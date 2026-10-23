@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 7 股票估值 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part7" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 3.2 Interest Rates and Security Valuation: Equity Pricing</div>
+      <h1>Part 7 股票估值</h1>
+      <p>本部分把折现思路应用到权益。两条路线：<strong>相对估值</strong>（用可比公司的 P/E 乘数）与<strong>绝对估值</strong>（股利折现模型）；折现率则由 <strong>CAPM</strong> 或 <strong>Fama-French 三因子模型</strong>给出。考点分布很均匀——P/E 与 DDM 是计算，CAPM 与因子模型则一半计算一半解释。</p>
+      <div class="tags">
+        <span>Trailing / Forward P/E</span><span>DDM 股利折现</span><span>零增长</span><span>固定增长</span><span>非常规增长</span><span>优先股</span><span>CAPM</span><span>SMB / HML / MOM</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 相对估值 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 相对估值：P/E">1. 相对估值：P/E 乘数 <span class="badge">Relative Valuation</span></h2>
+      <div class="lec-meta"><span>Chapter 3.2 · slides 3–9</span><span>Practice Q15(a)(b)(c)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Relative valuation</b> values an asset by comparing it with the market prices of <b>comparable</b> assets, using a standardised multiple such as the price-earnings ratio. <b>Trailing P/E</b> uses <b>realised (last twelve months)</b> EPS; <b>forward P/E</b> uses <b>expected</b> EPS.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">P/E</span>
+        \[ \text{Trailing P/E}=\frac{P_0}{EPS_{trailing}} \qquad \text{Forward P/E}=\frac{P_0}{EPS_{forward}} \]
+        <div class="fnote">当预期 EPS 高于已实现 EPS 时，分母变大 → <strong>Forward P/E 低于 Trailing P/E</strong>（价格固定）。</div>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 两个必考的陷阱</div>
+        <ol>
+          <li><strong>乘数必须与匹配的盈利口径相乘</strong>：用可比公司的 <em>trailing</em> P/E，就要乘目标公司的 <em>trailing</em> EPS；混用会得出错误的估值。</li>
+          <li><strong>相对便宜 ≠ 绝对便宜</strong>：如果整个可比组都被高估，那么「组内最便宜」的股票仍然可能是贵的。相对估值只能回答「相对于同伴」，不能回答「相对于内在价值」。</li>
+        </ol>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Trailing vs forward P/E and peer-based value</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Firm C has trailing EPS of $3.00 and expected EPS next year of $3.60. Its share price is $54. Comparable firms have an average trailing P/E of 20.
+            <br>(a) Calculate Firm C's trailing P/E and forward P/E. Explain why they differ.
+            <br>(b) Estimate its value using the peer trailing P/E and the matching EPS measure. Compare your estimate with the market price.
+            <br>(c) Give two economic reasons why Firm C might deserve a lower P/E than its peers. Why does a low relative valuation not prove that the share is cheap in absolute terms?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 两个 P/E 的差别全部来自<strong>分母</strong>：价格固定为 \$54，预期 EPS（\$3.60）高于已实现 EPS（\$3.00），所以 forward P/E 更低。
+            <br>(b) 可比公司给的是 <strong>trailing P/E</strong>，所以必须乘 <strong>trailing EPS</strong>（\$3.00），得到 \$60；与市价 \$54 相比低 \$6。
+            <br>(c) P/E 低通常反映<strong>增长预期更低</strong>或<strong>风险更高</strong>；而且相对便宜不代表绝对便宜。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ \text{Value}=EPS_{trailing}\times(\text{peer trailing P/E}) \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) Trailing P/E \(=54/3.00=\mathbf{18.0}\)。</li>
+              <li>(a) Forward P/E \(=54/3.60=\mathbf{15.0}\)。</li>
+              <li>(a) 差异原因：预期盈利高于已实现盈利，价格不变时分母变大 → forward 比率更低。</li>
+              <li>(b) 估值 \(=3.00\times20=\mathbf{\$60}\)。</li>
+              <li>(b) 与市价比较：\(\$60-\$54=\$6\)，市价比估计值<strong>低 \$6</strong>。</li>
+              <li>(c) 合理更低 P/E 的两个理由：<strong>预期增长更低</strong>、<strong>经营或财务风险更高</strong>（盈利质量差异也可作为第三点）。</li>
+              <li>(c) 相对便宜 ≠ 绝对便宜：<strong>整个可比组都可能被高估</strong>，因此相对估值不能证明绝对价值。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Trailing P/E = 54/3 = <b>18</b>; forward P/E = 54/3.60 = <b>15</b>. The forward ratio is lower because expected earnings exceed trailing earnings with price held fixed.
+                <br>(b) Peer-based value = trailing EPS × peer trailing P/E = 3 × 20 = <b>\$60</b>; the market price is <b>\$6 below</b> this estimate.
+                <br>(c) Lower expected growth and greater business or financial risk are two valid reasons (earnings quality may also matter). The whole peer group may be overpriced, so relative cheapness does not establish absolute value.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) Trailing <strong>18</strong>、Forward <strong>15</strong>（预期盈利更高 → 分母更大 → 比率更低）；(b) 估计值 <strong>\$60</strong>，市价低 \$6；(c) 增长更低、风险更高；且<strong>整组可能都被高估</strong>，相对便宜不等于绝对便宜。
+                <br>易错点：用 peer trailing P/E 乘 forward EPS（= \$72）是典型错误，口径必须匹配。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. DDM ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 股利折现模型">2. 股利折现模型 <span class="badge">Dividend Discount Model</span></h2>
+      <div class="lec-meta"><span>Chapter 3.2 · slides 10–25</span><span>Practice Q14</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Dividend discount model (DDM)</b>: the value of a share equals the present value of all <b>expected future dividends</b>, discounted at the required return on equity.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">零增长（永续年金）</span>
+        \[ P_0=\frac{D}{r} \]
+        <div class="fnote">适用于<strong>股利恒定不变</strong>的情形，典型例子是<strong>优先股 preferred share</strong>。</div>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">固定增长（戈登增长模型）</span>
+        \[ P_0=\frac{D_1}{r-g}=\frac{D_0(1+g)}{r-g},\qquad r&gt;g \]
+        <div class="fnote">\(D_1\) = <strong>下一期</strong>股利；\(r\) = 要求回报率；\(g\) = 永续增长率。<strong>必须用 \(D_1\) 而不是刚派发的 \(D_0\)</strong>，且必须 \(r&gt;g\)，否则级数不收敛、公式无意义。</div>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">非常规增长（分段 + 终值）</span>
+        \[ P_0=\sum_{t=1}^{T}\frac{D_t}{(1+r)^t}+\frac{TV_T}{(1+r)^T},\qquad TV_T=\frac{D_{T+1}}{r-g}=\frac{D_T(1+g)}{r-g} \]
+        <div class="fnote">终值 \(TV_T\) 位于<strong>第 \(T\) 期末</strong>（即刚付完 \(D_T\) 之后），代表此后所有股利的现值，需要再折现 \(T\) 期回到今天。</div>
+      </div>
+
+      <div data-fig="ddmTimeline" data-cap="股利折现的时间轴：从 D₁ 开始折现，终值位于拐点处再折回。图片来源：Chapter 3.2" data-src="Chapter 3"></div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 三个必须写进答案的条件</div>
+        <ol>
+          <li><strong>用 \(D_1\)</strong>：公式里的分子是<strong>下一期</strong>股利，题目通常给的是「刚派发的 \(D_0\)」，要乘 \((1+g)\) 转换。</li>
+          <li><strong>\(r&gt;g\)</strong>：否则无穷级数不收敛，模型给出无限大或负值，没有意义。</li>
+          <li><strong>反解回报</strong>：\(r=D_1/P_0+g\)，即「股利收益率 + 增长率」，可与要求回报率比较来判断高估/低估。</li>
+        </ol>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Constant-growth DDM, nonconstant growth and preferred shares</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Firm A has just paid an annual dividend of $2.00 per share. Dividends are expected to grow at 4% per year indefinitely. The required annual return is 9%.
+            <br>(a) Calculate next year's dividend and the current value of Firm A's shares under the constant-growth DDM.
+            <br>(b) If the market price is $40, calculate the expected return under the same dividend-growth assumptions. Compare it with the required return.
+            <br>(c) Explain why the constant-growth formula requires the required return to exceed the perpetual growth rate.
+            <br>(d) Firm B will pay $2.00 in Year 1 and $2.40 in Year 2. After Year 2, dividends grow at 3% forever. With a 9% required return, calculate the terminal value at the end of Year 2 and the current share value.
+            <br>(e) A preferred share pays a constant annual dividend of $3 forever, starting one year from now. Calculate its value at a required return of 6%.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 题目给的是「刚派发」的 \(D_0=2.00\)，必须先算出 \(D_1=2.00\times1.04=2.08\) 再代入。
+            <br>(b) 反解公式 \(r=D_1/P_0+g\)：把市价当作 \(P_0\) 代进去，得到的就是「按这个价格买入的预期回报」。
+            <br>(d) 终值在第 2 期末（刚付完 \(D_2\) 后），分子是 \(D_3=D_2(1+g)\)；然后 \(D_1\)、\(D_2+TV_2\) 分别折现。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ D_1=D_0(1+g) \qquad P_0=\frac{D_1}{r-g} \qquad r=\frac{D_1}{P_0}+g \qquad TV_2=\frac{D_3}{r-g} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) \(D_1=2.00\times1.04=\mathbf{\$2.08}\)。</li>
+              <li>(a) \(P_0=2.08/(0.09-0.04)=2.08/0.05=\mathbf{\$41.60}\)。</li>
+              <li>(b) \(r=2.08/40+0.04=0.052+0.04=\mathbf{9.20\%}\)。</li>
+              <li>(b) 与要求回报率比较：\(9.20\%&gt;9.00\%\)，高出 <strong>0.20 个百分点</strong> → 在该假设下市价 \$40 略偏低（预期回报高于要求回报）。</li>
+              <li>(c) 原因：贴现股利级数只有在 \(r&gt;g\) 时收敛；若 \(g\ge r\) 永续成立，无穷和不产生有限值。</li>
+              <li>(d) \(D_3=2.40\times1.03=\$2.472\)；\(TV_2=2.472/(0.09-0.03)=2.472/0.06=\mathbf{\$41.20}\)。</li>
+              <li>(d) 现值 \(=\dfrac{2.00}{1.09}+\dfrac{2.40+41.20}{1.09^2}=1.8349+36.6900=\mathbf{\$38.53}\)。</li>
+              <li>(e) 优先股（零增长永续）：\(P=3/0.06=\mathbf{\$50.00}\)。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \(D_1=2.00\times1.04=\mathbf{\$2.08}\); \(P_0=2.08/(0.09-0.04)=\mathbf{\$41.60}\).
+                <br>(b) Expected return \(=2.08/40+0.04=\mathbf{9.20\%}\), exceeding the required 9% by 0.20 pp.
+                <br>(c) The discounted dividend series converges only when \(r&gt;g\); if \(g\ge r\) indefinitely the infinite sum has no finite value.
+                <br>(d) \(D_3=2.40\times1.03=2.472\); \(TV_2=2.472/(0.09-0.03)=\mathbf{\$41.20}\); \(P_0=2/1.09+(2.40+41.20)/1.09^2=\mathbf{\$38.53}\).
+                <br>(e) \(P=3/0.06=\mathbf{\$50.00}\).</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) \(D_1=\)<strong>\$2.08</strong>，价值 <strong>\$41.60</strong>；(b) 预期回报 <strong>9.20%</strong>，高于要求回报 0.20 pp；(c) \(r&gt;g\) 是级数收敛的必要条件；
+                <br>(d) 终值 <strong>\$41.20</strong>，当前价值 <strong>\$38.53</strong>；(e) 优先股 <strong>\$50.00</strong>。
+                <br>易错点汇总：①把 \(D_0\) 当 \(D_1\) 直接代入；②(d) 中终值分子用 \(D_2\) 而非 \(D_3\)；③终值忘记再折现 2 期。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. CAPM ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. CAPM">3. CAPM：确定折现率 <span class="badge">Capital Asset Pricing Model</span></h2>
+      <div class="lec-meta"><span>Chapter 3.2 · slides 26–32</span><span>Practice Q15(d)(e)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>CAPM</b>: in equilibrium, the expected return on an asset equals the risk-free rate plus a premium proportional to its <b>beta</b> — its exposure to <b>market (systematic) risk</b>.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">CAPM</span>
+        \[ E(r_i)=r_f+\beta_i\big[E(r_M)-r_f\big] \qquad \beta_i=\frac{\mathrm{Cov}(r_i,r_M)}{\sigma_M^2} \]
+        <div class="fnote">\(r_f\) = 无风险利率；\(E(r_M)-r_f\) = 市场风险溢价 market risk premium；\(\beta_i\) = 该资产对市场组合的敏感度。</div>
+      </div>
+
+      <div data-fig="sml" data-cap="证券市场线 SML：截距为无风险利率，斜率为市场风险溢价。SML 上方 = 正 alpha（价格偏低）。图片来源：Chapter 3.2" data-src="Chapter 3"></div>
+
+      <div class="box key">
+        <div class="box-title">▸ 为什么 CAPM 只给系统性风险溢价？</div>
+        <p>投资者可以通过<strong>分散化</strong>消除公司特有风险（firm-specific / idiosyncratic risk），因此持有这种风险不会得到额外补偿。对组合风险真正有贡献的是该股票<strong>对市场波动的暴露程度</strong>，即 beta。所以<strong>不是所有的单独波动率都能换来溢价</strong>。
+        <br>答题句式：<em>In CAPM, diversified investors can reduce firm-specific risk through diversification; the relevant contribution to portfolio risk is the stock's exposure to market movements, measured by beta.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> CAPM required return</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">The risk-free rate is 3%, the expected market return is 8%, and Firm C's beta is 1.2.
+            <br>(a) Calculate its CAPM required return.
+            <br>(b) Explain why CAPM rewards exposure to market risk rather than every source of a stock's stand-alone volatility.
+            <br>(c) If the market risk premium doubles while beta and the risk-free rate stay the same, what is the new required return?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 直接代入：市场风险溢价 = 8% − 3% = 5%，乘以 beta 1.2 得 6%，加上无风险利率 3% = 9%。
+            <br>(c) 市场风险溢价翻倍 → 5% × 2 = 10%；新要求回报 = 3% + 1.2 × 10% = 15%。注意是<strong>溢价</strong>翻倍，不是总回报翻倍。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ E(r_i)=3\%+1.2\,(8\%-3\%)=3\%+1.2\times5\% \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 市场风险溢价 \(=8\%-3\%=5\%\)。</li>
+              <li>(a) 风险溢价部分 \(=1.2\times5\%=6\%\)。</li>
+              <li>(a) 要求回报 \(=3\%+6\%=\mathbf{9.00\%}\)。</li>
+              <li>(b) 解释：分散化消除个体风险 → 只有不可分散的市场暴露（beta）获得溢价。</li>
+              <li>(c) 新溢价 \(=10\%\) → 新要求回报 \(=3\%+1.2\times10\%=\mathbf{15.00\%}\)。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \(E(r)=3\%+1.2(8\%-3\%)=\mathbf{9.00\%}\).
+                <br>(b) Diversified investors can eliminate firm-specific risk, so only beta — exposure to market movements — is priced; not all stand-alone volatility earns a premium.
+                <br>(c) New premium = 10%; new required return = \(3\%+1.2(10\%)=\mathbf{15.00\%}\).</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>9.00%</strong>；(b) 只有系统性风险（beta）获溢价，个体风险可通过分散化消除；(c) <strong>15.00%</strong>。
+                <br>提醒：(c) 中是<strong>市场风险溢价</strong>翻倍（5% → 10%），不是要求回报翻倍。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 因子模型 ============ -->
+    <section id="s4">
+      <h2 class="sec" data-short="4. Fama-French 三因子与动量">4. Fama-French 三因子与动量 <span class="badge">Factor Models</span></h2>
+      <div class="lec-meta"><span>Chapter 3.2 · slides 27–42</span><span>Practice Q16</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Fama-French three-factor model</b> extends CAPM by adding two portfolio return series that capture <b>size</b> and <b>value</b> effects: <b>SMB</b> (small minus big) and <b>HML</b> (high minus low book-to-market).</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">三因子模型</span>
+        \[ r_i-r_f=\alpha+b_M\,\text{MKTRF}+b_S\,\text{SMB}+b_H\,\text{HML}+\varepsilon \]
+        <div class="fnote">
+          <strong>MKTRF</strong> = 市场收益 − 无风险利率（market excess return）；<br>
+          <strong>SMB</strong> = Small minus Big：小市值组合减大市值组合的收益；<br>
+          <strong>HML</strong> = High minus Low：高账面市值比（价值股）减低账面市值比（成长股）组合的收益；<br>
+          <strong>MOM（动量）</strong> = 近期赢家减近期输家的收益（课件提及）。
+        </div>
+      </div>
+
+      <div data-fig="factorModel" data-cap="三因子 + 动量：把超额收益拆解为各因子暴露 × 因子收益。图片来源：Chapter 3.2" data-src="Chapter 3"></div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 载荷符号怎么读</div>
+        <ul>
+          <li><strong>SMB 载荷为正</strong> → 该组合偏向<strong>小盘股</strong>；</li>
+          <li><strong>HML 载荷为正</strong> → 偏向<strong>价值股</strong>（高账面市值比）；<strong>为负</strong> → 偏向<strong>成长股</strong>。</li>
+          <li>因子收益与载荷<strong>同号时贡献为正</strong>：例如 HML 收益为 −0.5%、载荷为 −0.2，乘积为 <strong>+0.10%</strong>。</li>
+        </ul>
+      </div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 必考场景：CAPM 有正 alpha，三因子下 alpha ≈ 0</div>
+        <p>这说明此前的「超额收益」<strong>并非管理能力</strong>，而是该基金承担了规模与价值因子的暴露——CAPM 因为遗漏这些因子，把因子收益错误地记入了截距项 alpha。加入因子后，可解释的部分被吸收，截距自然趋近于 0。
+        <br>严谨表述：<em>Alpha near zero is consistent with factor exposure accounting for the earlier alpha; without further evidence it does not establish statistical significance or prove that skill is absent.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 4</span> Interpreting a three-factor regression</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Monthly Fama-French three-factor regression: excess fund return \(=\alpha+b_M\cdot\text{MKTRF}+b_S\cdot\text{SMB}+b_H\cdot\text{HML}+\) residual. Loadings: \(b_M=1.1\), \(b_S=0.5\), \(b_H=-0.2\).
+            <br>(a) Explain what MKTRF, SMB and HML represent. Interpret the signs of the fund's SMB and HML loadings.
+            <br>(b) In one month, MKTRF = 2.0%, SMB = 1.0% and HML = −0.5%. Assuming alpha and residual are zero, find the model-implied excess fund return.
+            <br>(c) If that month's risk-free return is 0.2%, calculate the corresponding total fund return.
+            <br>(d) A CAPM regression reports positive alpha, but a three-factor regression reports alpha close to zero. Explain how the additional factor exposures could account for this result.
+            <br>(e) Distinguish a common factor return series from a firm characteristic such as book-to-market. What broad past-return pattern does the momentum factor seek to capture?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(b) 三个乘积相加：<strong>注意 HML 这一项</strong>——因子收益 −0.5% 与载荷 −0.2 相乘得 <strong>+0.10%</strong>（负负得正），这是最容易算错的一处。
+            <br>(c) 总收益 = 超额收益 + 无风险收益。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ r-r_f = 1.1(2.0\%)+0.5(1.0\%)+(-0.2)(-0.5\%) \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) MKTRF = 市场超额收益；SMB = 小减大（规模）；HML = 高减低账面市值比（价值）。</li>
+              <li>(a) 载荷解读：\(b_S=0.5&gt;0\) → 偏<strong>小盘</strong>；\(b_H=-0.2&lt;0\) → 偏<strong>成长</strong>（低账面市值比）。</li>
+              <li>(b) 市场项：\(1.1\times2.0\%=2.20\%\)。</li>
+              <li>(b) 规模项：\(0.5\times1.0\%=0.50\%\)。</li>
+              <li>(b) 价值项：\((-0.2)\times(-0.5\%)=+0.10\%\)。</li>
+              <li>(b) 超额收益合计 \(=2.20+0.50+0.10=\mathbf{2.80\%}\)。</li>
+              <li>(c) 总收益 \(=2.80\%+0.20\%=\mathbf{3.00\%}\)。</li>
+              <li>(d) CAPM 把规模与价值暴露带来的收益记入了截距 → 出现正 alpha；控制这些暴露后，剩余不可解释部分变小 → alpha 趋近 0。</li>
+              <li>(e) 共同因子 = 跨资产共享的<strong>收益时间序列</strong>；账面市值比 = 随公司与时间变化的<strong>公司特征</strong>，可用来构造因子组合。动量捕捉「近期相对赢家在随后继续跑赢近期相对输家」的模式。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) <b>MKTRF</b>: market return less the risk-free rate. <b>SMB</b>: small-minus-big (size). <b>HML</b>: high-minus-low book-to-market (value). Positive SMB loading = small-cap tilt; negative HML loading = growth tilt.
+                <br>(b) \(1.1(2.0\%)+0.5(1.0\%)+(-0.2)(-0.5\%)=\mathbf{2.80\%}\); the negative HML return contributes positively because its loading is also negative.
+                <br>(c) Total return \(=2.80\%+0.20\%=\mathbf{3.00\%}\).
+                <br>(d) CAPM attributes returns associated with size and value exposures to its intercept; controlling for them leaves less unexplained, so alpha falls toward zero.
+                <br>(e) A <b>common factor</b> is a shared time series of portfolio returns; a <b>characteristic</b> such as book-to-market varies across firms and is used to form those portfolios. Momentum captures the tendency of recent relative winners to outperform recent relative losers.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 三个因子含义 + 载荷解读（偏小盘、偏成长）；(b) 超额收益 <strong>2.80%</strong>；(c) 总收益 <strong>3.00%</strong>；
+                <br>(d) CAPM 遗漏因子 → 因子收益被记入 alpha；加入因子后 alpha 趋近 0；
+                <br>(e) 因子是<strong>收益序列</strong>，特征是<strong>公司属性</strong>；动量捕捉近期赢家继续跑赢的规律。
+                <br>关键陷阱：HML 项 <strong>(−0.2)×(−0.5%) = +0.10%</strong>，负负得正。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 5. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="5. 练习（真题型）">5. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q14–Q16）。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Dividend discount valuation <span class="kbd">真题型</span> <span class="kbd">Practice Q14</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Firm A just paid $2.00; growth 4% forever; required return 9%.
+          <br>(a) \(D_1\) and value? (b) At a market price of $40, expected return vs required return? (c) Why must \(r&gt;g\)? (d) Firm B pays $2.00 in Year 1 and $2.40 in Year 2, then grows at 3% forever; terminal value at Year 2 and current value? (e) A preferred share paying $3 forever from Year 1 at a 6% required return?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。</p></div>
+            <ol class="steps">
+              <li>(a) \(D_1=\$2.08\)，\(P_0=\$41.60\)。</li>
+              <li>(b) \(r=2.08/40+4\%=9.20\%\)，高于 9% 0.20 pp。</li>
+              <li>(c) \(r&gt;g\) 是级数收敛的必要条件。</li>
+              <li>(d) \(TV_2=\$41.20\)，\(P_0=\$38.53\)。</li>
+              <li>(e) \(P=\$50.00\)。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) \(D_1=\)<b>\$2.08</b>, \(P_0=\)<b>\$41.60</b>. (b) <b>9.20%</b>, 0.20 pp above required. (c) The dividend series converges only if \(r&gt;g\). (d) \(TV_2=\)<b>\$41.20</b>, \(P_0=\)<b>\$38.53</b>. (e) <b>\$50.00</b>.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$2.08 / \$41.60</strong>；(b) <strong>9.20%</strong>；(c) 收敛条件；(d) <strong>\$41.20 / \$38.53</strong>；(e) <strong>\$50.00</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Relative valuation and CAPM <span class="kbd">真题型</span> <span class="kbd">Practice Q15</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Firm C: trailing EPS $3.00, expected EPS $3.60, price $54; peer average trailing P/E = 20.
+          <br>(a) Trailing and forward P/E, and why they differ? (b) Peer-based value and comparison with the market price? (c) Two reasons for a lower P/E; why is relative cheapness not absolute cheapness? (d) \(r_f=3\%\), \(E(r_M)=8\%\), \(\beta=1.2\): CAPM required return? (e) Why does CAPM reward only market risk?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1 与 EXAMPLE 3。</p></div>
+            <ol class="steps">
+              <li>(a) Trailing 18、Forward 15。</li>
+              <li>(b) 估值 \$60，市价低 \$6。</li>
+              <li>(c) 增长更低、风险更高；整组可能都被高估。</li>
+              <li>(d) \(3\%+1.2(5\%)=9.00\%\)。</li>
+              <li>(e) 个体风险可通过分散化消除，只有 beta 获溢价。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>18</b> and <b>15</b>; forward is lower because expected EPS exceeds trailing EPS. (b) <b>\$60</b>; market price \$6 below. (c) Lower growth, higher risk; the whole peer group may be overpriced. (d) <b>9.00%</b>. (e) Only systematic (beta) risk is priced.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>18 / 15</strong>；(b) <strong>\$60</strong>，低 \$6；(c) 增长与风险；整组高估的可能；(d) <strong>9.00%</strong>；(e) 只有系统性风险获溢价。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Factor-model results <span class="kbd">真题型</span> <span class="kbd">Practice Q16</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Loadings \(b_M=1.1\), \(b_S=0.5\), \(b_H=-0.2\). MKTRF = 2.0%, SMB = 1.0%, HML = −0.5%; \(r_f=0.2\%\).
+          <br>(a) What do the three factors represent; interpret the SMB and HML loadings? (b) Model-implied excess return? (c) Total fund return? (d) Why can CAPM alpha be positive while three-factor alpha ≈ 0? (e) Factor vs characteristic; what does momentum capture?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 4。重点检查 HML 项的符号。</p></div>
+            <ol class="steps">
+              <li>(a) MKTRF/SMB/HML 含义；偏小盘、偏成长。</li>
+              <li>(b) \(2.20\%+0.50\%+0.10\%=2.80\%\)。</li>
+              <li>(c) \(2.80\%+0.20\%=3.00\%\)。</li>
+              <li>(d) CAPM 遗漏因子 → 因子收益被记入截距。</li>
+              <li>(e) 因子 = 收益序列；特征 = 公司属性；动量 = 赢家继续跑赢。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Market excess return; small-minus-big; high-minus-low B/M; small-cap and growth tilts. (b) <b>2.80%</b>. (c) <b>3.00%</b>. (d) CAPM attributes size/value returns to its intercept. (e) A factor is a shared return series; B/M is a firm characteristic; momentum captures recent winners outperforming recent losers.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 见分析；(b) <strong>2.80%</strong>；(c) <strong>3.00%</strong>；(d) 遗漏因子导致 alpha 虚高；(e) 因子 vs 特征；动量 = 赢家继续跑赢。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Two-stage growth with a decline <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A firm just paid a dividend of $1.50. Dividends are expected to grow at 12% for the next three years and then at 3% forever. The required return is 10%.
+          <br>(a) Compute \(D_1\), \(D_2\), \(D_3\) and \(D_4\). (b) Terminal value at the end of Year 3. (c) Current share value.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>两阶段增长：先逐年算出高速期的股利，再用固定增长公式在第 3 期末求终值（分子是 \(D_4\)），最后把 \(D_1\)–\(D_3\) 与终值一起折现。</p></div>
+            <ol class="steps">
+              <li>\(D_1=1.50\times1.12=\$1.68\)。</li>
+              <li>\(D_2=1.68\times1.12=\$1.8816\approx\$1.88\)。</li>
+              <li>\(D_3=1.8816\times1.12=\$2.1074\approx\$2.11\)。</li>
+              <li>\(D_4=2.1074\times1.03=\$2.1706\approx\$2.17\)。</li>
+              <li>\(TV_3=D_4/(r-g)=2.1706/(0.10-0.03)=2.1706/0.07=\mathbf{\$31.01}\)。</li>
+              <li>折现：\(\dfrac{1.68}{1.10}=1.5273\)；\(\dfrac{1.8816}{1.10^2}=1.5542\)；\(\dfrac{2.1074}{1.10^3}=1.5831\)；\(\dfrac{31.01}{1.10^3}=23.2912\)。</li>
+              <li>合计：\(P_0=1.5273+1.5542+1.5831+23.2912=\mathbf{\$27.96}\)。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) \(D_1=\)<b>\$1.68</b>, \(D_2=\)<b>\$1.88</b>, \(D_3=\)<b>\$2.11</b>, \(D_4=\)<b>\$2.17</b>. (b) \(TV_3=2.1706/(0.10-0.03)=\)<b>\$31.01</b>. (c) \(P_0=1.68/1.10+1.8816/1.10^2+(2.1074+31.01)/1.10^3=\)<b>\$27.96</b>.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) \(D_1\)–\(D_4\) = <strong>\$1.68 / \$1.88 / \$2.11 / \$2.17</strong>；(b) 第 3 期末终值 <strong>\$31.01</strong>；(c) 当前价值 <strong>\$27.96</strong>。
+                <br>注意：终值的分子必须是 <strong>\(D_4\)</strong>（第 4 年股利），且折现率仍用 10%（\(r&gt;g=3\%\) 满足收敛条件）。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> CAPM required return versus the market price <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Stock XYZ has <b>β = 1.30</b>. The risk-free rate is <b>3.00%</b> and the expected market return is <b>9.00%</b>. Next year's dividend is expected to be <b>¥2.40</b> and dividends are expected to grow at <b>5.00%</b> forever.
+          <br>(a) Compute the required return on equity using the CAPM.
+          <br>(b) Compute the intrinsic value using the Gordon growth model.
+          <br>(c) The market price is <b>¥45.00</b>. Is the stock over- or undervalued? What growth rate is the market implicitly assuming?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>把两条线接起来：<strong>CAPM 给出折现率 r</strong>，<strong>戈登模型把 r 变成价格</strong>。\(r=r_f+\beta\,(r_m-r_f)\)，\(V_0=\dfrac{D_1}{r-g}\)。注意使用 D<sub>1</sub>（下一期股利）而不是 D<sub>0</sub>。反解市场隐含 g 是检验估值分歧的常用手法。</p></div>
+            <ol class="steps">
+              <li>(a) \(r=3.00\%+1.30\times(9.00\%-3.00\%)=3.00\%+7.80\%=\) <strong>10.80%</strong>。</li>
+              <li>(b) \(V_0=\dfrac{2.40}{0.1080-0.0500}=\dfrac{2.40}{0.0580}=\) <strong>¥41.38</strong>。</li>
+              <li>(c) 市价 ¥45.00 &gt; 内在价值 ¥41.38 → <strong>被高估</strong>，应卖出/回避。</li>
+              <li>(c) 反解：\(45.00=\dfrac{2.40}{0.1080-g}\) → \(0.1080-g=\dfrac{2.40}{45.00}=0.053333\)。</li>
+              <li>(c) \(g=0.1080-0.053333=\) <strong>5.47%</strong>。</li>
+              <li>(c) 含义：市场隐含的永续增长率比你的估计<strong>高 47 bp</strong>——估值分歧最终归结为对 g 的分歧。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) r = 3.00% + 1.30 × 6.00% = <b>10.80%</b>. (b) V<sub>0</sub> = 2.40/(0.1080 − 0.0500) = <b>¥41.38</b>. (c) The market price of ¥45.00 exceeds intrinsic value, so the stock is <b>overvalued</b>. Solving 45.00 = 2.40/(0.1080 − g) gives g = <b>5.47%</b>, i.e. the market is pricing in 47 bp more growth than your estimate.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 要求回报率 <strong>10.80%</strong>。(b) 内在价值 <strong>¥41.38</strong>。(c) 市价 ¥45 &gt; ¥41.38，<strong>被高估</strong>；市场隐含增长率 <strong>5.47%</strong>，比假设的 5.00% 高 47 bp。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Payout, growth and PVGO: why high P/E can be justified <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Two firms both have expected earnings of <b>¥5.00</b> per share next year and a required return of <b>10%</b>. Firm A pays out <b>80%</b> of earnings and grows at <b>4%</b>; Firm B pays out <b>40%</b> and grows at <b>8%</b>.
+          <br>(a) Compute the price and the P/E ratio of each firm.
+          <br>(b) Compute the no-growth value E<sub>1</sub>/r and the <b>PVGO</b> of each firm.
+          <br>(c) Is Firm B's higher P/E evidence that it is overvalued? Explain.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>把价格拆成两块：<strong>零增长价值（现有盈利的永续年金）</strong> 与 <strong>PVGO（增长机会的现值）</strong>。高市盈率只说明<strong>市场为增长机会付了更多钱</strong>，本身不是「贵」的证据——关键看增长是否真的能实现且 ROE &gt; r。</p></div>
+            <ol class="steps">
+              <li>(a) Firm A：D<sub>1</sub> = 5.00 × 80% = <strong>¥4.00</strong>；\(P_A=\dfrac{4.00}{0.10-0.04}=\) <strong>¥66.67</strong>；P/E = 66.67 ÷ 5.00 = <strong>13.33×</strong>。</li>
+              <li>(a) Firm B：D<sub>1</sub> = 5.00 × 40% = <strong>¥2.00</strong>；\(P_B=\dfrac{2.00}{0.10-0.08}=\) <strong>¥100.00</strong>；P/E = 100.00 ÷ 5.00 = <strong>20.00×</strong>。</li>
+              <li>(b) 零增长价值 = E<sub>1</sub>/r = 5.00 ÷ 0.10 = <strong>¥50.00</strong>（两家相同）。</li>
+              <li>(b) PVGO<sub>A</sub> = 66.67 − 50.00 = <strong>¥16.67</strong>；PVGO<sub>B</sub> = 100.00 − 50.00 = <strong>¥50.00</strong>。</li>
+              <li>(c) <strong>不能</strong>据此判断 B 被高估：B 的 PVGO 更高，源于它<strong>留存更多利润用于再投资</strong>并获得更高增长。</li>
+              <li>(c) 判断标准应是<strong>再投资的回报率是否高于要求回报率 r</strong>：若 ROE &gt; r，高留存创造正 PVGO；若 ROE &lt; r，高留存反而<strong>毁灭价值</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) A: D<sub>1</sub> = ¥4.00, P = <b>¥66.67</b>, P/E = <b>13.33×</b>. B: D<sub>1</sub> = ¥2.00, P = <b>¥100.00</b>, P/E = <b>20.00×</b>. (b) No-growth value = 5.00/0.10 = <b>¥50.00</b> for both; PVGO<sub>A</sub> = <b>¥16.67</b>, PVGO<sub>B</sub> = <b>¥50.00</b>. (c) A higher P/E is <b>not by itself</b> evidence of overvaluation — B retains more earnings and grows faster. The test is whether reinvestment earns more than the required return: positive PVGO requires ROE &gt; r.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) A：价格 <strong>¥66.67</strong>、P/E <strong>13.33×</strong>；B：价格 <strong>¥100.00</strong>、P/E <strong>20.00×</strong>。(b) 零增长价值均为 <strong>¥50.00</strong>；PVGO<sub>A</sub> = <strong>¥16.67</strong>，PVGO<sub>B</sub> = <strong>¥50.00</strong>。(c) 高 P/E 不等于高估，关键看<strong>再投资回报率是否高于 r</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Fama-French three-factor expected return <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">The risk-free rate is <b>2.50%</b>. Factor premiums: market <b>6.00%</b>, SMB (size) <b>2.00%</b>, HML (value) <b>3.50%</b>. A stock has loadings <b>β<sub>MKT</sub> = 0.90</b>, <b>β<sub>SMB</sub> = 0.60</b>, <b>β<sub>HML</sub> = −0.40</b>.
+          <br>(a) Compute the expected return using the Fama-French three-factor model.
+          <br>(b) Compute the CAPM-only estimate and explain the sign and size of the difference.
+          <br>(c) Interpret the stock's style: is it a small-cap growth, small-cap value, large-cap growth or large-cap value stock?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>三因子模型在 CAPM 之上再加两个<strong>风格因子</strong>：\(E(R)=r_f+\beta_{MKT}(R_m-r_f)+\beta_{SMB}\cdot SMB+\beta_{HML}\cdot HML\)。SMB 载荷为正 = 小盘倾向；HML 载荷为负 = 成长倾向。</p></div>
+            <ol class="steps">
+              <li>(a) 市场项 = 0.90 × 6.00% = <strong>5.40%</strong>；规模项 = 0.60 × 2.00% = <strong>1.20%</strong>；价值项 = (−0.40) × 3.50% = <strong>−1.40%</strong>。</li>
+              <li>(a) \(E(R)=2.50\%+5.40\%+1.20\%-1.40\%=\) <strong>7.70%</strong>。</li>
+              <li>(b) CAPM：\(2.50\%+0.90\times6.00\%=\) <strong>7.90%</strong>。</li>
+              <li>(b) 差 7.70% − 7.90% = <strong>−0.20% (−20 bp)</strong>：小盘敞口贡献 +120 bp，成长敞口贡献 −140 bp，净 −20 bp。</li>
+              <li>(c) β<sub>SMB</sub> &gt; 0 → <strong>小盘</strong>；β<sub>HML</sub> &lt; 0 → <strong>成长型</strong>（账面市值比低）。</li>
+              <li>(c) 结论：这是一只<strong>小盘成长股（small-cap growth）</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) E(R) = 2.50% + 0.90 × 6.00% + 0.60 × 2.00% + (−0.40) × 3.50% = <b>7.70%</b>. (b) CAPM gives 2.50% + 5.40% = <b>7.90%</b>, i.e. <b>20 bp higher</b>: the small-cap tilt adds 120 bp while the growth tilt subtracts 140 bp. (c) Positive SMB loading plus negative HML loading makes it a <b>small-cap growth</b> stock.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 预期回报 <strong>7.70%</strong>。(b) CAPM 估计 <strong>7.90%</strong>，高出 <strong>20 bp</strong>：小盘敞口 +120 bp、成长敞口 −140 bp。(c) 属于<strong>小盘成长股</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="6. 术语对照">6. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Relative valuation 相对估值</span><span>Trailing P/E  trailing 市盈率</span><span>Forward P/E  forward 市盈率</span>
+        <span>Comparable firms 可比公司</span><span>Earnings quality 盈利质量</span>
+        <span>Dividend discount model (DDM) 股利折现模型</span><span>Constant growth 固定增长</span>
+        <span>Nonconstant growth 非常规增长</span><span>Terminal value 终值</span><span>Preferred share 优先股</span>
+        <span>Required return on equity 权益要求回报率</span><span>Dividend yield 股利收益率</span>
+        <span>CAPM 资本资产定价模型</span><span>Beta 贝塔</span><span>Market risk premium 市场风险溢价</span>
+        <span>Systematic risk 系统性风险</span><span>Idiosyncratic risk 个体风险</span><span>SML 证券市场线</span><span>Alpha 阿尔法</span>
+        <span>MKTRF 市场超额收益因子</span><span>SMB 规模因子</span><span>HML 价值因子</span><span>Momentum (MOM) 动量因子</span>
+        <span>Factor loading 因子载荷</span><span>Book-to-market 账面市值比</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>到这里「价格」这条线讲完了。Part 8 转向另一条线：<strong>折现率如何被央行改变</strong>——美联储的工具、准备金与货币乘数，以及 FOMC 公告怎么读。</p>
+        <p><a href="part8-monetary-policy.html">前往 Part 8 货币政策与美联储 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 7 股票估值 · 内容依据 Chapter 3.2 课件与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

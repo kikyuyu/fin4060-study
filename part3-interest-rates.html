@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 3 利率的决定 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part3" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 2.0 Review · Chapter 2.1 Determinants of Interest Rates</div>
+      <h1>Part 3 利率的决定</h1>
+      <p>本部分解决全课最基础的问题：<strong>利率由什么决定</strong>。先复习货币时间价值（因为估值全是折现），再用<strong>可贷资金模型</strong>解释均衡利率如何形成，最后用<strong>费雪效应</strong>与<strong>加总分解式</strong>说明为什么不同证券的利率不同。这里既有画图题（供需曲线平移），也有计算题（实际利率、要求收益率）。</p>
+      <div class="tags">
+        <span>现值 / 终值</span><span>年金</span><span>可贷资金</span><span>费雪效应</span><span>通胀溢价</span><span>违约风险溢价</span><span>流动性溢价</span><span>期限风险溢价</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. TVM ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 货币时间价值复习">1. 货币时间价值复习 <span class="badge">Time Value of Money</span></h2>
+      <div class="lec-meta"><span>Chapter 2.0 Review · slides 3–16</span><span>Practice Q5</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Time value of money (TVM)</b>: a unit of currency received today is worth more than the same unit received in the future, because it can be invested to earn a return. Discounting converts future cash flows into present value; compounding converts present value into future value.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">单笔现金流</span>
+        \[ FV = PV(1+r)^n \qquad PV=\frac{FV}{(1+r)^n} \]
+        <div class="fnote">\(PV\) = 现值 present value；\(FV\) = 终值 future value；\(r\) = 每期利率；\(n\) = 期数。</div>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">年金</span>
+        \[ PV_{\text{annuity}} = C\cdot\frac{1-(1+r)^{-n}}{r} \qquad FV_{\text{annuity}} = C\cdot\frac{(1+r)^n-1}{r} \]
+        <div class="fnote">\(C\) = 每期等额现金流。课件练习默认<strong>期末支付</strong>（ordinary annuity，payment occurs at period-end），这也是全站的默认假设。</div>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 解题定式</div>
+        <ol>
+          <li>画时间轴，标出每期的现金流与折现率；</li>
+          <li>确认是单笔还是等额系列（年金），以及是否期末支付；</li>
+          <li>选公式代入，保留中间精度，最后再四舍五入；</li>
+          <li>比较方案时，<strong>必须折算到同一时点</strong>再比（要么都折到今天，要么都算到同一未来日）。</li>
+        </ol>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Present value of an instalment plan</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A student can buy a computer for $9,500 today or make three payments of $3,500 at the end of Years 1, 2 and 3. The appropriate annual discount rate is 5%.
+            <br>(a) Calculate the present value of the instalment plan and identify the cheaper payment option in present-value terms.
+            <br>(b) Calculate the future value at the end of Year 3 of $9,500 invested today at 5% per year.
+            <br>(c) The student instead saves $3,000 at the end of each of the next three years. Calculate the accumulated value immediately after the third deposit.
+            <br>(d) Explain how a higher discount rate affects the present value of the instalments. Distinguish a change in present value from a change in the contractual payment amounts.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 分期方案是一个<strong>三年期期末年金</strong>，把它折到现在与 $9,500 直接比较即可。注意：分期总额 $10,500 大于 $9,500，但因为钱是<strong>未来</strong>付的，现值可能更小——这正是本题的考点。
+            <br>(c) 第三笔存款<strong>在第三年末才存入</strong>，因此<strong>不计息</strong>；这是年金终值题最常见的坑。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ PV = \frac{3{,}500}{1.05}+\frac{3{,}500}{1.05^2}+\frac{3{,}500}{1.05^3} \]
+            \[ FV_{\text{annuity}} = 3{,}000\,(1.05^2+1.05+1) \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 逐项折现：\(\dfrac{3{,}500}{1.05}=3{,}333.33\)；\(\dfrac{3{,}500}{1.05^2}=3{,}174.60\)；\(\dfrac{3{,}500}{1.05^3}=3{,}023.43\)。</li>
+              <li>(a) 求和：\(PV=3{,}333.33+3{,}174.60+3{,}023.43=\mathbf{\$9{,}531.37}\)。</li>
+              <li>(a) 比较：\(9{,}531.37-9{,}500.00=\$31.37\)，<strong>今天一次性付 $9,500 更便宜 \$31.37</strong>。</li>
+              <li>(b) 单笔终值：\(FV=9{,}500\times1.05^3=\mathbf{\$10{,}997.44}\)。</li>
+              <li>(c) 年金终值：第一笔存 2 年、第二笔存 1 年、第三笔存 0 年 → \(3{,}000(1.05^2+1.05+1)=3{,}000\times3.1525=\mathbf{\$9{,}457.50}\)。</li>
+              <li>(d) 折现率越高 → 未来现金流的现值<strong>越低</strong>；但三笔 $3,500 的<strong>合同金额不变</strong>——变的是「今天值多少钱」，不是「要付多少」。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \(PV=3{,}500/1.05+3{,}500/1.05^2+3{,}500/1.05^3=\mathbf{\$9{,}531.37}\). Paying \$9,500 today is cheaper by <b>\$31.37</b> in present-value terms.
+                <br>(b) \(FV=9{,}500\times1.05^3=\mathbf{\$10{,}997.44}\).
+                <br>(c) The first deposit earns two years of interest, the second one year and the final deposit none: \(FV=3{,}000(1.05^2+1.05+1)=\mathbf{\$9{,}457.50}\).
+                <br>(d) A higher discount rate <b>lowers</b> the present value of the future instalments. It changes their value today, not the three contractual payments of \$3,500 each.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 分期方案现值 <strong>\$9,531.37</strong>，一次性付 <strong>\$9,500</strong> 更便宜（省 \$31.37）。
+                <br>(b) 终值 <strong>\$10,997.44</strong>；(c) 三年后累计 <strong>\$9,457.50</strong>。
+                <br>(d) 折现率上升 → 分期现值下降，但合同付款额 \$3,500 × 3 <strong>不变</strong>。
+                <br>两个易错点：①(c) 中最后一笔存款不计息；②(a) 的比较必须在<strong>同一时点</strong>进行。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 记忆技巧：年金终值为什么是 \((1+r)^{n-1}\) 到 \((1+r)^0\)？</div>
+        <p>第 1 笔存款在第 1 年末存入，到第 \(n\) 年末还能再存 \(n-1\) 年；最后一笔在第 \(n\) 年末存入，立刻就到估值时点，因此指数为 0，系数为 1。写成通式就是 \(C\big[(1+r)^{n-1}+\cdots+(1+r)+1\big]\)。</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 可贷资金 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 可贷资金理论">2. 可贷资金理论 <span class="badge">Loanable Funds Theory</span></h2>
+      <div class="lec-meta"><span>Chapter 2.1 Determinants · slides 5–14</span><span>Practice Q6</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Loanable funds theory</b> treats the interest rate as the <b>price of credit</b>, determined by the supply of funds (mainly household saving) and the demand for funds (mainly business investment and government borrowing). The equilibrium interest rate equates the two.</span><br>
+        可贷资金理论把利率视为<strong>信用的价格</strong>：由资金供给（主要是家庭储蓄）与资金需求（主要是企业投资）共同决定，均衡时两者相等。</p>
+      </div>
+
+      <div data-fig="loanableFunds" data-cap="可贷资金市场：供给向上倾斜、需求向下倾斜，交点决定均衡利率与均衡资金量；外生冲击使曲线平移。图片来源：Chapter 2.1" data-src="Chapter 2"></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:130px;">冲击</th><th>哪条曲线移动</th><th>方向</th><th>均衡利率</th><th>均衡数量</th></tr></thead>
+        <tbody>
+          <tr><td>家庭在每个利率下都存得更多</td><td>供给 S</td><td>右移 ↑</td><td><strong>下降</strong></td><td>上升</td></tr>
+          <tr><td>企业更乐观、想借更多</td><td>需求 D</td><td>右移 ↑</td><td><strong>上升</strong></td><td>上升</td></tr>
+          <tr><td>政府赤字扩大</td><td>需求 D</td><td>右移 ↑</td><td><strong>上升</strong></td><td>上升</td></tr>
+          <tr><td>家庭储蓄与企业借款需求<strong>同时</strong>增加</td><td>S 与 D 都右移</td><td>—</td><td><strong>方向不确定</strong></td><td><strong>上升</strong>（确定）</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 必考辨析：沿曲线移动 vs 曲线平移</div>
+        <ul>
+          <li><strong>沿曲线移动（movement along）</strong>：<strong>利率本身</strong>变化导致供给量/需求量变化。例如利率上升使家庭愿意多存 → 沿着既定的供给曲线向上移动。</li>
+          <li><strong>曲线平移（shift）</strong>：利率<strong>以外</strong>的因素变化，使得<strong>在每一个利率水平上</strong>的供给量或需求量都变了。例如偏好变化、收入变化、投资机会变化。</li>
+        </ul>
+        <p class="muted">答题句式：<em>A change in the interest rate itself causes movement along a given supply curve; an increase in saving at each possible rate shifts the whole supply curve outward.</em></p>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 供需同增时为什么利率方向不确定？</div>
+        <p>供给右移<strong>压低</strong>利率，需求右移<strong>推高</strong>利率，两者方向相反，最终取决于<strong>哪条曲线移动得更多</strong>。但<strong>均衡数量一定上升</strong>（两条曲线都往「量更大」的方向推）。这是课件明确要求的结论：<em>the rate effect is ambiguous; the equilibrium quantity increases.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Shifting the loanable-funds curves</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Draw a loanable-funds diagram and label the supply curve, demand curve, equilibrium interest rate and equilibrium quantity.
+            <br>(b) Households decide to save more at every interest rate. Identify the curve that shifts and explain the effects on the equilibrium rate and quantity.
+            <br>(c) Firms become more optimistic about investment projects and wish to borrow more. Repeat the analysis.
+            <br>(d) Explain the difference between a movement along the supply curve caused by a higher interest rate and an outward shift of that curve.
+            <br>(e) If household saving and business borrowing demand both increase, can the direction of the interest-rate change be determined without more information? Explain.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>画图题的评分点通常是「坐标轴 + 两条曲线斜率 + 交点标注」这三件事。之后每一问都按「哪条曲线 → 往哪移 → 利率如何 → 数量如何」的固定顺序作答，就不会漏点。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 纵轴 = 利率 \(r\)，横轴 = 可贷资金数量 \(Q\)；供给向上倾斜、需求向下倾斜；交点 = \((r^*, Q^*)\)。</li>
+              <li>(b) 储蓄在每个利率下都增加 → <strong>供给曲线右移</strong>；需求不变 → <strong>均衡利率下降、均衡数量上升</strong>。</li>
+              <li>(c) 企业借款需求增加 → <strong>需求曲线右移</strong>；供给不变 → <strong>均衡利率上升、均衡数量上升</strong>。</li>
+              <li>(d) 利率上升本身 → <strong>沿供给曲线向上移动</strong>；而「每个利率下都多存」→ <strong>整条供给曲线右移</strong>。</li>
+              <li>(e) 供给右移压低利率、需求右移推高利率 → 方向<strong>不能确定</strong>，取决于相对移动幅度；但<strong>均衡数量一定增加</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Vertical axis = interest rate, horizontal axis = quantity of loanable funds; <b>supply slopes up</b>, <b>demand slopes down</b>; their intersection gives the equilibrium rate and quantity.
+                <br>(b) Greater saving at every rate shifts <b>supply right</b>: the equilibrium interest rate <b>falls</b> and the quantity <b>rises</b>.
+                <br>(c) Greater desired borrowing shifts <b>demand right</b>: both the equilibrium rate and quantity <b>rise</b>.
+                <br>(d) A change in the interest rate itself causes <b>movement along</b> a given supply curve; an increase in saving at each possible rate <b>shifts the whole curve outward</b>.
+                <br>(e) <b>No</b> — higher supply pushes the rate down while higher demand pushes it up; their relative shifts determine the result. In the standard model the equilibrium <b>quantity increases</b>.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 纵轴利率、横轴资金量，供给向上、需求向下，交点即均衡。(b) 储蓄增加 → 供给右移 → <strong>利率降、数量升</strong>。(c) 投资需求增加 → 需求右移 → <strong>利率升、数量升</strong>。(d) 利率变动 = 沿曲线移动；每个利率下都多存 = 曲线平移。(e) 利率方向<strong>不确定</strong>（取决于相对幅度），但<strong>数量一定增加</strong>。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 费雪效应 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 费雪效应与通胀">3. 费雪效应与通胀 <span class="badge">Fisher Effect</span></h2>
+      <div class="lec-meta"><span>Chapter 2.1 Determinants · slides 16–29</span><span>Practice Q7(a)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Fisher effect</b>: the nominal interest rate adjusts one-for-one with expected inflation, leaving the <b>real</b> interest rate (the return in terms of purchasing power) unchanged.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">费雪关系</span>
+        \[ \text{近似：}\quad r_{nom} \approx r_{real} + E(\pi) \]
+        \[ \text{精确：}\quad (1+r_{nom}) = (1+r_{real})\,(1+E(\pi)) \]
+        <div class="fnote">\(r_{nom}\) = 名义利率 nominal rate；\(r_{real}\) = 实际利率 real rate；\(E(\pi)\) = 预期通胀率 expected inflation。课件与练习<strong>默认使用近似式</strong>，除非题目另有说明。</div>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 为什么两个式子都成立？</div>
+        <p>精确式来自「名义回报 = 实际回报 × 购买力变化」的相乘关系。展开后得到 \(r_{nom}=r_{real}+E(\pi)+r_{real}E(\pi)\)，最后一项是两个百分数的乘积，数值很小，因此<strong>近似式丢掉的就是这个交叉项</strong>。利率水平越低，近似越准。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> Applying the Fisher relation</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A one-year nominal risk-free rate is 4.0% and expected inflation is 2.5%.
+            <br>(a) Calculate the approximate real risk-free rate. If expected inflation rises to 3.5% while the real rate stays unchanged, calculate the new nominal risk-free rate.
+            <br>(b) Recalculate part (a) using the exact (multiplicative) Fisher relationship, and compare the two answers.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 近似式直接相减即可：实际利率 ≈ 名义 − 预期通胀。然后<strong>固定实际利率不变</strong>，把新的通胀预期代回去，得到新的名义利率——通胀预期上升 1 个百分点，名义利率也上升 1 个百分点，这正是费雪效应的含义。
+            <br>(b) 精确式要<strong>先除后减</strong>，顺序不能反。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ r_{real}\approx r_{nom}-E(\pi) \qquad r_{real}=\frac{1+r_{nom}}{1+E(\pi)}-1 \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 近似实际利率 \(=4.0\%-2.5\%=\mathbf{1.50\%}\)。</li>
+              <li>(a) 通胀升至 3.5%，实际利率不变 → 新名义利率 \(=1.50\%+3.5\%=\mathbf{5.00\%}\)。</li>
+              <li>(b) 精确实际利率 \(=\dfrac{1.04}{1.025}-1=1.4634\%\approx\mathbf{1.46\%}\)。</li>
+              <li>(b) 新名义利率 \(=(1.014634)(1.035)-1=5.0146\%\approx\mathbf{5.01\%}\)。</li>
+              <li>比较：近似值 1.50% / 5.00%，精确值 1.46% / 5.01%，差异约 4 个基点——在低利率水平下近似误差很小。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Approximate real risk-free rate = 4.0% − 2.5% = <b>1.50%</b>. With that real rate unchanged, the new nominal rate = 1.50% + 3.5% = <b>5.00%</b>.
+                <br>(b) Exact: \(r_{real}=1.04/1.025-1=1.4634\%\); new nominal \(=(1.014634)(1.035)-1=\mathbf{5.0146\%}\). The approximation differs by only about 1.5 bp and 1.5 bp respectively at these low rates.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 近似实际利率 <strong>1.50%</strong>；通胀预期升至 3.5% 后名义利率 <strong>5.00%</strong>。
+                <br>(b) 精确式：实际利率 <strong>1.4634%</strong>，新名义利率 <strong>5.0146%</strong>。两者差异很小（约 1–2 个基点）。
+                <br>核心结论：<strong>实际利率不变时，预期通胀上升多少，名义利率就上升多少</strong>。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 利率分解 ============ -->
+    <section id="s4">
+      <h2 class="sec" data-short="4. 利率的加总分解">4. 利率的加总分解 <span class="badge">Rate Decomposition</span></h2>
+      <div class="lec-meta"><span>Chapter 2.1 Determinants · slides 16–29</span><span>Practice Q7(b)(c)(d)</span></div>
+
+      <div class="formula hi">
+        <span class="tag">加总分解式</span>
+        \[ r = r_{real} + IP + DRP + LRP + MRP \]
+        <div class="fnote">
+          \(r_{real}\) <strong>实际利率</strong> real risk-free rate：剔除通胀后的真实资金成本。<br>
+          \(IP\) <strong>通胀溢价</strong> inflation premium：补偿购买力损失。<br>
+          \(DRP\) <strong>违约风险溢价</strong> default risk premium：补偿借款人可能不按约偿付的风险。<br>
+          \(LRP\) <strong>流动性溢价</strong> liquidity risk premium：补偿难以按可预期价格快速变现的成本。<br>
+          \(MRP\) <strong>期限风险溢价</strong> maturity risk premium：补偿长期利率不确定性（与 Part 4 的期限溢价相关）。
+        </div>
+      </div>
+
+      <div data-fig="rateDecomposition" data-cap="名义利率逐层叠加各项溢价。课件使用加总式（additive）而非相乘式。图片来源：Chapter 2.1" data-src="Chapter 2"></div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 4</span> Required yield with default and liquidity premiums</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A one-year nominal risk-free rate is 4.0% and expected inflation is 2.5%.
+            <br>(a) A corporate security has a default risk premium of 1.2% and a liquidity risk premium of 0.4%. Using the original 4.0% benchmark and assuming no other premiums, calculate its required yield.
+            <br>(b) The corporate yield subsequently rises by 0.6 percentage points while the matched Treasury yield stays unchanged. Explain why this need not mean that default risk alone has increased.
+            <br>(c) Explain why investors normally demand a higher yield on a less liquid security, other things equal. Distinguish a high promised yield from a guaranteed high realized return.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 4.0% 已经是<strong>名义无风险利率</strong>（已包含 \(r_{real}\) 与 \(IP\)），因此<strong>不要再重复加通胀</strong>——直接在它上面叠加 DRP 与 LRP 即可。这是最容易多算一步的地方。
+            <br>(b) 价差（spread）扩大了 60 bp，但价差是<strong>多个溢价的合计数</strong>，任何一项上升都能造成同样结果，因此不能反推出「只有违约风险上升」。
+            <br>(c) 承诺收益率（promised yield）是按合同应付的；实现收益率（realized return）要看<strong>实际收到多少</strong>——违约、折价抛售都会让实现收益低于承诺值。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ \text{Spread} = r_{corporate} - r_{Treasury} = DRP + LRP + \text{其他溢价} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 基准：名义无风险利率 = 4.0%（已含实际利率与通胀溢价）。</li>
+              <li>(a) 加总：\(4.0\%+1.2\%+0.4\%=\mathbf{5.60\%}\)。</li>
+              <li>(b) 国库券收益率不变 → 企业债收益率上升 0.6 pp 意味着<strong>价差扩大 60 bp</strong>。</li>
+              <li>(b) 解释：价差 = DRP + LRP + 其他；上升可能来自违约风险、流动性恶化，或两者兼有 → <strong>不能单独归因于违约风险</strong>。</li>
+              <li>(c) 低流动性证券难以及时按可预期价格卖出，投资者要求补偿 → 收益率更高。</li>
+              <li>(c) 区分：高<strong>承诺</strong>收益率可能只是对预期违约损失或流动性成本的补偿，<strong>实现</strong>收益率可能更低甚至为负。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Required yield = 4.0% + 1.2% + 0.4% = <b>5.60%</b>.
+                <br>(b) The spread over the matched Treasury rises by 0.6 pp (<b>60 bp</b>). The increase may reflect greater default risk, reduced liquidity, or both; a yield spread is <b>not a pure default-risk measure</b> unless other premiums are controlled for.
+                <br>(c) An illiquid security may be hard to sell promptly at a predictable price, so investors demand compensation. A higher <b>promised</b> yield may partly compensate for expected default losses or other risks; the <b>realized</b> return can be lower, including negative.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>5.60%</strong>（4.0% 基准已含通胀，不要再叠加通胀）。
+                <br>(b) 价差扩大 <strong>60 bp</strong>；原因可能是违约风险、流动性或两者皆有，<strong>不能只归因于违约风险</strong>。
+                <br>(c) 流动性差 → 要求更高收益率作为补偿；但高<strong>承诺</strong>收益率 ≠ 高<strong>实现</strong>收益率，后者可能因违约或折价抛售而更低。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 三个高频扣分点</div>
+        <ol>
+          <li><strong>重复计入通胀</strong>：若题目给的是名义无风险利率（如 4.0%），它已经包含 \(r_{real}+IP\)，不要再额外加一次 \(IP\)。</li>
+          <li><strong>把价差当纯违约度量</strong>：价差 = DRP + LRP + 其他，任何一项变化都会改变价差。</li>
+          <li><strong>混淆承诺与实现</strong>：承诺收益率是合同上的，实现收益率是实际拿到的。</li>
+        </ol>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 5. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="5. 练习（真题型）">5. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q5–Q7）。Q5、Q6、Q7 分别对应本章的三块内容。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Discount rate and annuity comparison <span class="kbd">真题型</span> <span class="kbd">Practice Q5</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A student can buy a computer for $9,500 today or make three payments of $3,500 at the end of Years 1, 2 and 3. The discount rate is 5%.
+          <br>(a) PV of the instalment plan, and which option is cheaper in PV terms?
+          <br>(b) FV at the end of Year 3 of $9,500 invested today at 5%?
+          <br>(c) If the student saves $3,000 at the end of each of the next three years, accumulated value right after the third deposit?
+          <br>(d) How does a higher discount rate affect the PV of the instalments? Distinguish this from a change in the contractual payments.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1。核心：分期是三年期末年金；最后一笔存款不计息；折现率变化只改变现值，不改变合同金额。</p></div>
+            <ol class="steps">
+              <li>(a) \(PV=\$9{,}531.37\)；一次性付 \$9,500 更便宜 \$31.37。</li>
+              <li>(b) \(FV=9{,}500\times1.05^3=\$10{,}997.44\)。</li>
+              <li>(c) \(3{,}000(1.05^2+1.05+1)=\$9{,}457.50\)。</li>
+              <li>(d) 折现率上升 → 现值下降；三笔 \$3,500 的合同付款<strong>不变</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) PV = <b>\$9,531.37</b>; pay \$9,500 today, cheaper by <b>\$31.37</b>. (b) <b>\$10,997.44</b>. (c) <b>\$9,457.50</b>. (d) Higher discount rate <b>lowers</b> the PV; the contractual payments of \$3,500 each are unchanged.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$9,531.37</strong>，一次性付更便宜 \$31.37；(b) <strong>\$10,997.44</strong>；(c) <strong>\$9,457.50</strong>；(d) 现值下降，合同金额不变。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Loanable funds: identify the shift <span class="kbd">真题型</span> <span class="kbd">Practice Q6</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Analyse each change separately, holding other relevant factors constant.
+          <br>(a) Households decide to save more at every interest rate.
+          <br>(b) Firms become more optimistic and wish to borrow more.
+          <br>(c) Distinguish a movement along the supply curve from an outward shift of the curve.
+          <br>(d) If household saving and business borrowing demand both increase, can the direction of the interest-rate change be determined?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。固定作答顺序：哪条曲线 → 移动方向 → 均衡利率 → 均衡数量。</p></div>
+            <ol class="steps">
+              <li>(a) 供给右移 → 利率<strong>降</strong>、数量<strong>升</strong>。</li>
+              <li>(b) 需求右移 → 利率<strong>升</strong>、数量<strong>升</strong>。</li>
+              <li>(c) 利率自身变化 = 沿曲线移动；每个利率下都变化 = 曲线平移。</li>
+              <li>(d) 利率方向<strong>不确定</strong>；数量<strong>一定增加</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Supply shifts right: rate <b>falls</b>, quantity <b>rises</b>. (b) Demand shifts right: both rate and quantity <b>rise</b>. (c) A rate change causes movement <b>along</b> the curve; saving more at each possible rate <b>shifts</b> the curve. (d) <b>No</b> — the rate direction is ambiguous, but the equilibrium quantity increases.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 利率降、量升；(b) 利率升、量升；(c) 沿曲线移动 vs 曲线平移；(d) 利率方向不确定，但数量一定增加。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Fisher effect and premiums <span class="kbd">真题型</span> <span class="kbd">Practice Q7</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A one-year nominal risk-free rate is 4.0% and expected inflation is 2.5%.
+          <br>(a) Approximate real risk-free rate? New nominal rate if expected inflation rises to 3.5% with the real rate unchanged?
+          <br>(b) A corporate security has DRP = 1.2% and LRP = 0.4%. Required yield?
+          <br>(c) The corporate yield rises by 0.6 pp while the matched Treasury yield is unchanged. Why need this not mean default risk alone increased?
+          <br>(d) Why is a higher yield demanded on a less liquid security? Distinguish promised from realized return.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 3 与 EXAMPLE 4。注意 (b) 中的 4.0% 已是名义利率，不要重复加通胀。</p></div>
+            <ol class="steps">
+              <li>(a) \(4.0\%-2.5\%=1.50\%\)；新名义 \(=1.50\%+3.5\%=5.00\%\)。</li>
+              <li>(b) \(4.0\%+1.2\%+0.4\%=5.60\%\)。</li>
+              <li>(c) 价差扩大 60 bp，可能来自违约风险、流动性或两者 → 不能只归因于违约。</li>
+              <li>(d) 流动性差需补偿；承诺收益率 ≠ 实现收益率。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>1.50%</b>; new nominal <b>5.00%</b>. (b) <b>5.60%</b>. (c) The spread widened 60 bp; it may reflect default risk, liquidity, or both — a spread is not a pure default measure. (d) Illiquidity requires compensation; a high <b>promised</b> yield can still produce a low <b>realized</b> return.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 实际 <strong>1.50%</strong>，新名义 <strong>5.00%</strong>；(b) <strong>5.60%</strong>；(c) 价差扩大 60 bp，原因可能是违约、流动性或两者；(d) 低流动性要求补偿，承诺收益 ≠ 实现收益。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Decomposing a yield spread <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A 5-year corporate bond yields 6.80% while a 5-year government bond yields 4.30%. The expected inflation rate over the next five years is 2.20%.
+          <br>(a) What is the total spread? If DRP = 1.8%, what implied LRP is consistent with the data (assuming no other premiums)?
+          <br>(b) If liquidity in the corporate market suddenly improves, what happens to the spread and to the price of the existing corporate bond, holding default risk constant?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>(a) 价差 = 企业债收益率 − 国债收益率。剩余部分在「无其他溢价」假设下全部归 LRP。(b) 流动性改善 → LRP 下降 → 价差收窄、企业债收益率下降 → 既有债券价格<strong>上升</strong>（价格与收益率反向）。</p></div>
+            <ol class="steps">
+              <li>总价差 \(=6.80\%-4.30\%=2.50\%\)（即 250 bp）。</li>
+              <li>扣除 DRP：\(LRP=2.50\%-1.80\%=\mathbf{0.70\%}\)（70 bp）。</li>
+              <li>流动性改善 → \(LRP\) 下降 → 企业债要求收益率下降。</li>
+              <li>价格与收益率反向 → 存量企业债价格<strong>上升</strong>。</li>
+              <li>注意：这里假设违约风险不变，只让 LRP 变化；若违约风险同时变化，结论需重新分析。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Spread = 6.80% − 4.30% = <b>2.50% (250 bp)</b>; implied LRP = 2.50% − 1.80% = <b>0.70%</b>. (b) Better liquidity lowers LRP, narrows the spread and lowers the corporate yield, so the price of the existing corporate bond <b>rises</b> (holding default risk constant).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 价差 <strong>250 bp</strong>，隐含 LRP = <strong>70 bp</strong>。(b) 流动性改善 → 价差收窄、收益率下降 → 存量债价格<strong>上涨</strong>。关键是把「溢价下降 → 收益率下降 → 价格上升」这条链完整写出来。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Fisher effect: expected versus unexpected inflation <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A 1-year Treasury bill offers a nominal yield of <b>5.50%</b>. Expected inflation over the year is <b>3.00%</b>.
+          <br>(a) Compute the <b>exact</b> expected real interest rate and the approximate one. Why do they differ?
+          <br>(b) Suppose actual inflation turns out to be <b>4.50%</b>. Compute the realised real rate. Who gains and who loses?
+          <br>(c) State the Fisher equation and explain what it says about how nominal yields respond to a rise in expected inflation.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>费雪方程的<strong>精确形式相乘、近似形式相加</strong>。\(1+r_{\text{nom}}=(1+r_{\text{real}})(1+\pi)\)。差异来自交叉项 \(r_{\text{real}}\times\pi\)，利率与通胀越高，近似误差越大。第二问考的是<strong>预期内 vs 预期外</strong>通胀的再分配效应。</p></div>
+            <ol class="steps">
+              <li>(a) 精确：\(r_{\text{real}}=\dfrac{1.0550}{1.0300}-1=0.024272=\) <strong>2.427%</strong>。</li>
+              <li>(a) 近似：5.50% − 3.00% = <strong>2.50%</strong>；差 7.3 bp = 交叉项 \(r_{\text{real}}\pi\approx 0.0243\times0.03\)。</li>
+              <li>(b) 实现实际利率 = \(\dfrac{1.0550}{1.0450}-1=0.009569=\) <strong>0.957%</strong>。</li>
+              <li>(b) 实际通胀高于预期 → 实际回报被侵蚀 → <strong>借款人获益、贷款人受损</strong>（财富从债权人转移到债务人）。</li>
+              <li>(c) 费雪方程：\(r_{\text{nom}}\approx r_{\text{real}}+\pi^{e}\)。预期通胀上升 1 pp，名义收益率<strong>大致上升 1 pp</strong>，而实际利率不变（<strong>费雪效应</strong>）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Exact: 1.0550/1.0300 − 1 = <b>2.427%</b>; approximate: 5.50% − 3.00% = <b>2.50%</b>. They differ by the cross-product term r_real × π. (b) Realised real rate = 1.0550/1.0450 − 1 = <b>0.957%</b>. Because inflation came in above expectation, wealth is transferred from the <b>lender to the borrower</b>. (c) Fisher: r_nom ≈ r_real + π<sup>e</sup>; a 1 pp rise in expected inflation raises the nominal yield about 1 pp, leaving the real rate unchanged.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 精确实际利率 <strong>2.427%</strong>，近似 <strong>2.50%</strong>，差值为交叉项。(b) 实现实际利率 <strong>0.957%</strong>，通胀超预期使<strong>借款人受益、贷款人受损</strong>。(c) \(r_{\text{nom}}\approx r_{\text{real}}+\pi^{e}\)：预期通胀升 1 pp，名义收益率约升 1 pp。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Decomposing two yields into five premia <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Observed yields: 10-year Treasury <b>4.20%</b>, 10-year corporate bond <b>6.45%</b>. You estimate the real risk-free rate at <b>1.20%</b>, expected inflation at <b>2.50%</b>, the corporate default risk premium at <b>1.60%</b>, and the corporate liquidity risk premium at <b>0.65%</b>.
+          <br>(a) Using \(r=r_{\text{real}}+\text{IP}+\text{DRP}+\text{LRP}+\text{MRP}\), solve for the maturity risk premium implied by the Treasury yield.
+          <br>(b) Verify that the same decomposition reproduces the corporate yield.
+          <br>(c) If expected inflation rises by 100 bp with everything else unchanged, what happens to both yields and to bond prices? Which bond's price falls by more, and why?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>分解公式是<strong>逐项相加</strong>。国债的 DRP 与 LRP 视为 0，因此它只含三项；公司债在此基础上再加 DRP 与 LRP。(c) 把「溢价上升 → 收益率上升 → 价格下跌」和 Malkiel 定理 2（期限越长越敏感）串起来。</p></div>
+            <ol class="steps">
+              <li>(a) 国债：4.20 = 1.20 + 2.50 + 0 + 0 + MRP → MRP = 4.20 − 3.70 = <strong>0.50%</strong>（50 bp）。</li>
+              <li>(b) 公司债：1.20 + 2.50 + 1.60 + 0.65 + 0.50 = <strong>6.45%</strong> ✓ 与观测值一致。</li>
+              <li>(b) 因此<strong>信用价差</strong> = 6.45 − 4.20 = 225 bp = DRP 160 bp + LRP 65 bp。</li>
+              <li>(c) IP 升 100 bp → 两个收益率<strong>各上升 100 bp</strong>，价格均下跌（价格与收益率反向）。</li>
+              <li>(c) 因为两者期限同为 10 年、但公司债票息更高 → <strong>公司债价格跌幅略小</strong>（Malkiel 定理 3：票息越高，价格对收益率越不敏感）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) MRP = 4.20 − (1.20 + 2.50) = <b>0.50%</b>. (b) 1.20 + 2.50 + 1.60 + 0.65 + 0.50 = <b>6.45%</b>, matching the observed yield; the credit spread is 225 bp = 160 bp DRP + 65 bp LRP. (c) Both yields rise 100 bp and both prices fall. The corporate bond's price falls slightly <b>less</b> in percentage terms because its higher coupon makes it less price-sensitive (Malkiel's Theorem 3).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) MRP = <strong>0.50%</strong>。(b) 1.20+2.50+1.60+0.65+0.50 = <strong>6.45%</strong>，与观测一致；信用价差 225 bp = DRP 160 + LRP 65。(c) 两者收益率各升 100 bp、价格均跌；<strong>公司债跌幅略小</strong>，因其票息更高、价格敏感度更低。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Quoted rate versus effective annual rate <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Bank A quotes <b>6.00%</b> compounded monthly on a 1-year deposit. Bank B quotes <b>6.10%</b> compounded annually.
+          <br>(a) Compute the effective annual rate (EAR) of each.
+          <br>(b) Which deposit is better, and by how many basis points?
+          <br>(c) Explain in words why a lower quoted rate can beat a higher one, and state the general EAR formula.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>比较不同复利频率的报价时，<strong>必须换算到同一口径</strong>（EAR）。公式 \(\text{EAR}=\left(1+\frac{r_{\text{quoted}}}{m}\right)^{m}-1\)，m 为每年复利次数。<strong>复利频率越高，EAR 越高</strong>。</p></div>
+            <ol class="steps">
+              <li>(a) Bank A：\(\text{EAR}=\left(1+\dfrac{0.0600}{12}\right)^{12}-1=(1.005)^{12}-1\)。</li>
+              <li>(a) \((1.005)^{12}=1.061678\) → EAR<sub>A</sub> = <strong>6.1678%</strong>。</li>
+              <li>(a) Bank B：年复利，EAR<sub>B</sub> = <strong>6.1000%</strong>。</li>
+              <li>(b) 6.1678% − 6.1000% = 0.0678% = <strong>6.78 bp</strong> → <strong>Bank A 更优</strong>。</li>
+              <li>(c) 原因：A 的报价虽低 10 bp，但<strong>每月复利产生的利滚利</strong>多出 16.78 bp，净胜 6.78 bp。</li>
+              <li>(c) 结论：报价利率（APR）<strong>不可直接横向比较</strong>，必须看复利频率或统一换算为 EAR。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) EAR<sub>A</sub> = (1 + 0.06/12)<sup>12</sup> − 1 = <b>6.1678%</b>; EAR<sub>B</sub> = <b>6.1000%</b>. (b) Bank A is better by <b>6.78 bp</b>. (c) A's lower quoted rate is more than offset by monthly compounding: EAR = (1 + r_quoted/m)<sup>m</sup> − 1, and EAR rises with the compounding frequency m, so quoted rates with different m cannot be compared directly.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) EAR<sub>A</sub> = <strong>6.1678%</strong>，EAR<sub>B</sub> = <strong>6.1000%</strong>。(b) A 更优，高 <strong>6.78 bp</strong>。(c) 复利频率更高带来额外利滚利；\(\text{EAR}=(1+r/m)^m-1\)，报价利率须换算后才可比较。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="6. 术语对照">6. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Present value 现值</span><span>Future value 终值</span><span>Ordinary annuity 普通年金（期末支付）</span>
+        <span>Discount rate 折现率</span><span>Compounding 复利</span><span>Discounting 折现</span>
+        <span>Loanable funds 可贷资金</span><span>Supply of funds 资金供给</span><span>Demand for funds 资金需求</span>
+        <span>Equilibrium interest rate 均衡利率</span><span>Movement along the curve 沿曲线移动</span><span>Shift of the curve 曲线平移</span>
+        <span>Fisher effect 费雪效应</span><span>Nominal rate 名义利率</span><span>Real rate 实际利率</span><span>Expected inflation 预期通胀</span>
+        <span>Inflation premium (IP) 通胀溢价</span><span>Default risk premium (DRP) 违约风险溢价</span>
+        <span>Liquidity risk premium (LRP) 流动性风险溢价</span><span>Maturity risk premium (MRP) 期限风险溢价</span>
+        <span>Promised yield 承诺收益率</span><span>Realized return 实现收益率</span><span>Yield spread 收益率价差</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>Part 3 解释了「利率的整体水平」。但同样是政府债，1 年期与 10 年期利率也不同——Part 4 的<strong>期限结构</strong>就解释这条曲线为什么长这样，以及它如何随时间移动。</p>
+        <p><a href="part4-term-structure.html">前往 Part 4 利率的期限结构 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 3 利率的决定 · 内容依据 Chapter 2.0 / 2.1 课件与配套练习整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 4 利率的期限结构 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part4" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 2.2 Term Structure of Interest Rates</div>
+      <h1>Part 4 利率的期限结构</h1>
+      <p>本部分解释<strong>收益率曲线</strong>为什么长这样、为什么会移动。核心是三个理论（无偏预期 / 流动性溢价 / 市场分割）对同一条曲线的不同解释，以及<strong>远期利率</strong>的计算。这里既有纯计算题（由即期利率求远期、求长端），也有典型的「读数据总结规律」题（Homework 1 第 2 题）。</p>
+      <div class="tags">
+        <span>收益率曲线</span><span>期限价差</span><span>无偏预期理论</span><span>流动性溢价</span><span>市场分割</span><span>远期利率</span><span>牛陡 / 熊平</span><span>倒挂与衰退</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 曲线与三个事实 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 收益率曲线与三个经验事实">1. 收益率曲线与三个经验事实 <span class="badge">The Yield Curve</span></h2>
+      <div class="lec-meta"><span>Chapter 2.2 · slides 3–23</span><span>HW1 Q2</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Term structure of interest rates / yield curve</b>: the relationship between <b>yield to maturity</b> and <b>time to maturity</b> for a set of otherwise comparable (typically default-free government) bonds at a point in time.</span><br>
+        <span class="en"><b>Term spread（期限价差）</b>: the difference between a long-term yield and a short-term yield, commonly \(s_t = y_{10,t} - y_{1,t}\).</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">期限价差与形状判定</span>
+        \[ s_t \equiv y_{10,t}-y_{1,t} \]
+        <div class="fnote">
+          \(s_t&gt;0.20\%\) → <strong>向上倾斜 upward-sloping</strong>；<br>
+          \(-0.20\%\le s_t\le 0.20\%\) → <strong>大致平坦 approximately flat</strong>；<br>
+          \(s_t&lt;-0.20\%\) → <strong>倒挂 inverted</strong>。<br>
+          <em>（课件与 Homework 1 使用的判定规则）</em>
+        </div>
+      </div>
+
+      <div data-fig="yieldCurveShapes" data-cap="同一时点上不同期限的收益率连线。教材数据中的三种典型形状。图片来源：Chapter 2.2" data-src="Chapter 2"></div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 三个经验事实（任何理论都必须解释它们）</div>
+        <ol>
+          <li><strong>不同期限的利率随时间同向变动</strong>（co-movement）：短端涨时，长端通常也涨。</li>
+          <li><strong>短端利率低时曲线多呈陡峭向上；短端利率高时曲线多平坦甚至倒挂</strong>：期限价差与短端水平负相关。</li>
+          <li><strong>长期利率平均高于短期利率</strong>：平均而言曲线向上倾斜。</li>
+        </ol>
+        <p class="muted">三个理论各自能解释其中一部分：<strong>UET</strong> 解释 1 与倒挂；<strong>流动性溢价理论</strong>解释 1、2、3（最完整）；<strong>市场分割理论</strong>解释特定区段的异常。</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 三大理论 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 三大期限结构理论">2. 三大期限结构理论 <span class="badge">Three Theories</span></h2>
+      <div class="lec-meta"><span>Chapter 2.2 · slides 3–35</span><span>Practice Q8, Q9(c)</span></div>
+
+      <div data-fig="termStructureTheories" data-cap="无偏预期理论、流动性溢价理论与市场分割理论的对比。图片来源：Chapter 2.2" data-src="Chapter 2"></div>
+
+      <h3 class="sub" data-short="2.1 无偏预期理论">2.1 无偏预期理论 <span class="eninline">Unbiased Expectations Theory (UET)</span></h3>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Unbiased expectations theory</b>: long-term rates are the <b>geometric average</b> of current and expected future short-term rates; investors view different maturities as perfect substitutes, so no maturity premium exists.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">UET</span>
+        \[ (1+z_n)^n = (1+i_1)(1+i_2^e)\cdots(1+i_n^e) \]
+        <div class="fnote">\(z_n\) = \(n\) 年期即期利率（spot rate）；\(i_t^e\) = 预期的第 \(t\) 年一年期利率。注意用<strong>几何</strong>平均（相乘后开方），不是算术平均。</div>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ UET 解释不了什么？</div>
+        <p>如果不同期限是完全替代品且没有期限溢价，那么预期的短期利率<strong>上升与下降应当同样常见</strong>，曲线平均应该是<strong>平的</strong>。但现实中曲线<strong>平均向上倾斜</strong>（事实 3）——这正是 UET 的短板，也是流动性溢价理论存在的理由。</p>
+      </div>
+
+      <h3 class="sub" data-short="2.2 流动性溢价理论">2.2 流动性溢价理论 <span class="eninline">Liquidity Premium Theory</span></h3>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Liquidity premium theory</b>: long-term rates equal the geometric average of expected short rates <b>plus a positive, maturity-specific liquidity (term) premium</b>. Investors prefer short maturities, so borrowers must pay a premium to issue long.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">流动性溢价</span>
+        \[ z_n = \underbrace{\left[\prod_{t=1}^{n}(1+i_t^e)\right]^{1/n}-1}_{\text{UET 部分}} + LRP_n,\qquad LRP_n \text{ 随 } n \text{ 递增} \]
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 必考结论：向上倾斜 ≠ 预期短期利率上升</div>
+        <p>在流动性溢价理论下，<strong>即使预期未来短期利率完全不变甚至下降</strong>，只要期限溢价为正且随期限递增，长端收益率仍会高于短端，曲线仍会向上倾斜。
+        <br>答题句式：<em>An increasing liquidity premium can raise longer yields even when expected short-term rates are constant or declining. The observed slope reflects both expectations and premiums.</em></p>
+      </div>
+
+      <h3 class="sub" data-short="2.3 市场分割理论">2.3 市场分割理论 <span class="eninline">Market Segmentation Theory</span></h3>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Market segmentation theory</b>: each maturity segment is a <b>separate market</b> whose yield is determined by its <b>own supply and demand</b>; investors have strong maturity preferences and do not substitute across maturities.</span><br>
+        在该理论下，养老金等机构对长期债的需求上升 → 长端价格上升、收益率下降 → 在短端不变时价差收窄，曲线<strong>变平甚至倒挂</strong>。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Spot rates under UET and with liquidity premiums</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">The current one-year spot rate is 3%. Expected one-year rates for Years 2 and 3 are 4% and 5%, respectively. All rates use annual compounding.
+            <br>(a) Under unbiased expectations theory, calculate the two-year and three-year spot rates using geometric compounding.
+            <br>(b) Sketch the resulting yield curve for maturities of one, two and three years. Explain its slope in terms of expected short-term rates.
+            <br>(c) Now add maturity-specific liquidity premiums of 0.20 percentage points to the two-year rate and 0.40 percentage points to the three-year rate calculated in part (a). Calculate and compare the new rates.
+            <br>(d) Explain why an upward-sloping yield curve does not necessarily imply rising expected short-term rates under liquidity premium theory.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) UET 的核心是「两条投资路径的复利结果必须相同」：持有两年期零息债，等于连续持有两个一年期零息债。因此 <strong>先相乘，再开方</strong>。
+            <br>(c) 溢价是<strong>在 UET 结果之上直接加</strong>（题目给的是百分点），并且要<strong>加到未四舍五入的数值上</strong>——这点很重要，先舍入再相加会累积误差。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ (1+z_2)^2 = (1.03)(1.04) \qquad (1+z_3)^3 = (1.03)(1.04)(1.05) \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>两年期：\((1+z_2)^2=1.03\times1.04=1.0712\) → \(z_2=\sqrt{1.0712}-1=3.4988\%\approx\mathbf{3.50\%}\)。</li>
+              <li>三年期：\((1+z_3)^3=1.03\times1.04\times1.05=1.12476\) → \(z_3=1.12476^{1/3}-1=3.9968\%\approx\mathbf{4.00\%}\)。</li>
+              <li>(b) 三个点：(1Y, 3.00%)、（2Y, 3.50%）、(3Y, 4.00%)，连成<strong>向上倾斜</strong>的曲线。</li>
+              <li>(b) 斜率解释：长端包含了<strong>后续年份更高的预期短期利率</strong>（第 2 年 4%、第 3 年 5%）。</li>
+              <li>(c) 加溢价：\(z_2=3.4988\%+0.20\%=\mathbf{3.70\%}\)；\(z_3=3.9968\%+0.40\%=\mathbf{4.40\%}\)；1 年期仍为 3.00%。</li>
+              <li>(c) 比较：加入溢价后曲线<strong>更陡</strong>（价差从 1.00 pp 扩大到 1.40 pp）。</li>
+              <li>(d) 因为期限溢价为<strong>正且随期限递增</strong>，即使预期短期利率不变甚至下降，长端仍可能更高 → 向上倾斜<strong>不能</strong>推出「预期短期利率上升」。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \((1+z_2)^2=1.03\times1.04\), so \(z_2=\mathbf{3.4988\%}\approx3.50\%\). Similarly \(z_3=(1.03\times1.04\times1.05)^{1/3}-1=\mathbf{3.9968\%}\approx4.00\%\).
+                <br>(b) Points (1Y, 3.00%), (2Y, 3.50%), (3Y, 4.00%) joined by an <b>upward-sloping</b> curve; longer rates incorporate the higher expected short rates in later years.
+                <br>(c) Add the premiums to the unrounded rates: two-year = 3.4988% + 0.20% = <b>3.70%</b>; three-year = 3.9968% + 0.40% = <b>4.40%</b>; the one-year rate stays 3.00%. The curve is <b>steeper</b>.
+                <br>(d) An increasing liquidity premium can raise longer yields even when expected short-term rates are constant or declining; the observed slope reflects <b>both expectations and premiums</b>.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 两年期 <strong>3.50%</strong>，三年期 <strong>4.00%</strong>（未舍入为 3.4988% 与 3.9968%）。
+                <br>(b) 曲线向上倾斜，因为长端包含了更高的预期短期利率。
+                <br>(c) 加溢价后：两年 <strong>3.70%</strong>、三年 <strong>4.40%</strong>，曲线<strong>更陡</strong>。
+                <br>(d) 正的期限溢价可以让长端更高，<strong>即使预期短期利率不变或下降</strong>。
+                <br>易错点：溢价要加在<strong>未舍入</strong>的数值上；且必须用<strong>几何</strong>平均，不能用算术平均。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 远期利率 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 远期利率">3. 远期利率 <span class="badge">Forward Rates</span></h2>
+      <div class="lec-meta"><span>Chapter 2.2 · slides 24–35</span><span>Practice Q9(a)(b)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Forward rate（远期利率）</b>: the interest rate for a future period that is <b>implied today</b> by the current term structure. It is the rate that makes two investment strategies deliver the same compounded payoff.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">远期利率恒等式</span>
+        \[ (1+z_2)^2 = (1+z_1)(1+f_{1,2}) \quad\Longrightarrow\quad f_{1,2}=\frac{(1+z_2)^2}{1+z_1}-1 \]
+        <div class="fnote">\(z_1\)、\(z_2\) = 1 年与 2 年即期利率；\(f_{1,2}\) = 从第 1 年末到第 2 年末的<strong>隐含一年期远期利率</strong>。这是<strong>恒等式</strong>，任何理论下都成立。</div>
+      </div>
+
+      <div data-fig="forwardRate" data-cap="两条投资路径在两年末必须给出相同的复利结果，由此解出隐含远期利率。图片来源：Chapter 2.2" data-src="Chapter 2"></div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 易错点：把远期利率当成「预测」需要额外假设</div>
+        <p>上面的公式只是一个<strong>无套利恒等式</strong>——它保证两条路径的复利结果相同，但它<strong>不说明</strong> \(f_{1,2}\) 等于市场对未来即期利率的预期。要把 \(f_{1,2}\) 读作预期未来即期利率，必须额外假设<strong>不存在期限/流动性溢价</strong>，也就是 UET 成立。
+        <br>答题句式：<em>The expectations-theory assumption is needed: no term/liquidity premium separates the implied forward rate from the expected future short rate. The compounding identity alone does not imply an unbiased forecast.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Implied forward rate and its interpretation</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">The one-year spot rate is 4.0% and the two-year spot rate is 4.5%, with annual compounding.
+            <br>(a) Calculate the implied one-year forward rate for the period from the end of Year 1 to the end of Year 2. Show the compound-return relationship.
+            <br>(b) Explain the extra assumption needed to interpret that forward rate as the expected future one-year spot rate.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 两年期路径的总复利是 \((1.045)^2\)；一年期 + 远期的路径是 \((1.04)(1+f)\)。令两者相等解出 \(f\)。
+            <br>(b) 恒等式本身不含预测含义；需要 UET 假设才能把 \(f\) 读成预期。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ (1.045)^2 = (1.04)(1+f_{1,2}) \quad\Longrightarrow\quad f_{1,2}=\frac{1.045^2}{1.04}-1 \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>两年路径总复利：\((1.045)^2=1.092025\)。</li>
+              <li>拆出第一年：\(\dfrac{1.092025}{1.04}=1.050024\)。</li>
+              <li>减 1：\(f_{1,2}=5.0024\%\approx\mathbf{5.00\%}\)。</li>
+              <li>校验：\((1.04)(1.050024)=1.092025\) ✓ 与两年路径一致。</li>
+              <li>(b) 额外假设：不存在期限/流动性溢价（即 UET 成立），远期利率才等于预期未来即期利率。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \((1.045)^2=(1.04)(1+f_{1,2})\), so \(f_{1,2}=1.045^2/1.04-1=5.0024\%\approx\mathbf{5.00\%}\).
+                <br>(b) The <b>expectations-theory assumption</b> is needed: there is no relevant term/liquidity premium separating the implied forward rate from the expected future short rate. The compounding identity alone does not imply an unbiased forecast.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 隐含远期利率 <strong>5.00%</strong>（精确 5.0024%）。
+                <br>(b) 需要假设<strong>没有期限/流动性溢价</strong>（UET 成立），才能把它读作预期未来即期利率。恒等式本身不构成预测。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 曲线移动 ============ -->
+    <section id="s4">
+      <h2 class="sec" data-short="4. 曲线移动的分类">4. 曲线移动的分类 <span class="badge">Curve Movements</span></h2>
+      <div class="lec-meta"><span>Chapter 2.2 · slides 39–45, 49–51</span><span>Practice Q9(c)(d)(e)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Bull / bear（牛/熊）</b>: a <b>bull</b> movement is a broad <b>decline</b> in yields (bond prices rise); a <b>bear</b> movement is a broad <b>rise</b> in yields.
+        <b>Steepening / flattening（陡/平）</b>: the curve <b>steepens</b> when the long-short spread <b>widens</b> and <b>flattens</b> when it <b>narrows</b>.</span></p>
+      </div>
+
+      <div data-fig="curveMoves" data-cap="牛/熊（水平）× 陡/平（斜率）四种组合。图片来源：Chapter 2.2" data-src="Chapter 2"></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:150px;">类型</th><th>收益率水平</th><th>期限价差</th><th>典型成因</th></tr></thead>
+        <tbody>
+          <tr><td><strong>牛陡 Bull steepening</strong></td><td>下行 ↓</td><td>扩大 ↑</td><td>央行降息，短端降更多</td></tr>
+          <tr><td><strong>牛平 Bull flattening</strong></td><td>下行 ↓</td><td>收窄 ↓</td><td>长端降更多（避险/预期恶化）</td></tr>
+          <tr><td><strong>熊陡 Bear steepening</strong></td><td>上行 ↑</td><td>扩大 ↑</td><td>长端升更多（通胀预期上行）</td></tr>
+          <tr><td><strong>熊平 Bear flattening</strong></td><td>上行 ↑</td><td>收窄 ↓</td><td>央行加息，短端升更多</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 倒挂曲线不是衰退的精确预测</div>
+        <p>倒挂通常反映<strong>未来政策宽松的预期</strong>或<strong>经济走弱</strong>，但收益率同时受<strong>期限溢价</strong>与<strong>特定期限的供需</strong>（市场分割）影响。因此倒挂<strong>不能</strong>给出衰退的确切时点、持续时间或严重程度。
+        <br>答题句式：<em>An inversion can reflect expectations of future easing or weakness, but premiums and maturity-specific demand also affect yields; it does not identify an exact recession date, duration or severity.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> Segmentation, and classifying a curve move</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Under market segmentation theory, suppose pension funds increase their demand for long-term bonds while short-term market conditions stay unchanged. Explain the effect on long-term bond prices, yields, and the yield-curve slope.
+            <br>(b) A different yield curve moves from 4% at two years and 5% at ten years to 3% and 4.5%, respectively. Identify the movement as bull or bear, and steepening or flattening. Explain your classification.
+            <br>(c) Why should an inverted yield curve not be treated as a precise forecast of the timing or severity of a recession?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 需求上升 → 价格上升 → 收益率下降（价格与收益率反向）；短端不变 → 价差收窄 → 变平或倒挂。
+            <br>(b) 两个期限的收益率都下降 → <strong>牛</strong>；价差从 1.0 pp 扩大到 1.5 pp → <strong>陡</strong>；合起来是<strong>牛陡</strong>。
+            <br>(c) 见上方要点框。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 养老金需求↑ → 长期债券<strong>价格上升</strong>。</li>
+              <li>(a) 价格↑ → 长期<strong>收益率下降</strong>。</li>
+              <li>(a) 短端不变 → 价差（长−短）<strong>下降</strong> → 曲线<strong>变平或更倒挂</strong>。</li>
+              <li>(b) 水平：4%→3%（2Y）与 5%→4.5%（10Y），<strong>都在下降</strong> → <strong>牛（bull）</strong>。</li>
+              <li>(b) 斜率：价差从 \(5\%-4\%=1.0\) pp 变为 \(4.5\%-3\%=1.5\) pp，<strong>扩大</strong> → <strong>陡（steepening）</strong>。</li>
+              <li>(b) 结论：<strong>牛陡 bull steepening</strong>。</li>
+              <li>(c) 倒挂同时受预期、溢价与期限供需影响 → 不能给出衰退的时点、时长与严重程度。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Greater demand <b>raises long-term bond prices</b> and <b>lowers their yields</b>. With short-term yields unchanged, the long-minus-short spread falls, so the curve <b>flattens or becomes more inverted</b>. Maturity preferences let the effect concentrate in the long segment.
+                <br>(b) Both yields fall → <b>bull</b>. The ten-year-minus-two-year spread rises from 1.0 to 1.5 pp → <b>steepening</b>. Hence <b>bull steepening</b>.
+                <br>(c) An inversion can reflect expectations of future easing or weakness, but premiums and maturity-specific demand also affect yields; it does not identify an exact recession date, duration or severity.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 长端价格↑、收益率↓；短端不变 → 曲线<strong>变平或更倒挂</strong>。
+                <br>(b) <strong>牛陡（bull steepening）</strong>：两端利率都降（牛），价差从 1.0 pp 扩大到 1.5 pp（陡）。
+                <br>(c) 倒挂受预期、溢价、期限供需共同影响，<strong>不能</strong>精确预测衰退的时点与严重程度。
+                <br>判断口诀：<em>两端都降 = 牛；价差扩大 = 陡。</em></p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 5. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="5. 练习（真题型）">5. 练习 <span class="badge">Practice &amp; HW1 · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q8、Q9）与 <strong>Homework 1 第 2 题</strong>。HW1 第 2 题是典型的「读数据表、总结三条规律」题，务必动手算一遍。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> UET and liquidity premium <span class="kbd">真题型</span> <span class="kbd">Practice Q8</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Current one-year spot rate = 3%. Expected one-year rates for Years 2 and 3 are 4% and 5%. Annual compounding.
+          <br>(a) Two-year and three-year spot rates under UET. (b) Sketch and explain the curve. (c) Add liquidity premiums of 0.20 pp (2Y) and 0.40 pp (3Y) and compare. (d) Why does an upward slope not imply rising expected short rates?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1。关键：几何平均、溢价加在未舍入值上。</p></div>
+            <ol class="steps">
+              <li>\(z_2=\sqrt{1.03\times1.04}-1=3.4988\%\approx3.50\%\)。</li>
+              <li>\(z_3=(1.03\times1.04\times1.05)^{1/3}-1=3.9968\%\approx4.00\%\)。</li>
+              <li>加溢价：\(z_2=3.70\%\)，\(z_3=4.40\%\)，曲线更陡。</li>
+              <li>向上倾斜可以由正的、随期限递增的溢价造成，不必是预期短期利率上升。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) \(z_2=\mathbf{3.50\%}\), \(z_3=\mathbf{4.00\%}\). (b) Upward-sloping: (1Y, 3.00%), (2Y, 3.50%), (3Y, 4.00%). (c) \(z_2=\mathbf{3.70\%}\), \(z_3=\mathbf{4.40\%}\); steeper. (d) A positive, increasing liquidity premium can produce an upward slope even with flat or falling expected short rates.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>3.50% / 4.00%</strong>；(b) 向上倾斜；(c) <strong>3.70% / 4.40%</strong>，更陡；(d) 溢价可以单独造成向上倾斜。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Forward rates and curve classification <span class="kbd">真题型</span> <span class="kbd">Practice Q9</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">One-year spot = 4.0%, two-year spot = 4.5%, annual compounding.
+          <br>(a) Implied one-year forward rate from the end of Year 1 to the end of Year 2. (b) What extra assumption is needed to read it as the expected future spot rate? (c) Under market segmentation, pension funds buy more long bonds — effect on prices, yields and slope? (d) A curve moves from (2Y 4%, 10Y 5%) to (2Y 3%, 10Y 4.5%): bull or bear, steepening or flattening? (e) Why is an inverted curve not a precise recession forecast?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2 与 EXAMPLE 3。</p></div>
+            <ol class="steps">
+              <li>(a) \(f_{1,2}=1.045^2/1.04-1=5.0024\%\approx5.00\%\)。</li>
+              <li>(b) 需要 UET 假设（无期限/流动性溢价）。</li>
+              <li>(c) 长端价格↑、收益率↓；短端不变 → 曲线变平或更倒挂。</li>
+              <li>(d) 两端都降 = 牛；价差 1.0 → 1.5 pp 扩大 = 陡 → <strong>牛陡</strong>。</li>
+              <li>(e) 倒挂受预期、溢价与期限供需共同影响，无法给出时点与严重程度。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>5.00%</b>. (b) The <b>no-term-premium</b> (UET) assumption. (c) Long prices <b>rise</b>, long yields <b>fall</b>, curve <b>flattens/inverts further</b>. (d) <b>Bull steepening</b>. (e) Premiums and maturity-specific demand also drive yields, so inversion does not date or size a recession.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>5.00%</strong>；(b) UET 假设；(c) 价↑率↓、曲线变平；(d) <strong>牛陡</strong>；(e) 见分析。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Term-structure data exercise (HW1 Q2) <span class="kbd">真题型</span> <span class="kbd">HW1</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A researcher collects spot annualized yields (%) on ten dates. Term spread \(s_t=y_{10,t}-y_{1,t}\).</p>
+          <div class="tablewrap">
+          <table class="data">
+            <thead><tr><th>Date</th><th>1-Year</th><th>2-Year</th><th>5-Year</th><th>10-Year</th></tr></thead>
+            <tbody>
+              <tr><td>T1</td><td>1.20</td><td>1.45</td><td>1.95</td><td>2.40</td></tr>
+              <tr><td>T2</td><td>1.50</td><td>1.78</td><td>2.22</td><td>2.70</td></tr>
+              <tr><td>T3</td><td>1.85</td><td>2.10</td><td>2.58</td><td>3.05</td></tr>
+              <tr><td>T4</td><td>2.30</td><td>2.55</td><td>3.00</td><td>3.42</td></tr>
+              <tr><td>T5</td><td>3.10</td><td>3.28</td><td>3.65</td><td>4.02</td></tr>
+              <tr><td>T6</td><td>4.20</td><td>4.25</td><td>4.38</td><td>4.55</td></tr>
+              <tr><td>T7</td><td>5.30</td><td>5.10</td><td>4.82</td><td>4.65</td></tr>
+              <tr><td>T8</td><td>5.80</td><td>5.45</td><td>5.00</td><td>4.72</td></tr>
+              <tr><td>T9</td><td>4.90</td><td>4.75</td><td>4.55</td><td>4.48</td></tr>
+              <tr><td>T10</td><td>3.70</td><td>3.82</td><td>4.05</td><td>4.35</td></tr>
+            </tbody>
+          </table>
+          </div>
+          <p class="en-q">(a) Do yields of different maturities move in the same direction in most adjacent periods? Use at least three specific intervals.
+          <br>(b) Compute the term spread at each date and classify the curve (upward if \(s_t&gt;0.20\%\), flat if \(-0.20\%\le s_t\le0.20\%\), inverted if \(s_t&lt;-0.20\%\)).
+          <br>(c) Group by the 1-year rate: low (&lt;2.00%), medium (2.00%–4.50%), high (&gt;4.50%). Compute the average spread per group and describe the pattern.
+          <br>(d) Compute \(\bar y_1\) and \(\bar y_{10}\) over the full sample, and \(\bar y_{10}-\bar y_1\).
+          <br>(e) Summarize the three numerical patterns.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>这类题不需要复杂公式，关键是<strong>有条理地算</strong>：(b) 逐行相减；(c) 先分组再平均；(d) 全样本平均。注意 (c) 中 T10 的 1 年期是 3.70%，属于<strong>中等组</strong>而非高组。</p></div>
+            <ol class="steps">
+              <li><strong>(a) 同向变动</strong>：T1→T3 四个期限全部上升（1Y 1.20→1.85，10Y 2.40→3.05）；T6→T8 全部上升（1Y 4.20→5.80，10Y 4.55→4.72）；T8→T10 全部下降（1Y 5.80→3.70，10Y 4.72→4.35）。本数据中<strong>每个相邻区间四个期限都同向变动</strong>，强有力地支持事实 1。</li>
+              <li><strong>(b) 期限价差与形状</strong>：T1 1.20、T2 1.20、T3 1.20、T4 1.12、T5 0.92、T6 0.35 → <strong>向上</strong>；T7 −0.65、T8 −1.08、T9 −0.42 → <strong>倒挂</strong>；T10 0.65 → <strong>向上</strong>。（单位：百分点）</li>
+              <li><strong>(c) 分组平均价差</strong>：低组（T1–T3，1Y = 1.20/1.50/1.85）平均 \(=(1.20+1.20+1.20)/3=\mathbf{1.20}\) pp；中组（T4 2.30、T5 3.10、T6 4.20、T10 3.70）平均 \(=(1.12+0.92+0.35+0.65)/4=\mathbf{0.76}\) pp；高组（T7 5.30、T8 5.80、T9 4.90）平均 \(=(-0.65-1.08-0.42)/3=\mathbf{-0.72}\) pp。</li>
+              <li><strong>(c) 规律</strong>：短端利率<strong>越低</strong>，价差<strong>越大</strong>（曲线越陡）；短端<strong>越高</strong>，价差越小甚至为负（平坦/倒挂）——这正是事实 2。</li>
+              <li><strong>(d) 全样本平均</strong>：\(\bar y_1=33.85/10=\mathbf{3.385\%}\)；\(\bar y_{10}=38.34/10=\mathbf{3.834\%}\)；差值 \(=3.834-3.385=\mathbf{+0.449}\) pp（约 45 bp）。</li>
+              <li><strong>(d) 结论</strong>：长期利率平均<strong>高于</strong>短期利率 → 支持事实 3。</li>
+              <li><strong>(e) 三条总结</strong>：①不同期限利率随时间<strong>同向变动</strong>；②短端<strong>低</strong>时曲线<strong>陡峭向上</strong>，短端<strong>高</strong>时曲线<strong>平坦/倒挂</strong>；③平均而言长端<strong>高于</strong>短端约 45 bp。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span>
+              <p>(a) Yes — in every adjacent interval all four maturities move the same way (e.g. T1→T3 all up; T6→T8 all up; T8→T10 all down).
+              <br>(b) Spreads: 1.20, 1.20, 1.20, 1.12, 0.92, 0.35, −0.65, −1.08, −0.42, 0.65 → upward, upward, upward, upward, upward, upward, <b>inverted</b>, <b>inverted</b>, <b>inverted</b>, upward.
+              <br>(c) Low group avg = <b>1.20 pp</b>; medium = <b>0.76 pp</b>; high = <b>−0.72 pp</b>. Low short rates go with steep curves; high short rates with flat/inverted curves.
+              <br>(d) \(\bar y_1=3.385\%\), \(\bar y_{10}=3.834\%\), difference <b>+0.449 pp</b>: long rates exceed short rates on average.
+              <br>(e) Co-movement; slope depends inversely on the short-rate level; long rates exceed short rates on average.</p>
+            </div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span>
+              <p>①四个期限在每个相邻区间<strong>都同向变动</strong>；②价差 T1–T6 为正（向上）、T7–T9 为负（倒挂）、T10 为正；③低/中/高短端组的平均价差为 <strong>+1.20 / +0.76 / −0.72 pp</strong>，呈明显的单调递减；④\(\bar y_{10}-\bar y_1=+0.449\) pp。
+              <br>三条规律<strong>分别对应</strong>课件的三个经验事实，答题时要明确点出这个对应关系。</p>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Three-year forward rate chain <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Spot rates are \(z_1=2.0\%\), \(z_2=3.0\%\), \(z_3=3.6\%\) (annual compounding).
+          <br>(a) Compute the implied one-year forward rates \(f_{1,2}\) and \(f_{2,3}\).
+          <br>(b) If you believed UET, what would these forward rates tell you about expected future one-year rates?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>两年期与三年期分别用「两年路径 = 一年 + 远期」与「三年路径 = 两年 + 远期」的恒等式。第二个远期 \(f_{2,3}\) 要用两年期的<strong>总复利</strong> \((1+z_3)^3\) 除以 \((1+z_2)^2\)。</p></div>
+            <ol class="steps">
+              <li>\(f_{1,2}=\dfrac{(1.03)^2}{1.02}-1=\dfrac{1.0609}{1.02}-1=4.0098\%\approx\mathbf{4.01\%}\)。</li>
+              <li>\(f_{2,3}=\dfrac{(1.036)^3}{(1.03)^2}-1=\dfrac{1.111934}{1.0609}-1=4.8114\%\approx\mathbf{4.81\%}\)。</li>
+              <li>校验：\((1.02)(1.040098)(1.048114)=1.111934=(1.036)^3\) ✓。</li>
+              <li>(b) 若 UET 成立，则 \(f_{1,2}\) 与 \(f_{2,3}\) 分别是市场预期的第 2 年与第 3 年一年期即期利率，即预期短端<strong>逐步上行</strong>（2% → 4.01% → 4.81%）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) \(f_{1,2}=1.03^2/1.02-1=\mathbf{4.01\%}\); \(f_{2,3}=1.036^3/1.03^2-1=\mathbf{4.81\%}\). (b) Under UET these would be the market's expected one-year rates in Years 2 and 3, implying a rising short-rate path — though under liquidity premium theory part of the rise would instead be premium.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) \(f_{1,2}=\)<strong>4.01%</strong>，\(f_{2,3}=\)<strong>4.81%</strong>。(b) 在 UET 下它们就是预期的第 2、3 年一年期利率；但在流动性溢价理论下，其中一部分应归因为<strong>期限溢价</strong>而非预期加息。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Forward rates and a risk-free arbitrage <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Observed spot rates: <b>r<sub>1</sub> = 4.00%</b>, <b>r<sub>2</sub> = 5.00%</b>, <b>r<sub>3</sub> = 5.60%</b>.
+          <br>(a) Compute the one-year forward rate one year from now, f(1,1), and the one-year forward rate two years from now, f(2,1).
+          <br>(b) A bank quotes a forward borrowing rate of <b>5.80%</b> for the year beginning in one year. Is this too high or too low relative to the fair rate?
+          <br>(c) Describe the arbitrage and compute the risk-free profit per ¥100 of notional, stating when it is received.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>远期利率由即期利率<strong>唯一确定</strong>（无套利）：\((1+r_n)^n=(1+r_{n-1})^{n-1}(1+f)\)。若报价偏离这个值，就可以用「借长贷短」复制出远期头寸来套取差价。</p></div>
+            <ol class="steps">
+              <li>(a) \(f(1,1)=\dfrac{(1.05)^{2}}{1.04}-1=\dfrac{1.102500}{1.04}-1=\) <strong>6.010%</strong>。</li>
+              <li>(a) \(f(2,1)=\dfrac{(1.056)^{3}}{(1.05)^{2}}-1=\dfrac{1.177584}{1.102500}-1=\) <strong>6.810%</strong>。</li>
+              <li>(b) 报价 5.80% <strong>低于</strong>公允值 6.010% → 作为<strong>借入方</strong>这个报价便宜。</li>
+              <li>(c) 操作：按 5.80% <strong>远期借入</strong>（t=1 收到 ¥100，t=2 偿还 ¥105.80）；同时<strong>合成一笔远期贷出</strong>——t=0 借入 2 年期 ¥96.15（=100/1.04）并贷出 1 年期同额，t=1 付出 ¥100，t=2 收到 ¥106.01。</li>
+              <li>(c) t=2 净现金流 = 106.0096 − 105.80 = <strong>¥0.21</strong>（每 ¥100 名义本金）。</li>
+              <li>(c) 现值 = 0.2096 ÷ (1.05)<sup>2</sup> = 0.2096 ÷ 1.1025 = <strong>¥0.19</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) f(1,1) = 1.05<sup>2</sup>/1.04 − 1 = <b>6.010%</b>; f(2,1) = 1.056<sup>3</sup>/1.05<sup>2</sup> − 1 = <b>6.810%</b>. (b) The quoted 5.80% is <b>below</b> the fair 6.010%, so it is cheap to <b>borrow</b> forward. (c) Borrow forward at 5.80% and create a synthetic forward loan at 6.010% by borrowing two-year and lending one-year. Net at t=2 = <b>¥0.21</b> per ¥100 notional, worth about <b>¥0.19</b> today.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) f(1,1) = <strong>6.010%</strong>，f(2,1) = <strong>6.810%</strong>。(b) 报价 5.80% <strong>低于</strong>公允值，远期借入更便宜。(c) 远期借入 5.80% + 合成远期贷出 6.010%，t=2 每 ¥100 净赚 <strong>¥0.21</strong>，现值约 <strong>¥0.19</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Pure expectations versus the liquidity premium theory <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">The current 1-year rate is <b>3.00%</b>. Expected 1-year rates are <b>4.00%</b> in year 2, <b>5.00%</b> in year 3 and <b>4.50%</b> in year 4.
+          <br>(a) Under the <b>pure expectations theory</b>, compute the 2-, 3- and 4-year spot rates and describe the shape of the curve.
+          <br>(b) Now assume a liquidity (maturity) premium of <b>0.25% per extra year of maturity</b>, i.e. MRP<sub>n</sub> = 0.25% × (n − 1). Recompute the curve and describe the new shape.
+          <br>(c) Explain why the liquidity premium theory can produce an upward-sloping curve even when future short rates are expected to be <b>flat</b>.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>纯预期假说下，长端即期利率是<strong>当期与预期短期利率的几何平均</strong>：\((1+r_n)^n=\prod_{i=1}^{n}(1+r_i^{e})\)。加入流动性溢价只需在每一档<strong>额外加上 MRP<sub>n</sub></strong>。</p></div>
+            <ol class="steps">
+              <li>(a) \(r_2=\left[(1.03)(1.04)\right]^{1/2}-1=(1.0712)^{1/2}-1=\) <strong>3.499%</strong>。</li>
+              <li>(a) \(r_3=\left[(1.03)(1.04)(1.05)\right]^{1/3}-1=(1.12476)^{1/3}-1=\) <strong>3.997%</strong>。</li>
+              <li>(a) \(r_4=\left[(1.03)(1.04)(1.05)(1.045)\right]^{1/4}-1=(1.175374)^{1/4}-1=\) <strong>4.122%</strong>。</li>
+              <li>(a) 形状：3.00 → 3.50 → 4.00 → 4.12，<strong>向上倾斜</strong>（预期短端先升后略降）。</li>
+              <li>(b) r<sub>1</sub> = 3.000 + 0 = <strong>3.000%</strong>；r<sub>2</sub> = 3.499 + 0.25 = <strong>3.749%</strong>。</li>
+              <li>(b) r<sub>3</sub> = 3.997 + 0.50 = <strong>4.497%</strong>；r<sub>4</sub> = 4.122 + 0.75 = <strong>4.872%</strong> → 更陡峭地向上倾斜。</li>
+              <li>(c) 若预期短端持平，纯预期假说给出<strong>水平</strong>曲线；加上随期限递增的 MRP 后，长端 = 短端 + MRP<sub>n</sub> → 曲线<strong>必然向上倾斜</strong>。这正是流动性溢价理论解释「收益率曲线通常向上倾斜」的方式。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) r<sub>2</sub> = <b>3.499%</b>, r<sub>3</sub> = <b>3.997%</b>, r<sub>4</sub> = <b>4.122%</b> — upward sloping. (b) <b>3.000%, 3.749%, 4.497%, 4.872%</b> — more steeply upward sloping. (c) With flat expected short rates the pure expectations theory gives a flat curve; the rising maturity premium makes the long end exceed the short end, so the curve slopes up — which is why the curve is upward sloping on average.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 3.499% / 3.997% / 4.122%，<strong>向上倾斜</strong>。(b) 3.000% / 3.749% / 4.497% / 4.872%，更陡峭。(c) 预期持平时纯预期假说给出水平曲线，但递增的期限溢价使长端更高 → 向上倾斜。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="6. 术语对照">6. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Term structure 期限结构</span><span>Yield curve 收益率曲线</span><span>Spot rate 即期利率</span><span>Forward rate 远期利率</span>
+        <span>Term spread 期限价差</span><span>Upward-sloping 向上倾斜</span><span>Flat 平坦</span><span>Inverted 倒挂</span>
+        <span>Unbiased expectations theory (UET) 无偏预期理论</span><span>Liquidity premium theory 流动性溢价理论</span>
+        <span>Market segmentation theory 市场分割理论</span><span>Maturity preference 期限偏好</span>
+        <span>Geometric average 几何平均</span><span>Bull steepening 牛陡</span><span>Bull flattening 牛平</span>
+        <span>Bear steepening 熊陡</span><span>Bear flattening 熊平</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>有了「合适的折现率」，Part 5 就可以把它代入债券定价：现金流折现、到期收益率、以及溢价/折价/平价的判断。</p>
+        <p><a href="part5-bond-valuation.html">前往 Part 5 债券估值 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 4 利率的期限结构 · 内容依据 Chapter 2.2 课件、Homework 1 与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

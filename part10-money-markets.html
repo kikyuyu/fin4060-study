@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 10 货币市场 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part10" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 5a / 5b / 5c Money Markets</div>
+      <h1>Part 10 货币市场</h1>
+      <p>本部分是全课<strong>计算密度最高</strong>的一章：四种报价惯例（折现收益率、单利收益率、BEY、EAR）的转换，以及国库券拍卖、联邦基金、回购、商业票据、大额可转让 CD、银行承兑汇票与欧洲美元。核心纪律只有一条——<strong>360 天与 365 天不能混用</strong>。</p>
+      <div class="tags">
+        <span>折现收益率</span><span>单利收益率</span><span>BEY</span><span>EAR</span><span>国库券拍卖</span><span>联邦基金</span><span>回购</span><span>商业票据</span><span>大额 CD</span><span>银行承兑汇票</span><span>欧洲美元</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 报价惯例 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 四种收益率报价">1. 四种收益率报价 <span class="badge">Yield Conventions</span></h2>
+      <div class="lec-meta"><span>Chapter 5a · slides 2–24</span><span>Practice Q22</span></div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 天数约定（全章第一纪律）</div>
+        <ul>
+          <li><strong>折现收益率</strong>与<strong>单利收益率</strong>：使用 <strong>360 天</strong>年；</li>
+          <li><strong>BEY</strong> 与 <strong>EAR</strong>：使用 <strong>365 天</strong>年。</li>
+        </ul>
+        <p class="muted">练习集的统一约定：<em>Money-market discount and single-payment quotations use a 360-day year. Bond equivalent yields (BEY) and effective annual returns (EAR) use 365 days.</em> 答题时先写下天数假设，能避免绝大多数失分。</p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">持有期回报</span>
+        \[ HPR=\frac{F-P}{P}=\frac{D}{P} \]
+        <div class="fnote">\(F\) = 面值 / 到期收到的金额；\(P\) = 购买价格；\(D=F-P\) = 折价（dollar discount）。这是<strong>实际赚到</strong>的回报率，其余四种只是对它的不同年化方式。</div>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">折现收益率（分母用面值，360 天）</span>
+        \[ r_D=\frac{F-P}{F}\times\frac{360}{n} \]
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">单利收益率（分母用投资额，360 天）</span>
+        \[ r_{SPY}=\frac{F-P}{P}\times\frac{360}{n} \]
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">债券等价收益率 BEY（线性年化，365 天）</span>
+        \[ BEY=\frac{F-P}{P}\times\frac{365}{n} \]
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">实际年化收益率 EAR（复利年化，365 天）</span>
+        \[ EAR=(1+HPR)^{365/n}-1=\left(\frac{F}{P}\right)^{365/n}-1 \]
+      </div>
+
+      <div data-fig="yieldQuotes" data-cap="同一笔收益的四种报价：分母与天数不同 → 数值依次递增。图片来源：Chapter 5a" data-src="Chapter 5"></div>
+
+      <div class="box key">
+        <div class="box-title">▸ 两条永远成立的排序</div>
+        <ol>
+          <li>\(r_D &lt; r_{SPY}\)：折现收益率的分母是<strong>面值</strong>（更大），所以数值更小。</li>
+          <li>\(r_{SPY} &lt; BEY &lt; EAR\)：365 &gt; 360（线性年化更大），且复利年化 &gt; 线性年化。</li>
+        </ol>
+        <p class="muted">合起来：\(r_D &lt; r_{SPY} &lt; BEY &lt; EAR\)。算完可以用这条排序自检。</p>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 报价年化率 ≠ 实际赚到的钱</div>
+        <p>年化只是把这段持有期的回报<strong>折算成年度口径以便比较</strong>；90 天真正到手的是 \(F-P\) 这笔美元金额，<strong>不是</strong>把年化率乘一年得到的数。要真正实现 EAR，还需要有合适的<strong>再投资机会</strong>。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Converting among the four quotations</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A 90-day discount security has a face value of $100,000 and a purchase price of $98,800. Discount and single-payment yields use a 360-day year; BEY uses a 365-day year and the purchase price as its base.
+            <br>(a) Calculate the dollar gain and the 90-day holding-period return if the security pays full face value at maturity.
+            <br>(b) Calculate its discount yield and its single-payment yield. Explain why the two quoted rates differ.
+            <br>(c) Calculate its BEY and EAR, using \((1+HPR)^{365/90}\) for EAR.
+            <br>(d) Explain why a quoted annualized rate is not the dollar return actually earned over 90 days.
+            <br>(e) Explain why maturity, liquidity and credit quality matter when a firm selects an instrument for temporarily idle cash, even if one instrument offers a higher quoted yield.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>先算 \(D=F-P=1{,}200\)，然后四个公式逐一代入。关键区别只有两点：<strong>分母是 F 还是 P</strong>，以及<strong>年用 360 还是 365 天</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ r_D=\frac{1{,}200}{100{,}000}\cdot\frac{360}{90} \qquad r_{SPY}=\frac{1{,}200}{98{,}800}\cdot\frac{360}{90} \qquad BEY=\frac{1{,}200}{98{,}800}\cdot\frac{365}{90} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 美元收益 \(D=100{,}000-98{,}800=\mathbf{\$1{,}200}\)。</li>
+              <li>(a) \(HPR=1{,}200/98{,}800=1.2146\%\approx\mathbf{1.21\%}\)。</li>
+              <li>(b) \(r_D=(1{,}200/100{,}000)\times(360/90)=0.012\times4=\mathbf{4.80\%}\)。</li>
+              <li>(b) \(r_{SPY}=(1{,}200/98{,}800)\times4=0.0121457\times4=\mathbf{4.86\%}\)。</li>
+              <li>(b) 差异原因：折现收益率用<strong>面值</strong>作分母（分母更大 → 比率更小），单利用<strong>实际投资额</strong>作分母。</li>
+              <li>(c) \(BEY=0.0121457\times(365/90)=0.0121457\times4.05556=\mathbf{4.93\%}\)。</li>
+              <li>(c) \(EAR=(100{,}000/98{,}800)^{365/90}-1=(1.0121457)^{4.05556}-1=\mathbf{5.02\%}\)。</li>
+              <li>自检：\(4.80&lt;4.86&lt;4.93&lt;5.02\) ✓ 符合排序规律。</li>
+              <li>(d) 年化只是换算口径，90 天实际到手的是 \$1,200。</li>
+              <li>(e) 选择闲置资金工具的顺序：<strong>先匹配期限</strong>（现金何时要用），<strong>再看流动性</strong>（是否需要提前变现），<strong>最后才比报价收益率</strong>；信用质量影响能否收回本金。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Dollar gain = \$1,200; \(HPR=1{,}200/98{,}800=\mathbf{1.21\%}\).
+                <br>(b) \(r_D=(1{,}200/100{,}000)(360/90)=\mathbf{4.80\%}\); \(r_{SPY}=(1{,}200/98{,}800)(360/90)=\mathbf{4.86\%}\). The discount yield uses <b>face value</b> rather than invested funds as its denominator.
+                <br>(c) \(BEY=(1{,}200/98{,}800)(365/90)=\mathbf{4.93\%}\); \(EAR=(100{,}000/98{,}800)^{365/90}-1=\mathbf{5.02\%}\). EAR compounds the holding-period return; BEY annualises it linearly.
+                <br>(d) Annualisation rescales the 90-day return; the holding period actually produces \$1,200. Realising the EAR requires suitable reinvestment opportunities.
+                <br>(e) Maturity should match the cash-use horizon; liquidity matters if early sale is needed; credit quality affects repayment. A higher quoted rate may compensate for risk or use a different convention, so rates must be made comparable.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>\$1,200 / 1.21%</strong>；(b) <strong>4.80% / 4.86%</strong>（分母不同）；(c) <strong>4.93% / 5.02%</strong>；
+                <br>(d) 年化率 ≠ 90 天实际赚到的钱；(e) 期限 → 流动性 → 收益率，顺序不能颠倒。
+                <br>自检排序：4.80 &lt; 4.86 &lt; 4.93 &lt; 5.02 ✓</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 国库券与拍卖 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 国库券：报价与拍卖">2. 国库券：报价与拍卖 <span class="badge">Treasury Bills</span></h2>
+      <div class="lec-meta"><span>Chapter 5b · slides 3–24</span><span>Practice Q23, Q24</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Treasury bill (T-bill)</b>: a short-term government security sold at a <b>discount</b> to face value and redeemed at <b>full face value</b> at maturity. It pays no coupon; the return is the purchase discount.</span><br>
+        <span class="en"><b>Bid discount yield / ask discount yield</b>: the dealer's discount-yield quotation on the side it <b>buys</b> (bid) and the side it <b>sells</b> (ask).</span></p>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 反向关系：折现收益率越高 → 价格越低</div>
+        <p>价格公式是 \(P=F\big[1-r_D\,(n/360)\big]\)。<strong>折现收益率 \(r_D\) 越大，折扣越大，价格越低</strong>。因此交易商的<strong>买入价（bid）低于卖出价（ask）</strong>，而对应的<strong>买入折现收益率高于卖出折现收益率</strong>。
+        <br>客户<strong>买入</strong>国库券时按交易商的 <strong>ask</strong>（卖出价）成交。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Dealer quotes and the bid-ask spread</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A dealer quotes a 90-day Treasury bill with face value $100,000 at a bid discount yield of 4.20% and an ask discount yield of 4.10%. Both use a 360-day year.
+            <br>(a) Calculate the dealer's bid price and ask price.
+            <br>(b) Which price does a customer pay to buy the bill? Calculate that customer's BEY if the bill is held to maturity, using a 365-day year.
+            <br>(c) Calculate the dollar bid-ask spread. Explain why the bid discount yield is higher than the ask discount yield even though the bid price is lower.
+            <br>(d) Explain why a Treasury bill is usually highly liquid and has low credit risk. Why does this not imply that its price can never change before maturity?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 用 \(P=F[1-r_D(n/360)]\)，其中 \(n/360=90/360=0.25\)。(b) 客户买入按 <strong>ask</strong>；(c) 价差 = ask − bid。
+            <br>关键解释：<strong>折现收益率与价格反向</strong>，所以「bid 价更低」与「bid 收益率更高」是同一件事的两种说法。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ P=F\left[1-r_D\cdot\frac{n}{360}\right] \qquad BEY=\frac{F-P}{P}\cdot\frac{365}{n} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) Bid 价 \(=100{,}000[1-0.042\times0.25]=100{,}000\times0.9895=\mathbf{\$98{,}950.00}\)。</li>
+              <li>(a) Ask 价 \(=100{,}000[1-0.041\times0.25]=100{,}000\times0.98975=\mathbf{\$98{,}975.00}\)。</li>
+              <li>(b) 客户<strong>买入</strong>按交易商 ask = <strong>\$98,975.00</strong>。</li>
+              <li>(b) \(BEY=\dfrac{100{,}000-98{,}975}{98{,}975}\times\dfrac{365}{90}=0.0103563\times4.05556=\mathbf{4.20\%}\)。</li>
+              <li>(c) 价差 \(=98{,}975.00-98{,}950.00=\mathbf{\$25.00}\)。</li>
+              <li>(c) 解释：折现报价下<strong>收益率越高折扣越大、价格越低</strong>，因此「bid 收益率 4.20% &gt; ask 收益率 4.10%」与「bid 价 98,950 &lt; ask 价 98,975」完全一致。</li>
+              <li>(d) 高流动性 + 低信用风险的原因：政府信用背书（低违约风险）、交易活跃、期限短 → 利率风险也较低。</li>
+              <li>(d) 但价格<strong>仍会变动</strong>：到期前市场收益率变化会改变其转售价。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Bid \(=100{,}000[1-0.042(90/360)]=\mathbf{\$98{,}950.00}\); ask \(=100{,}000[1-0.041(90/360)]=\mathbf{\$98{,}975.00}\).
+                <br>(b) The customer buys at the dealer's <b>ask</b> price of \$98,975; \(BEY=[(100{,}000-98{,}975)/98{,}975](365/90)=\mathbf{4.20\%}\).
+                <br>(c) Spread \(=98{,}975-98{,}950=\mathbf{\$25.00}\). Under a discount quote a larger discount yield means a lower cash price, so the higher bid yield corresponds to the lower bid price.
+                <br>(d) Treasury backing supports low credit risk; extensive trading and short maturity support liquidity and relatively low interest-rate risk. Before maturity, changes in market yields can still change the sale price.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) bid <strong>\$98,950.00</strong>、ask <strong>\$98,975.00</strong>；(b) 按 <strong>ask</strong> 成交，BEY <strong>4.20%</strong>；(c) 价差 <strong>\$25.00</strong>，折现报价下收益率与价格反向；
+                <br>(d) 国债背书 + 交易活跃 + 期限短 → 低风险高流动性，但<strong>到期前价格仍会随市场收益率变化</strong>。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <h3 class="sub" data-short="2.1 单一价格拍卖">2.1 单一价格拍卖 <span class="eninline">Single-price Auction</span></h3>
+
+      <div class="box theory">
+        <div class="box-title">▸ 拍卖规则（课件口径）</div>
+        <ol>
+          <li>发行总额中先扣掉<strong>非竞争性投标</strong>（valid noncompetitive bids），剩余部分给竞争性投标；</li>
+          <li>竞争性投标<strong>按折现收益率由低到高排序</strong>（等价于价格由高到低）；</li>
+          <li>依次分配，最后一个被接受的投标可以<strong>部分分配</strong>；</li>
+          <li><strong>所有中标者支付同一个价格</strong>——即由<strong>最高的被接受折现收益率（stop-out yield）</strong>对应的价格；</li>
+          <li>非竞争性投标者<strong>放弃报价权</strong>，接受拍卖决定的价格，但获得全额分配。</li>
+        </ol>
+      </div>
+
+      <div data-fig="billAuction" data-cap="单一价格拍卖：按折现收益率由低到高排序，最后一笔可部分分配，所有中标者付同一价格。图片来源：Chapter 5b" data-src="Chapter 5"></div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> A single-price Treasury bill auction</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A hypothetical auction offers $120 million of 90-day bills at face value. Valid noncompetitive bids total $20 million. All successful bidders pay the price associated with the highest accepted discount yield.
+            <br>Bids: A — $30m at 3.80%; B — $40m at 3.90%; C — $50m at 4.00%; D — $20m at 4.10%.
+            <br>(a) Amount available to competitive bidders, and the order of acceptance.
+            <br>(b) Each bidder's accepted amount and the stop-out discount yield (partial allocation allowed).
+            <br>(c) Common price per $100 face value (360-day year). What do noncompetitive bidders pay?
+            <br>(d) What do noncompetitive bidders give up in exchange for accepting the auction-determined price?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>先减去非竞争部分 → 竞争性可用 \$100M；按收益率<strong>从低到高</strong>依次分配（A→B→C→D），C 只能拿到剩余的 \$30M（部分分配）。Stop-out 是最高的被接受收益率 = C 的 4.00%。共同价格由 4.00% 算出。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 竞争性可用 \(=120-20=\mathbf{\$100}\) 百万。</li>
+              <li>(a) 接受顺序（收益率低 → 高，即价格高 → 低）：<strong>A → B → C → D</strong>。</li>
+              <li>(b) A 分配 <strong>\$30M</strong>（全额）；B 分配 <strong>\$40M</strong>（全额）。</li>
+              <li>(b) 剩余 \(100-30-40=\$30M\) 给 C（申报 \$50M）→ C 分配 <strong>\$30M</strong>（部分）。</li>
+              <li>(b) D <strong>未中标</strong>（\$0）。</li>
+              <li>(b) Stop-out 折现收益率 = 最高的被接受收益率 = <strong>4.00%</strong>。</li>
+              <li>(c) 共同价格（每 \$100 面值）\(=100[1-0.04\times(90/360)]=100\times0.99=\mathbf{\$99.00}\)。</li>
+              <li>(c) 非竞争性投标者<strong>付同样的 \$99.00</strong>（单一价格规则）。</li>
+              <li>(d) 他们放弃的是<strong>指定自己愿意接受的收益率/价格</strong>的权利；其有效申请在竞争性投标决定剩余分配之前就已被满足，因此获得<strong>全额分配</strong>但接受拍卖价格，<strong>没有特殊低价</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Competitive allocation \(=120-20=\mathbf{\$100m}\). Ranked from lowest discount yield to highest: <b>A, B, C, D</b> (highest price first).
+                <br>(b) A gets \$30m; B gets \$40m; C gets \$30m (partial); D gets zero. After A and B only \$30m remains for C's \$50m bid. Stop-out yield = <b>4.00%</b>.
+                <br>(c) Common price \(=100[1-0.04(90/360)]=\mathbf{\$99.00}\) per \$100 face value; noncompetitive bidders pay this same price.
+                <br>(d) They give up specifying the yield or price they will accept. Their valid requests are filled before competitive bidding determines the residual allocation, and they accept the resulting price; they do not receive a special lower price.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 竞争性可用 <strong>\$100M</strong>，顺序 A→B→C→D；(b) A 30M、B 40M、C 30M（部分）、D 0，stop-out = <strong>4.00%</strong>；(c) 共同价格 <strong>\$99.00 / \$100</strong>，非竞争投标者付同样价格；(d) 他们放弃<strong>报价权</strong>，换取全额分配。
+                <br>易错点：把 D 也算成中标，或误以为非竞争投标者拿到更低的特殊价格。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 联邦基金与回购 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 联邦基金与回购">3. 联邦基金与回购 <span class="badge">Fed Funds &amp; Repo</span></h2>
+      <div class="lec-meta"><span>Chapter 5b · slides 26–33</span><span>Chapter 5c · slides 3–9</span><span>Practice Q25</span></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:130px;">维度</th><th>联邦基金 Federal funds</th><th>回购 Repo</th></tr></thead>
+        <tbody>
+          <tr><td>抵押品</td><td><strong>无抵押</strong>（unsecured）</td><td><strong>有抵押</strong>（证券作为抵押）</td></tr>
+          <tr><td>期限</td><td>通常<strong>隔夜</strong></td><td>隔夜至数周（本题为 7 天）</td></tr>
+          <tr><td>交易双方</td><td>机构之间拆借<strong>准备金余额</strong></td><td>证券卖方（融入方）与现金提供方（融出方）</td></tr>
+          <tr><td>记账名称</td><td>federal funds <strong>sold</strong>（资产）/ <strong>purchased</strong>（负债）</td><td>同一笔交易：一方记为 repo，另一方记为 <strong>reverse repo</strong></td></tr>
+          <tr><td>天数约定</td><td>360 天</td><td>360 天</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 折减率 Haircut</div>
+        <p>回购中融出的现金<strong>低于抵押品市值</strong>，这个差额比例就是折减率。它为抵押品价格下跌与变现成本提供<strong>缓冲</strong>，但<strong>不消除全部风险</strong>：借款人违约、抵押品价格变动、变现困难都可能造成损失。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 4</span> Federal funds and repo calculations</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Bank A lends Bank B $10 million overnight in the federal funds market at a quoted annual rate of 3.60%. Separately, a dealer receives $10 million through a seven-day repo and agrees to repay $10,007,000.
+            <br>(a) Calculate the overnight interest and total repayment on the federal funds loan using a 360-day year.
+            <br>(b) Identify which bank records federal funds sold and which records federal funds purchased. Explain the asset-versus-liability distinction.
+            <br>(c) Calculate the repo's quoted annualized rate using a 360-day year.
+            <br>(d) Identify the repo borrower and lender. Explain why the same transaction is a repo for one party and a reverse repo for the other.
+            <br>(e) Compare the role of collateral in the two transactions. Explain why a haircut may be required and why collateral does not necessarily eliminate all loss risk.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a)(c) 都是「利息 ÷ 本金 × 360/n」的简单利率计算，注意天数：隔夜用 1/360，7 天用 360/7。
+            <br>(b) 记账名称跟随<strong>方向</strong>：拆出方（贷款人）记 <em>sold</em>（资产），拆入方记 <em>purchased</em>（负债）。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ I=P\times r\times\frac{n}{360} \qquad r_{repo}=\frac{\text{Repay}-\text{Principal}}{\text{Principal}}\times\frac{360}{n} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 利息 \(=10{,}000{,}000\times0.036\times\dfrac{1}{360}=\mathbf{\$1{,}000}\)。</li>
+              <li>(a) 还款总额 \(=10{,}000{,}000+1{,}000=\mathbf{\$10{,}001{,}000}\)。</li>
+              <li>(b) <strong>Bank A（贷款人）</strong>记录 <em>federal funds sold</em>（<strong>资产</strong>）；<strong>Bank B（借款人）</strong>记录 <em>federal funds purchased</em>（<strong>负债</strong>）。</li>
+              <li>(c) 利息 \(=10{,}007{,}000-10{,}000{,}000=\$7{,}000\)。</li>
+              <li>(c) \(r_{repo}=\dfrac{7{,}000}{10{,}000{,}000}\times\dfrac{360}{7}=0.0007\times51.4286=\mathbf{3.60\%}\)。</li>
+              <li>(d) 收到 \$10M 的<strong>交易商是借款人</strong>（现在卖券、以后买回）→ 记为 <strong>repo</strong>；提供现金的一方是<strong>贷款人</strong> → 记为 <strong>reverse repo</strong>。</li>
+              <li>(e) 联邦基金<strong>无抵押</strong>；回购<strong>有抵押</strong>。</li>
+              <li>(e) 折减率的作用：融出金额低于抵押品市值，为价格下跌与变现成本提供缓冲。</li>
+              <li>(e) 为什么不消除全部风险：违约、抵押品价格变动、变现困难仍可能造成损失。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Interest \(=10{,}000{,}000\times0.036\times(1/360)=\mathbf{\$1{,}000}\); total repayment \(\mathbf{\$10{,}001{,}000}\).
+                <br>(b) <b>Bank A</b>, the lender, records <b>federal funds sold</b> (an asset); <b>Bank B</b>, the borrower, records <b>federal funds purchased</b> (a liability).
+                <br>(c) \(r=(7{,}000/10{,}000{,}000)(360/7)=\mathbf{3.60\%}\).
+                <br>(d) The dealer receiving \$10m is the <b>borrower</b> and takes the repo position (sell now, repurchase later); the cash provider is the <b>lender</b> and takes the reverse repo position.
+                <br>(e) The federal funds loan is <b>unsecured</b>; the repo is <b>collateralised</b>. A haircut provides a buffer against price declines and liquidation costs, but default, collateral-price changes and difficulties realising collateral can still generate losses.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 利息 <strong>\$1,000</strong>，还款 <strong>\$10,001,000</strong>；(b) A 记 sold（资产）、B 记 purchased（负债）；(c) 回购利率 <strong>3.60%</strong>；
+                <br>(d) 交易商 = 借款人（repo），现金提供方 = 贷款人（reverse repo）；
+                <br>(e) 无抵押 vs 有抵押；折减率提供缓冲但不消除全部风险。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. CP / CD / BA / Eurodollar ============ -->
+    <section id="s4">
+      <h2 class="sec" data-short="4. 商票、CD、银行承兑汇票与欧洲美元">4. 商票、CD、银行承兑汇票与欧洲美元 <span class="badge">CP · CD · BA · Eurodollar</span></h2>
+      <div class="lec-meta"><span>Chapter 5c · slides 11–26</span><span>Practice Q26, Q27, Q28</span></div>
+
+      <div data-fig="mmInstruments" data-cap="货币市场工具谱系：谁负责付款、有无担保、流动性如何。图片来源：Chapter 5c" data-src="Chapter 5"></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:140px;">工具</th><th>付款义务人</th><th>担保 / 信用</th><th>二级市场流动性</th></tr></thead>
+        <tbody>
+          <tr><td><strong>商业票据 CP</strong></td><td>发行企业</td><td>通常<strong>无担保</strong>，依赖发行人信用</td><td><strong>有限</strong>，提前变现可能要打折</td></tr>
+          <tr><td><strong>大额可转让 CD</strong></td><td>发行银行</td><td>存款负债</td><td><strong>可转让</strong></td></tr>
+          <tr><td><strong>银行承兑汇票 BA</strong></td><td><strong>承兑银行</strong></td><td><strong>银行担保</strong>（银行承诺到期付款）</td><td>可<strong>贴现</strong>变现</td></tr>
+          <tr><td><strong>欧洲美元存款</strong></td><td>美国境外的银行</td><td>存款负债</td><td>视期限而定</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 欧洲美元 ≠ 欧元</div>
+        <p><strong>欧洲美元（Eurodollar）</strong>指的是<strong>存放在美国境外的美元存款</strong>（包括美国银行在境外的分行）。它<strong>既不限于欧洲</strong>，也<strong>与欧元无关</strong>——新加坡的美元存款同样是欧洲美元存款。
+        <br>课件补充：LIBOR 因报价丑闻退出后，由以回购市场为基础的 <strong>SOFR</strong> 接替成为主要美元参考利率。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 5</span> Commercial paper yields</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A highly rated company issues 120-day commercial paper with face value $1,000,000 at a price of $986,000 to finance seasonal inventory.
+            <br>(a) Explain why commercial paper is suitable for this funding need and why strong credit quality matters.
+            <br>(b) Calculate its discount yield on a 360-day basis and its BEY on a 365-day basis.
+            <br>(c) Explain why a corporate issuer may obtain cheaper funding through CP than through a bank loan.
+            <br>(d) An investor may need cash before the paper matures. Explain the concern and compare with T-bill liquidity.
+            <br>(e) Explain why the calculated yield assumes full repayment and should not be interpreted as a guaranteed return.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(b) 折现收益率用 360 天、分母 F；BEY 用 365 天、分母 P。注意 \(n=120\)。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 适用性：季节性库存是<strong>临时性</strong>资金需求，与 CP 的短期限匹配。</li>
+              <li>(a) 信用的重要性：普通 CP <strong>无抵押</strong>，偿付完全依赖发行人信用。</li>
+              <li>(b) 折扣 \(=1{,}000{,}000-986{,}000=\$14{,}000\)。</li>
+              <li>(b) \(r_D=(14{,}000/1{,}000{,}000)\times(360/120)=0.014\times3=\mathbf{4.20\%}\)。</li>
+              <li>(b) \(BEY=(14{,}000/986{,}000)\times(365/120)=0.0141988\times3.041667=\mathbf{4.32\%}\)。</li>
+              <li>(c) 优质发行人可<strong>直接面向投资者</strong>融资，绕过银行贷款中内含的一部分中介成本 → 可能更便宜（但不保证）。</li>
+              <li>(d) 提前变现的顾虑：CP 二级市场有限，可能找不到买家或需折价出售；国库券市场<strong>活跃得多</strong>。</li>
+              <li>(e) 计算假设<strong>按期全额偿付</strong>；违约、延期或不利价格提前卖出都会降低实际回报 → 不是保证收益。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Seasonal inventory is a <b>temporary</b> need matching a short maturity. Ordinary CP is <b>unsecured</b>, so repayment relies on the issuer's creditworthiness.
+                <br>(b) Discount = \$14,000. \(r_D=(14{,}000/1{,}000{,}000)(360/120)=\mathbf{4.20\%}\); \(BEY=(14{,}000/986{,}000)(365/120)=\mathbf{4.32\%}\).
+                <br>(c) A strong issuer can access investors directly, potentially avoiding part of the intermediation cost embedded in a bank loan — though not guaranteed.
+                <br>(d) CP has a limited secondary market; an early seller may find no ready buyer or must discount. T-bills are generally more actively traded.
+                <br>(e) The yield calculation assumes payment in full on schedule; default, delay or an unfavourable early sale lowers the actual return.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 短期限匹配临时需求；CP 无担保，依赖信用。(b) 折现 <strong>4.20%</strong>、BEY <strong>4.32%</strong>。(c) 绕过中介成本，可能更低。(d) 二级市场有限 vs 国库券活跃。(e) 假设全额按期偿付，非保证收益。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div data-fig="cdTimeline" data-cap="大额可转让 CD：到期一次付息；二级市场价格下跌时新买家收益率上升。图片来源：Chapter 5c" data-src="Chapter 5"></div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 6</span> Negotiable CD: issue, resale and the inverse relation</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A bank issues a 180-day negotiable CD for $1,000,000. It pays interest at maturity at a quoted annual single-payment rate of 4.00%, using a 360-day year.
+            <br>(a) Calculate the interest payment and total maturity payment.
+            <br>(b) Calculate the original investor's BEY and EAR, using 365 days for annualisation.
+            <br>(c) Immediately after issue, its secondary-market price falls to $995,000. Assume 180 days remain and the promised maturity payment is unchanged. Calculate the new buyer's holding-period return and quoted single-payment yield.
+            <br>(d) Explain the inverse relationship between the secondary-market price and the new buyer's yield.
+            <br>(e) Explain what makes the CD negotiable and how a money market mutual fund can give small savers indirect access to large-denomination CDs.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 单利计息：利息 = 本金 × 报价利率 × 天数/360。(c) 新买家的成本是 \$995,000，收到的仍是 \$1,020,000 → HPR 更高 → 报价更高。这正是「价格与收益率反向」。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ I=P\times r\times\frac{n}{360} \qquad EAR=(1+HPR)^{365/n}-1 \qquad r_{SPY}^{new}=HPR\times\frac{360}{n} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 利息 \(=1{,}000{,}000\times0.04\times\dfrac{180}{360}=\mathbf{\$20{,}000}\)。</li>
+              <li>(a) 到期支付 \(=1{,}000{,}000+20{,}000=\mathbf{\$1{,}020{,}000}\)。</li>
+              <li>(b) 180 天回报 \(=20{,}000/1{,}000{,}000=2\%\)。</li>
+              <li>(b) \(BEY=0.02\times\dfrac{365}{180}=0.02\times2.027778=\mathbf{4.06\%}\)。</li>
+              <li>(b) \(EAR=1.02^{365/180}-1=1.02^{2.027778}-1=\mathbf{4.10\%}\)。</li>
+              <li>(c) 新买家 \(HPR=(1{,}020{,}000-995{,}000)/995{,}000=25{,}000/995{,}000=\mathbf{2.51\%}\)。</li>
+              <li>(c) 新报价单利收益率 \(=0.025126\times\dfrac{360}{180}=0.025126\times2=\mathbf{5.03\%}\)。</li>
+              <li>(d) 反向关系：承诺支付额与剩余期限不变 → <strong>买入价越低，每美元投资的收益越大，收益率越高</strong>。</li>
+              <li>(e) 「可转让」= 到期前可在二级市场卖出转让；货币市场基金把小额资金集合起来购买大额 CD，提供<strong>面额转换</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Interest \(=1{,}000{,}000\times4\%\times(180/360)=\mathbf{\$20{,}000}\); maturity payment \(\mathbf{\$1{,}020{,}000}\).
+                <br>(b) The 180-day return is 2%. \(BEY=0.02(365/180)=\mathbf{4.06\%}\); \(EAR=1.02^{365/180}-1=\mathbf{4.10\%}\).
+                <br>(c) New \(HPR=(1{,}020{,}000-995{,}000)/995{,}000=\mathbf{2.51\%}\); new quoted single-payment yield \(=[(1{,}020{,}000-995{,}000)/995{,}000](360/180)=\mathbf{5.03\%}\). Use the full promised maturity payment including interest.
+                <br>(d) The promised payment and remaining term are unchanged, so a lower purchase price gives a larger gain per dollar invested and a higher yield.
+                <br>(e) Negotiability means the CD can be transferred before maturity; a money market mutual fund pools small investors' funds to buy large-denomination CDs, providing denomination intermediation.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 利息 <strong>\$20,000</strong>，到期 <strong>\$1,020,000</strong>；(b) BEY <strong>4.06%</strong>、EAR <strong>4.10%</strong>；(c) 新买家 HPR <strong>2.51%</strong>、报价 <strong>5.03%</strong>；
+                <br>(d) 价格与收益率反向；(e) 可转让 + 货币基金提供面额转换。
+                <br>易错点：(c) 的分子必须用<strong>含利息的到期支付额 \$1,020,000</strong>，不能只用面值。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 7</span> Banker's acceptance and Eurodollar deposits</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">An exporter will receive payment in 90 days but does not know the importer well. A bank accepts a time draft and guarantees payment. Separately, a company places US dollars in a bank in Singapore.
+            <br>(a) Identify the trade-finance instrument and explain how the bank's acceptance helps the exporter.
+            <br>(b) The exporter wants cash immediately. Explain how selling the accepted draft differs from waiting for payment at maturity.
+            <br>(c) Explain why the US-dollar deposit in Singapore is a Eurodollar deposit despite being outside Europe. Does the term mean a deposit denominated in euros?
+            <br>(d) Compare a banker's acceptance, commercial paper and a negotiable CD by the party responsible for payment and the role of any bank guarantee.
+            <br>(e) A firm has spare cash for one week but may need it unexpectedly. Compare a liquid T-bill with less actively traded CP.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 工具是<strong>银行承兑汇票 BA</strong>：银行承兑后承担到期付款义务，把「进口商的信用」换成「银行的信用」。
+            <br>(c) 欧洲美元的定义与地点无关，只与<strong>币种 + 存放地</strong>有关。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 工具 = <strong>银行承兑汇票（banker's acceptance）</strong>。</li>
+              <li>(a) 作用：承兑银行承诺到期付款，加入自身信用，降低出口商对进口商的依赖；但银行自身的偿付能力仍然重要。</li>
+              <li>(b) 立即贴现卖出：出口商<strong>现在</strong>拿到现金，代价是<strong>折价</strong>；买主取得到期收款权。</li>
+              <li>(b) 持有到期：拿到<strong>全额</strong>，但要<strong>等 90 天</strong>。</li>
+              <li>(c) 欧洲美元 = <strong>美国境外的美元存款</strong>（含美国银行的境外分行）；新加坡符合；<strong>与欧元无关，也不限于欧洲</strong>。</li>
+              <li>(d) BA：承兑银行承担付款；CP：通常是<strong>无银行担保</strong>的企业负债；CD：发行银行的存款负债。</li>
+              <li>(e) 一周且可能急用的现金：国库券<strong>流动性更好</strong>，急用时更容易卖出；CP 报价可能更高，但<strong>发行人信用风险更大、二级市场更差</strong> → 此时「随时能取钱」比多几个基点的报价更有价值。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) A <b>banker's acceptance</b>: the accepting bank undertakes to pay the draft at maturity, adding its credit support and reducing reliance on the importer; the bank's own ability to pay still matters.
+                <br>(b) The exporter can sell the accepted draft before maturity, normally <b>at a discount</b>, for immediate cash; the purchaser then holds the claim. Waiting preserves the full maturity receipt but delays access to cash.
+                <br>(c) A <b>Eurodollar</b> deposit is a US-dollar deposit at a bank <b>outside the United States</b>, including a foreign branch of a US bank. Singapore qualifies; the term refers neither exclusively to Europe nor to euro currency.
+                <br>(d) BA: the accepting bank undertakes payment of a trade draft. CP is generally an <b>unsecured</b> corporate obligation without an inherent bank guarantee. A negotiable CD is a deposit obligation of its issuing bank.
+                <br>(e) A liquid T-bill can generally be sold more readily if cash is needed unexpectedly; CP may offer a higher yield but carries more issuer credit risk and poorer secondary liquidity. For a one-week or uncertain horizon, ready access to funds can be worth more than the extra quoted yield.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>银行承兑汇票</strong>：银行承兑后承担付款；(b) 提前贴现拿现金（折价）vs 等到期拿全额；(c) 欧洲美元 = <strong>境外美元存款，与欧元无关</strong>；
+                <br>(d) BA = 银行担保、CP = 通常无担保、CD = 银行的存款负债；(e) 短期且不确定时，<strong>流动性优先于报价收益率</strong>。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 5. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="5. 练习（真题型）">5. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q22–Q28）。这一组是全部 28 题里计算最密集的部分，建议限时完成。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Yield convention conversions <span class="kbd">真题型</span> <span class="kbd">Practice Q22</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">90-day discount security, F = $100,000, P = $98,800. Discount/single-payment yields use 360 days; BEY uses 365 days and the purchase price as base.
+          <br>(a) Dollar gain and 90-day HPR. (b) Discount yield and single-payment yield; why do they differ? (c) BEY and EAR. (d) Why is a quoted annualized rate not the dollar return earned? (e) Why do maturity, liquidity and credit quality matter for idle cash?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1。</p></div>
+            <ol class="steps">
+              <li>(a) \$1,200；HPR 1.21%。</li>
+              <li>(b) 4.80% 与 4.86%（分母不同）。</li>
+              <li>(c) BEY 4.93%，EAR 5.02%。</li>
+              <li>(d) 年化率 ≠ 实际到手金额。</li>
+              <li>(e) 期限 → 流动性 → 报价收益率。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$1,200; 1.21%</b>. (b) <b>4.80%</b> and <b>4.86%</b>; different denominators. (c) <b>4.93%</b>; <b>5.02%</b>. (d) Annualisation rescales; actual gain is \$1,200. (e) Match horizon, then liquidity, then yield.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$1,200 / 1.21%</strong>；(b) <strong>4.80% / 4.86%</strong>；(c) <strong>4.93% / 5.02%</strong>；(d) 年化 ≠ 到手；(e) 顺序：期限 → 流动性 → 收益率。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Dealer quotes <span class="kbd">真题型</span> <span class="kbd">Practice Q23</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">90-day T-bill, F = $100,000, bid discount yield 4.20%, ask discount yield 4.10%, 360-day year.
+          <br>(a) Bid and ask prices. (b) Which price does a customer pay to buy; BEY to maturity (365 days)? (c) Dollar spread; why is the bid yield higher though the bid price is lower? (d) Why liquid and low credit risk, yet price can change before maturity?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。</p></div>
+            <ol class="steps">
+              <li>(a) bid \$98,950.00、ask \$98,975.00。</li>
+              <li>(b) 按 ask 成交，BEY 4.20%。</li>
+              <li>(c) 价差 \$25.00；折现报价下收益率与价格反向。</li>
+              <li>(d) 国债背书 + 活跃交易，但市场收益率变化仍会改变转售价。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$98,950.00</b> and <b>\$98,975.00</b>. (b) <b>Ask</b>; BEY <b>4.20%</b>. (c) <b>\$25.00</b>; a larger discount yield means a lower price. (d) Treasury backing and active trading; market yield changes still move the price.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>98,950 / 98,975</strong>；(b) <strong>ask</strong>，BEY <strong>4.20%</strong>；(c) <strong>\$25.00</strong>，反向关系；(d) 仍会随市场收益率变动。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Single-price auction <span class="kbd">真题型</span> <span class="kbd">Practice Q24</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">$120m of 90-day bills; noncompetitive bids $20m. Bids: A $30m @ 3.80%, B $40m @ 3.90%, C $50m @ 4.00%, D $20m @ 4.10%.
+          <br>(a) Amount for competitive bidders and acceptance order. (b) Accepted amounts and stop-out yield (partial allocation allowed). (c) Common price per $100 face; what do noncompetitive bidders pay? (d) What do noncompetitive bidders give up?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 3。</p></div>
+            <ol class="steps">
+              <li>(a) \$100M；顺序 A→B→C→D。</li>
+              <li>(b) A 30M、B 40M、C 30M、D 0；stop-out 4.00%。</li>
+              <li>(c) \$99.00；非竞争投标者付同样价格。</li>
+              <li>(d) 放弃指定收益率/价格的权利。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$100m</b>; A, B, C, D. (b) <b>30 / 40 / 30 / 0</b>; stop-out <b>4.00%</b>. (c) <b>\$99.00</b>; same price. (d) They give up specifying the yield or price they accept.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$100M</strong>；(b) <strong>30/40/30/0</strong>，stop-out <strong>4.00%</strong>；(c) <strong>\$99.00</strong>；(d) 放弃报价权。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Fed funds versus repo <span class="kbd">真题型</span> <span class="kbd">Practice Q25</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Bank A lends Bank B $10m overnight at 3.60% (360-day). A dealer receives $10m through a 7-day repo and repays $10,007,000.
+          <br>(a) Overnight interest and total repayment. (b) Who records funds sold / purchased? (c) Repo quoted rate (360-day). (d) Repo borrower and lender; why repo for one and reverse repo for the other? (e) Collateral role; haircut; why risk remains.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 4。</p></div>
+            <ol class="steps">
+              <li>(a) \$1,000；\$10,001,000。</li>
+              <li>(b) A 记 sold（资产），B 记 purchased（负债）。</li>
+              <li>(c) 3.60%。</li>
+              <li>(d) 交易商借、现金方贷；同一笔交易两个名字。</li>
+              <li>(e) 无抵押 vs 有抵押；折减率缓冲但不消除全部风险。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$1,000</b>; <b>\$10,001,000</b>. (b) <b>A sold</b> (asset), <b>B purchased</b> (liability). (c) <b>3.60%</b>. (d) Dealer borrows (repo); cash provider lends (reverse repo). (e) Unsecured vs collateralised; haircut buffers but does not remove all risk.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$1,000 / \$10,001,000</strong>；(b) A sold、B purchased；(c) <strong>3.60%</strong>；(d) 交易商借；(e) 有抵押但仍存风险。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Commercial paper <span class="kbd">真题型</span> <span class="kbd">Practice Q26</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">120-day CP, F = $1,000,000, P = $986,000. (a) Why suitable and why does credit quality matter? (b) Discount yield (360) and BEY (365). (c) Why cheaper than a bank loan? (d) Early-cash concern vs T-bills. (e) Why is the yield not guaranteed?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 5。</p></div>
+            <ol class="steps">
+              <li>(b) 折扣 \$14,000 → 折现 4.20%、BEY 4.32%。</li>
+              <li>(a) 短期限匹配；无担保依赖信用。</li>
+              <li>(c) 绕过中介成本。</li>
+              <li>(d) 二级市场有限。</li>
+              <li>(e) 假设全额按期偿付。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(b) <b>4.20%</b> and <b>4.32%</b>. (a) Temporary need, short maturity; unsecured. (c) Direct access may avoid intermediation cost. (d) Limited secondary market. (e) Assumes full, timely repayment.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(b) <strong>4.20% / 4.32%</strong>；(a) 期限匹配、依赖信用；(c) 绕过中介；(d) 流动性差；(e) 非保证收益。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Negotiable CD <span class="kbd">真题型</span> <span class="kbd">Practice Q27</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">180-day CD, $1,000,000, quoted annual single-payment rate 4.00%, 360-day year. (a) Interest and maturity payment. (b) Original investor's BEY and EAR (365 days). (c) Resale at $995,000 with 180 days left: new HPR and quoted yield. (d) Inverse price-yield relation. (e) Negotiability and money market funds.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 6。</p></div>
+            <ol class="steps">
+              <li>(a) \$20,000；\$1,020,000。</li>
+              <li>(b) BEY 4.06%，EAR 4.10%。</li>
+              <li>(c) HPR 2.51%，报价 5.03%。</li>
+              <li>(d) 价格与收益率反向。</li>
+              <li>(e) 可转让 + 面额转换。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$20,000</b>; <b>\$1,020,000</b>. (b) <b>4.06%</b>; <b>4.10%</b>. (c) <b>2.51%</b>; <b>5.03%</b>. (d) Lower price → larger gain per dollar → higher yield. (e) Transferable before maturity; funds pool small savings.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$20,000 / \$1,020,000</strong>；(b) <strong>4.06% / 4.10%</strong>；(c) <strong>2.51% / 5.03%</strong>；(d) 反向；(e) 可转让 + 基金面额转换。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Trade finance and international money markets <span class="kbd">真题型</span> <span class="kbd">Practice Q28</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Exporter paid in 90 days; a bank accepts a time draft. A company places USD in a Singapore bank.
+          <br>(a) Identify the instrument; how does acceptance help? (b) Selling the accepted draft vs waiting. (c) Why is the Singapore USD deposit Eurodollar? Does it mean euros? (d) Compare BA, CP and CD by payer and bank guarantee. (e) One-week spare cash that may be needed: T-bill vs CP.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 7。</p></div>
+            <ol class="steps">
+              <li>(a) 银行承兑汇票；银行承担付款义务。</li>
+              <li>(b) 折价贴现换现金 vs 等到期拿全额。</li>
+              <li>(c) 境外美元存款，与欧元无关。</li>
+              <li>(d) BA 银行担保；CP 通常无担保；CD 是银行存款负债。</li>
+              <li>(e) 一周且不确定 → 流动性优先。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>Banker's acceptance</b>; the bank undertakes payment. (b) Discount for immediate cash vs full payment later. (c) USD deposit outside the US; <b>not</b> euros. (d) BA: bank pays; CP: unsecured corporate; CD: bank deposit liability. (e) T-bill liquidity is worth more than a higher CP quote for an uncertain one-week horizon.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>银行承兑汇票</strong>；(b) 折价变现 vs 全额等待；(c) <strong>境外美元，非欧元</strong>；(d) 付款人不同；(e) 流动性优先。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Three yield conventions for one T-bill <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A <b>91-day</b> Treasury bill with ¥10,000 face is quoted at a <b>bank discount rate of 4.80%</b> (360-day year).
+          <br>(a) Compute the discount and the price.
+          <br>(b) Compute the bond equivalent yield (365-day year).
+          <br>(c) Compute the effective annual return.
+          <br>(d) Explain why r<sub>D</sub> &lt; BEY &lt; EAR, and which one you should use to compare with a bond or a deposit.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>三种报价口径的差别只在<strong>分母（面值 vs 价格）</strong>与<strong>一年天数（360 vs 365）</strong>，以及<strong>是否复利</strong>。\(r_D=\frac{F-P}{F}\times\frac{360}{t}\)，\(r_{BEY}=\frac{F-P}{P}\times\frac{365}{t}\)，\(\text{EAR}=\left(1+\frac{F-P}{P}\right)^{365/t}-1\)。</p></div>
+            <ol class="steps">
+              <li>(a) 折现额 \(=10{,}000\times0.0480\times\dfrac{91}{360}=10{,}000\times0.0480\times0.252778=\) <strong>¥121.33</strong>。</li>
+              <li>(a) 价格 \(P=10{,}000-121.33=\) <strong>¥9,878.67</strong>。</li>
+              <li>(b) \(r_{BEY}=\dfrac{121.33}{9{,}878.67}\times\dfrac{365}{91}=0.0122824\times4.010989=\) <strong>4.926%</strong>。</li>
+              <li>(c) \(\text{EAR}=(1.0122824)^{4.010989}-1=\) <strong>5.018%</strong>。</li>
+              <li>(d) 排序 <strong>r<sub>D</sub> 4.80% &lt; BEY 4.93% &lt; EAR 5.02%</strong>：r<sub>D</sub> 分母用<strong>更大的面值</strong>且一年只算 360 天，故最低；EAR 额外计入<strong>复利</strong>，故最高。</li>
+              <li>(d) 用途：与<strong>债券收益率</strong>比较用 <strong>BEY</strong>（同为单利、365 天口径）；与<strong>存款 APR</strong> 比较用 <strong>EAR</strong>；r<sub>D</sub> 只用于<strong>报价惯例</strong>，不能直接横向比较。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Discount = 10,000 × 0.0480 × 91/360 = <b>¥121.33</b>; price = <b>¥9,878.67</b>. (b) BEY = (121.33/9,878.67) × 365/91 = <b>4.926%</b>. (c) EAR = (1.0122824)<sup>4.010989</sup> − 1 = <b>5.018%</b>. (d) r<sub>D</sub> &lt; BEY &lt; EAR because the discount rate divides by the larger face value and uses a 360-day year, while the EAR additionally compounds. Use <b>BEY</b> to compare with bond yields and <b>EAR</b> to compare with deposit rates; r<sub>D</sub> is a quoting convention only.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 折现额 <strong>¥121.33</strong>，价格 <strong>¥9,878.67</strong>。(b) BEY = <strong>4.926%</strong>。(c) EAR = <strong>5.018%</strong>。(d) r<sub>D</sub> &lt; BEY &lt; EAR；与债券比用 BEY，与存款比用 EAR。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Repo pricing with a haircut <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A dealer uses <b>¥50 million</b> face of Treasury bills (worth ¥50 million at par) as collateral in a <b>7-day repo</b>. The repo rate is <b>2.20%</b> and the haircut is <b>2%</b>. Use a 360-day year.
+          <br>(a) How much cash does the dealer receive?
+          <br>(b) How much interest is due at maturity, and what is the repurchase price?
+          <br>(c) What is the haircut for, and what happens if the collateral's market value falls during the repo?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>回购的本质是<strong>有抵押的短期借款</strong>：现金出借方拿到的是「市值 × (1 − 折扣率)」对应的资金，利息按<strong>实际借出的现金</strong>计算。<strong>折扣率（haircut）</strong>是出借方抵御抵押品价格波动的安全垫。</p></div>
+            <ol class="steps">
+              <li>(a) 借出现金 \(=50{,}000{,}000\times(1-0.02)=\) <strong>¥49,000,000</strong>。</li>
+              <li>(b) 利息 \(=49{,}000{,}000\times0.0220\times\dfrac{7}{360}=49{,}000{,}000\times0.00042778=\) <strong>¥20,961</strong>。</li>
+              <li>(b) 回购价格 \(=49{,}000{,}000+20{,}961=\) <strong>¥49,020,961</strong>。</li>
+              <li>(c) 折扣率的作用：为出借方提供<strong>缓冲</strong>——即使抵押品价格小幅下跌，贷款仍有足额担保。</li>
+              <li>(c) 若抵押品市值下跌到接近或低于贷款额，出借方可发出 <strong>margin call</strong>，要求<strong>追加抵押品或提前还款</strong>；违约时出借方<strong>直接处置抵押品</strong>。</li>
+              <li>(c) 折扣率越高 → 出借方越安全，但借款人融入的资金越少；危机时折扣率会<strong>普遍上调</strong>，形成去杠杆压力。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Cash = 50,000,000 × (1 − 0.02) = <b>¥49,000,000</b>. (b) Interest = 49,000,000 × 0.0220 × 7/360 = <b>¥20,961</b>; repurchase price = <b>¥49,020,961</b>. (c) The haircut gives the cash lender a cushion against collateral price moves; if the collateral's value falls, the lender issues a <b>margin call</b> for additional collateral or early repayment, and can liquidate the collateral on default. Higher haircuts mean more safety for the lender but less cash for the borrower, and they rise in crises, creating deleveraging pressure.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 借出 <strong>¥49,000,000</strong>。(b) 利息 <strong>¥20,961</strong>，回购价格 <strong>¥49,020,961</strong>。(c) 折扣率是出借方的安全垫；抵押品跌价会触发<strong>追加保证金</strong>或提前还款，违约则处置抵押品。危机时折扣率上调会加剧去杠杆。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Commercial paper versus a bank loan <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A firm needs <b>¥20,000,000</b> of usable funds for <b>90 days</b>. Option 1: issue commercial paper at a <b>5.20% discount rate</b> (360-day year). Option 2: borrow from a bank at <b>5.30% simple interest</b> (365-day year) with a <b>10% compensating balance</b>.
+          <br>(a) For each option, compute the interest cost and the effective annualised cost on <b>usable</b> funds.
+          <br>(b) Which is cheaper, and by how much?
+          <br>(c) Give two reasons a firm might still choose the apparently more expensive option.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>比较融资成本必须统一到<strong>「可用资金」的年度化成本</strong>：商业票据是<strong>折现发行</strong>（先扣利息，可用资金 = 面值 − 折现额）；银行贷款有<strong>补偿性余额</strong>（借了不能全用，可用资金 = 借款额 × 90%），这会显著推高实际成本。</p></div>
+            <ol class="steps">
+              <li>(a) <strong>商业票据</strong>：折现额 \(=20{,}000{,}000\times0.0520\times\dfrac{90}{360}=20{,}000{,}000\times0.013=\) <strong>¥260,000</strong>。</li>
+              <li>(a) 可用资金 = 20,000,000 − 260,000 = <strong>¥19,740,000</strong>。</li>
+              <li>(a) 年度化成本 \(=\dfrac{260{,}000}{19{,}740{,}000}\times\dfrac{365}{90}=0.013171\times4.05556=\) <strong>5.342%</strong>。</li>
+              <li>(a) <strong>银行贷款</strong>：需借入 \(B\) 使 \(0.90B=20{,}000{,}000\) → \(B=\) <strong>¥22,222,222</strong>。</li>
+              <li>(a) 利息 \(=22{,}222{,}222\times0.0530\times\dfrac{90}{365}=22{,}222{,}222\times0.0130685=\) <strong>¥290,411</strong>。</li>
+              <li>(a) 年度化成本 \(=\dfrac{290{,}411}{20{,}000{,}000}\times\dfrac{365}{90}=0.0145206\times4.05556=\) <strong>5.889%</strong>。</li>
+              <li>(b) 商业票据更便宜：5.889% − 5.342% = <strong>约 55 bp</strong>（90 天节省约 ¥30,400）。</li>
+              <li>(c) 仍选银行的理由：① 商业票据<strong>需要滚动续发</strong>，市场紧张时可能发不出去（<strong>滚续风险</strong>）；② 银行提供<strong>授信额度与备用流动性</strong>，且金额与期限更灵活；③ 票据发行有<strong>最低规模与信息披露要求</strong>，小企业难以进入。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) CP: discount = ¥260,000, usable funds = ¥19,740,000, annualised cost = (260,000/19,740,000) × 365/90 = <b>5.342%</b>. Bank: borrow 20,000,000/0.90 = ¥22,222,222, interest = ¥290,411, annualised cost on usable funds = <b>5.889%</b>. (b) CP is cheaper by about <b>55 bp</b>. (c) A firm may still prefer the bank because CP must be <b>rolled over</b> (rollover risk if the market closes), the bank provides a committed <b>credit line and backup liquidity</b>, and CP issuance has minimum size and disclosure requirements.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 商业票据成本 <strong>5.342%</strong>，银行贷款 <strong>5.889%</strong>。(b) 票据便宜约 <strong>55 bp</strong>。(c) 仍可能选银行：票据需滚动续发存在滚续风险、银行提供授信与备用流动性、且票据发行有规模与披露门槛。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="6. 术语对照">6. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Holding-period return (HPR) 持有期回报</span><span>Discount yield 折现收益率</span>
+        <span>Single-payment yield 单利收益率</span><span>Bond equivalent yield (BEY) 债券等价收益率</span>
+        <span>Effective annual return (EAR) 实际年化收益率</span><span>360-day year 360 天年</span><span>365-day year 365 天年</span>
+        <span>Treasury bill (T-bill) 国库券</span><span>Bid / ask discount yield 买入 / 卖出折现收益率</span>
+        <span>Bid-ask spread 买卖价差</span><span>Noncompetitive bid 非竞争性投标</span><span>Competitive bid 竞争性投标</span>
+        <span>Stop-out yield 截止收益率</span><span>Single-price auction 单一价格拍卖</span>
+        <span>Federal funds sold / purchased 联邦基金拆出 / 拆入</span><span>Repo / reverse repo 回购 / 逆回购</span><span>Haircut 折减率</span>
+        <span>Commercial paper (CP) 商业票据</span><span>Negotiable CD 大额可转让存单</span>
+        <span>Banker's acceptance (BA) 银行承兑汇票</span><span>Time draft 远期汇票</span>
+        <span>Eurodollar 欧洲美元</span><span>LIBOR → SOFR 伦敦同业拆借利率 → 担保隔夜融资利率</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 全部内容已覆盖</div>
+        <p>到这里，课件 Chapter 0–5 的全部内容，加上 Homework 1 与 Midterm Practice Set 的 28 道题目，都已经整理完毕。考前建议：</p>
+        <ol>
+          <li>用每页顶部的<strong>知识地图</strong>快速过一遍主干；</li>
+          <li>重点重做标有 <span class="kbd">真题型</span> 的题目；</li>
+          <li>把「360 天 vs 365 天」「折现收益率与价格反向」「央行先买 = 投放」这三句话写在草稿纸顶部。</li>
+        </ol>
+        <p><a href="index.html">← 回到课程总览</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 10 货币市场 · 内容依据 Chapter 5a / 5b / 5c 课件与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

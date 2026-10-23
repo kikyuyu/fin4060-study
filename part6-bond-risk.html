@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 6 债券价格风险：久期与凸性 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part6" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 3.3 Advanced Bond Pricing</div>
+      <h1>Part 6 债券价格风险：久期与凸性</h1>
+      <p>本部分回答：<strong>收益率变动时，债券价格会变多少</strong>。上半部分是 <strong>Malkiel 五定理</strong>的定性（并会用 Homework 1 的数值逐条验证），下半部分是<strong>麦考利久期、修正久期与凸性</strong>的定量计算。这一部分既考简答（为什么长期债更敏感），也考计算（久期表 + 近似估计 + 精确重定价对比）。</p>
+      <div class="tags">
+        <span>Malkiel 五定理</span><span>价格敏感性</span><span>麦考利久期</span><span>修正久期</span><span>凸性</span><span>价格—收益率曲线</span><span>久期近似误差</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. Malkiel 五定理 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. Malkiel 五大定理">1. Malkiel 五大定理 <span class="badge">Malkiel's Theorems</span></h2>
+      <div class="lec-meta"><span>Chapter 3.3 · slides 4–25</span><span>HW1 Q3</span><span>Practice Q12</span></div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 五条定理（必须能默写 + 能举例）</div>
+        <ol>
+          <li><strong>债券价格与收益率反向变动</strong>。（Bond prices and yields move in opposite directions.）</li>
+          <li><strong>给定相同的收益率变动，期限越长的债券价格敏感性越大</strong>。</li>
+          <li><strong>敏感性随期限递增，但递增的速度递减</strong>（increases at a decreasing rate）。</li>
+          <li><strong>固定期限时，票息率越低的债券敏感性越大</strong>。</li>
+          <li><strong>收益率下降带来的价格涨幅，大于收益率同幅上升带来的价格跌幅</strong>（凸性造成的不对称）。</li>
+        </ol>
+      </div>
+
+      <div data-fig="bondPriceYield" data-cap="价格—收益率曲线向下倾斜且凸向原点；切线（久期线性近似）在系统上高估损失、低估收益。图片来源：Chapter 3.3" data-src="Chapter 3"></div>
+
+      <div class="box key">
+        <div class="box-title">▸ 第 5 条为什么成立？</div>
+        <p>价格—收益率关系是一条<strong>弯的（凸的）曲线</strong>，不是直线。久期只是这条曲线在某一点的<strong>切线斜率</strong>。用直线去近似弯线时：收益率<strong>上升</strong>方向，真实曲线在切线<strong>之上</strong> → 久期<strong>高估</strong>损失；收益率<strong>下降</strong>方向，真实曲线在切线<strong>之上</strong> → 久期<strong>低估</strong>收益。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Verifying Malkiel's theorems numerically (HW1 Q3)</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Assume all bonds are default-free, option-free, pay annual coupons and are priced right after a coupon date. The yield curve is flat and YTM is compounded annually. Let \(F=1{,}000\), \(y_0=6\%\), \(\Delta y=1\%\), \(C=cF\).
+            <br><b>Part A.</b> Bond A with \(c=6\%\), \(T=10\). Complete the table of prices at 5%, 6%, 7% and the percentage changes. Which theorem does this verify?
+            <br><b>Part B.</b> Hold \(c=6\%\). For \(T=5,10,\dots,30\), compute the price at 6% and at 7%, \(R_{up}\), sensitivity \(S_T=|R_{up}|\) and increment \(I_T=S_T-S_{T-5}\).
+            <br><b>Part C.</b> Hold \(T=10\). Vary \(c=0,3,6,9,12\%\). Compute \(S_c=|R_{up}|\) and rank.
+            <br><b>Part D.</b> Compare the dollar gain \(G\) from a 100 bp yield decrease with the dollar loss \(L\) from a 100 bp yield increase for Bond A (6%, 10Y) and Bond B (0%, 20Y).</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>这道题的价值在于<strong>用数字把五条定理全部验证一遍</strong>。计算量大但公式单一：\(P=\sum C/(1+y)^t+F/(1+y)^T\)。关键观察有三处：①价格随收益率上升而下降（定理 1）；②\(S_T\) 随期限上升但 \(I_T\) 递减（定理 2、3）；③\(S_c\) 随票息上升而下降（定理 4）；④\(G&gt;L\)（定理 5）。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ P(c,T,y)=\sum_{t=1}^{T}\frac{C}{(1+y)^t}+\frac{F}{(1+y)^T},\qquad R_{up}=\frac{P(c,T,y_0+\Delta y)-P(c,T,y_0)}{P(c,T,y_0)} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤与结果</span>
+            <ol class="steps">
+              <li><strong>Part A</strong>：\(P(5\%)=\$1{,}077.22\)；\(P(6\%)=\$1{,}000.00\)；\(P(7\%)=\$929.76\)。</li>
+              <li>\(R_{down}=+7.72\%\)，\(R_{up}=-7.02\%\) → 收益率升、价格跌 → <strong>定理 1</strong> 成立。</li>
+              <li><strong>Part B</strong>（\(c=6\%\)，6% 时均为平价 \$1,000）：<br>
+              \(T=5\)：\(P(7\%)=\$959.00\)，\(S=4.10\%\)；<br>
+              \(T=10\)：\$929.76，\(S=7.02\%\)，\(I=2.92\)；<br>
+              \(T=15\)：\$908.92，\(S=9.11\%\)，\(I=2.09\)；<br>
+              \(T=20\)：\$894.06，\(S=10.59\%\)，\(I=1.48\)；<br>
+              \(T=25\)：\$883.46，\(S=11.65\%\)，\(I=1.06\)；<br>
+              \(T=30\)：\$875.91，\(S=12.41\%\)，\(I=0.76\)。</li>
+              <li>\(S_T\) <strong>递增</strong>（4.10 → 12.41）→ <strong>定理 2</strong>；\(I_T\) <strong>递减</strong>（2.92 → 0.76）→ <strong>定理 3</strong>。</li>
+              <li><strong>Part C</strong>（\(T=10\)）：\(c=0\%\)：\(S=8.96\%\)；\(c=3\%\)：\(7.72\%\)；\(c=6\%\)：\(7.02\%\)；\(c=9\%\)：\(6.58\%\)；\(c=12\%\)：\(6.27\%\)。<strong>票息越低越敏感 → 定理 4</strong>，排序为 0% &gt; 3% &gt; 6% &gt; 9% &gt; 12%。</li>
+              <li><strong>Part D</strong>：Bond A：\(G=1{,}077.22-1{,}000=\$77.22\)，\(L=1{,}000-929.76=\$70.24\)，\(G-L=\$6.98&gt;0\)。</li>
+              <li>Bond B（\(c=0\%,T=20\)）：\(P(5\%)=\$376.89\)，\(P(6\%)=\$311.80\)，\(P(7\%)=\$258.42\)；\(G=\$65.09\)，\(L=\$53.38\)，\(G-L=\$11.71&gt;0\)。</li>
+              <li>不对称性来源：<strong>凸性（convexity）</strong>；Bond B 的不对称更大，因为<strong>期限更长且为零息债</strong>（凸性更大）。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p><b>Part A.</b> Prices 1,077.22 / 1,000.00 / 929.76; changes +7.72% and −7.02% → <b>Theorem 1</b>.
+                <br><b>Part B.</b> \(S_T\) = 4.10, 7.02, 9.11, 10.59, 11.65, 12.41 for T = 5…30; increments 2.92, 2.09, 1.48, 1.06, 0.76. Sensitivity rises with maturity but at a decreasing rate → <b>Theorems 2 and 3</b>.
+                <br><b>Part C.</b> \(S_c\) = 8.96, 7.72, 7.02, 6.58, 6.27 for c = 0…12%. Lower coupons are more sensitive → <b>Theorem 4</b>.
+                <br><b>Part D.</b> Bond A: \(G=77.22&gt;L=70.24\). Bond B: \(G=65.09&gt;L=53.38\). The asymmetry is <b>convexity</b>, and it is larger for Bond B because of its longer maturity and zero coupon.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>A：\$1,077.22 / \$1,000.00 / \$929.76 → 定理 1；B：\(S_T\) 递增但增量递减 → 定理 2、3；C：票息越低 \(S_c\) 越大 → 定理 4；D：两个债都 \(G&gt;L\) → 定理 5，Bond B 的不对称更大（期限长 + 零息 → 凸性大）。
+                <br>记忆法：<strong>期限长、票息低 → 久期大、凸性大 → 更敏感、不对称更明显。</strong></p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div data-fig="durationSensitivity" data-cap="上：久期随期限递增但增量递减；下：期限固定时票息越高久期越短。图片来源：Chapter 3.3" data-src="Chapter 3"></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 久期 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 麦考利久期与修正久期">2. 麦考利久期与修正久期 <span class="badge">Duration</span></h2>
+      <div class="lec-meta"><span>Chapter 3.3 · slides 27–59</span><span>Practice Q13</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Macaulay duration</b>: the <b>weighted-average time</b> until a bond's cash flows are received, where the weights are the present values of each cash flow as a fraction of price. It is measured in years.</span><br>
+        <span class="en"><b>Modified duration</b>: \(D_{mac}/(1+y/m)\). It measures the <b>percentage price change per unit change in yield</b>.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">久期</span>
+        \[ D_{mac}=\sum_{t=1}^{T} t\cdot\frac{PV(CF_t)}{P} \qquad D_{mod}=\frac{D_{mac}}{1+y/m} \]
+        \[ \frac{\Delta P}{P}\approx -D_{mod}\,\Delta y \qquad \Delta P\approx -D_{mod}\,\Delta y\,P \]
+        <div class="fnote">\(m\) = 每年付息次数（年付息时 \(m=1\)）。\(\Delta y\) 用<strong>小数</strong>（如 50 bp = 0.005）。负号表示价格与收益率反向。</div>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 三个决定久期大小的变量</div>
+        <ul>
+          <li><strong>期限 ↑</strong> → 久期 ↑（但增速递减）；</li>
+          <li><strong>票息 ↑</strong> → 久期 ↓（早期现金流的权重变大）；</li>
+          <li><strong>收益率 ↑</strong> → 久期 ↓（远期现金流的现值权重变小）。</li>
+        </ul>
+        <p class="muted">零息债的麦考利久期<strong>恰好等于其期限</strong>；付息债的久期<strong>严格小于</strong>期限。因此「期限相同的债券利率风险相同」是错误的——必须用久期描述。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Computing and applying duration</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A two-year bond has a face value of $1,000 and pays an annual coupon of 5%. Its YTM is 5% with annual compounding. The next coupon is one year away.
+            <br>(a) Calculate its price. Construct a table showing each payment time, cash flow, present value and PV weight.
+            <br>(b) Use the weights to calculate Macaulay duration. Explain why it is less than two years.
+            <br>(c) Calculate modified duration and use it to estimate the percentage and dollar price changes if the YTM rises by 0.50 percentage points.
+            <br>(d) Reprice the bond exactly at 5.5% and compare the actual change with the duration estimate.
+            <br>(e) State the Macaulay duration of a two-year zero-coupon bond. Explain why maturity alone cannot describe the interest-rate sensitivity of all bonds.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) YTM = 票息率 = 5% → 债券<strong>平价</strong>交易，价格 = \$1,000（可以直接得出，但仍建议列出折现过程）。
+            <br>(b) 权重就是「每期现金流现值占价格的比重」。因为第 1 年的票息提前收回了一部分钱，平均回收时间必然<strong>短于 2 年</strong>。
+            <br>(d) 精确重定价与久期估计的差额，就是<strong>凸性修正</strong>的大小。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ P=\frac{50}{1.05}+\frac{1{,}050}{1.05^2} \qquad D_{mac}=1\cdot w_1+2\cdot w_2 \qquad D_{mod}=\frac{D_{mac}}{1+y} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) \(PV_1=50/1.05=47.619048\)；\(PV_2=1{,}050/1.05^2=952.380952\)；\(P=\mathbf{\$1{,}000.00}\)。</li>
+              <li>(a) 权重：\(w_1=0.04761905\)，\(w_2=0.95238095\)（合计 1）。</li>
+              <li>(b) \(D_{mac}=1(0.04761905)+2(0.95238095)=1.952381\) 年 <strong>≈ 1.95 年</strong>。</li>
+              <li>(b) 小于 2 年的原因：第 1 年的 \$50 票息<strong>提前</strong>收回，拉低了平均回收时间。</li>
+              <li>(c) \(D_{mod}=1.952381/1.05=1.859410\)。</li>
+              <li>(c) 估计百分比变化 \(=-1.859410\times0.005=-0.929705\%\approx\mathbf{-0.93\%}\)。</li>
+              <li>(c) 估计金额变化 \(=-0.929705\%\times1{,}000=\mathbf{-\$9.30}\) → 新价格约 \$990.70。</li>
+              <li>(d) 精确：\(P=50/1.055+1{,}050/1.055^2=47.3934+943.3835=\mathbf{\$990.77}\)。</li>
+              <li>(d) 实际变化 = \(-\$9.23\)（\(-0.923160\%\)）；久期估计高估损失约 <strong>\$0.07</strong>。</li>
+              <li>(e) 两年零息债的麦考利久期 = <strong>2 年</strong>；因为期限相同的债券可能有不同的票息时点与收益率，久期与敏感性也就不同 → <strong>期限不能单独描述利率敏感性</strong>。</li>
+            </ol>
+            <div class="tablewrap">
+            <table class="data">
+              <thead><tr><th>Year</th><th>Cash flow</th><th>PV at 5%</th><th>PV weight</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>\$50.00</td><td>\$47.619048</td><td>0.04761905</td></tr>
+                <tr><td>2</td><td>\$1,050.00</td><td>\$952.380952</td><td>0.95238095</td></tr>
+                <tr><td><strong>Total</strong></td><td>\$1,100.00</td><td><strong>\$1,000.00</strong></td><td><strong>1.00000000</strong></td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \(P=50/1.05+1{,}050/1.05^2=\mathbf{\$1{,}000.00}\); weights 0.04761905 and 0.95238095.
+                <br>(b) \(D_{mac}=1(0.04761905)+2(0.95238095)=\mathbf{1.952381}\) years — below two because the first coupon arrives before maturity.
+                <br>(c) \(D_{mod}=1.952381/1.05=\mathbf{1.859410}\); estimated change \(=-1.859410\times0.005=\mathbf{-0.93\%}\), or <b>−\$9.30</b>; estimated new price \$990.70.
+                <br>(d) Exact: \(50/1.055+1{,}050/1.055^2=\mathbf{\$990.77}\); actual change <b>−\$9.23</b> (−0.923160%). The approximation overstates the loss by about \$0.07.
+                <br>(e) A two-year zero has Macaulay duration <b>2 years</b>. Bonds with the same maturity can differ in coupon timing and yield, hence in duration and sensitivity.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 价格 <strong>\$1,000.00</strong>；(b) 麦考利久期 <strong>1.952 年</strong>（小于 2 年）；(c) 修正久期 <strong>1.859</strong>，估计变化 <strong>−0.93% / −\$9.30</strong>；(d) 精确价 <strong>\$990.77</strong>，实际变化 −\$9.23，久期<strong>高估损失约 \$0.07</strong>；(e) 两年零息债久期 = <strong>2 年</strong>。
+                <br>核心考点：久期是<strong>局部线性近似</strong>——在收益率上升方向它<strong>高估</strong>损失，在下降方向<strong>低估</strong>收益。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div data-fig="durationApprox" data-cap="久期近似（切线）与真实价格曲线的差距。Δy = 50 bp 时误差仅约 $0.07；Δy 越大误差越大。图片来源：Chapter 3.3" data-src="Chapter 3"></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 凸性 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 凸性与近似误差">3. 凸性与久期近似的误差 <span class="badge">Convexity</span></h2>
+      <div class="lec-meta"><span>Chapter 3.3 · slides 57–63</span><span>Practice Q12(c)(e)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Convexity</b> measures the <b>curvature</b> of the price-yield relationship. It captures the part of the price change that duration (a straight line) misses, and it is the source of the gain-versus-loss asymmetry.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">凸性修正</span>
+        \[ \frac{\Delta P}{P}\approx -D_{mod}\,\Delta y+\frac{1}{2}\,\text{Convexity}\,(\Delta y)^2 \]
+        <div class="fnote">第二项<strong>恒为正</strong>（对普通无期权债券），无论 \(\Delta y\) 是正是负。这就从公式上证成了 Malkiel 第 5 条：收益率下降时收益被<strong>额外放大</strong>，上升时损失被<strong>部分抵消</strong>。课件不要求手算凸性，只要求<strong>定性理解</strong>。</div>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 什么时候久期近似会失准？</div>
+        <p>久期是<strong>局部（local）线性近似</strong>：\(\Delta y\) 越小越准。<strong>收益率变动越大，曲率越重要</strong>，久期与真实值的差距越大。定性结论必须记住：</p>
+        <ul>
+          <li>收益率<strong>上升</strong>时，久期<strong>高估</strong>损失（真实损失更小）；</li>
+          <li>收益率<strong>下降</strong>时，久期<strong>低估</strong>收益（真实收益更大）。</li>
+        </ul>
+        <p class="muted">答题句式：<em>Duration is a local linear approximation to a curved price-yield relationship. For a positively convex option-free bond, duration alone overstates the loss after a yield rise and understates the gain after a yield fall.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> Sensitivity comparisons without calculating</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Consider default-free, option-free bonds; coupon bonds pay annually. Compare percentage price changes for the same small change in yield.
+            <br>(a) Compare a five-year zero-coupon bond with a five-year 6% coupon bond when both initially yield 5%. Which is more sensitive, and why?
+            <br>(b) Compare three-year and eight-year zero-coupon bonds at the same yield.
+            <br>(c) A five-year 4% coupon bond currently yields 4%. Sketch its price-yield curve and explain why equal yield increases and decreases do not generate equal price losses and gains.
+            <br>(d) A premium coupon bond's yield stays constant as it approaches maturity. Explain pull to par, comparing prices just after coupon payments.
+            <br>(e) Explain why a duration-only approximation becomes less accurate for larger yield changes.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a)(b) 都是「久期大者更敏感」的判断：零息债久期 = 期限 > 付息债久期；期限长者久期更大。
+            <br>(c) 起点是平价（\(y=c=4\%\)），曲线向下倾斜且凸 → 同幅的收益下降带来的涨幅大于收益上升带来的跌幅。
+            <br>(d) 拉动至面值：溢价随到期临近收敛为 0。
+            <br>(e) 曲率效应。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) <strong>五年零息债更敏感</strong>：它的全部现金流都在到期时收到，麦考利久期 = 5 年；而付息债早期就有现金回流，久期 &lt; 5 年。</li>
+              <li>(b) <strong>八年零息债更敏感</strong>：唯一的一笔现金流被折现更多期，久期 8 &gt; 3。</li>
+              <li>(c) 曲线<strong>向下倾斜且凸向原点</strong>，过 (4%, \$1,000) 的平价点；同幅变动时收益下降的涨幅更大。</li>
+              <li>(c) 原因：曲线是<strong>弯的</strong>，不是直线。</li>
+              <li>(d) 收益率与承诺现金流不变时，溢价幅度随到期临近<strong>递减至 0</strong>；比较付息后的价格可剔除票息累积的干扰。</li>
+              <li>(e) 久期是局部线性近似；\(\Delta y\) 越大，被忽略的<strong>曲率项</strong>越重要，误差越大。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) The five-year <b>zero</b> is more sensitive: all its cash arrives at maturity, whereas the coupon bond returns cash earlier and has a lower duration at the same yield.
+                <br>(b) The eight-year zero is more sensitive: its only payment is discounted for more periods.
+                <br>(c) The curve slopes downward and is <b>convex</b>, passing through par at 4%; for equal yield changes the gain when yields fall exceeds the loss when yields rise.
+                <br>(d) With constant yield and unchanged promised cash flows, the premium above par declines toward zero as maturity approaches; comparing prices just after coupon payments removes the within-coupon accumulation effect.
+                <br>(e) Duration is a local linear approximation to a curved relationship; large changes make curvature more important.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>零息债更敏感</strong>（久期 = 5 年）；(b) <strong>八年零息债更敏感</strong>；(c) 曲线向下倾斜且凸，收益下降的涨幅 &gt; 收益上升的跌幅；(d) 溢价随到期收敛至 0（pull to par）；(e) 变动越大，曲率误差越大。
+                <br>答题提醒：(d) 中「票息本身仍是投资者总回报的一部分」这句话常被遗漏。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="4. 练习（真题型）">4. 练习 <span class="badge">Practice &amp; HW1 · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q12、Q13）与 <strong>Homework 1 第 3 题</strong>。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Malkiel theorems: qualitative <span class="kbd">真题型</span> <span class="kbd">Practice Q12</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">(a) Five-year zero vs five-year 6% coupon, both at 5% — which is more sensitive? (b) Three-year vs eight-year zero at the same yield? (c) A five-year 4% coupon yielding 4%: sketch the price-yield curve and explain the gain/loss asymmetry. (d) Explain pull to par for a premium bond. (e) Why does a duration-only approximation lose accuracy for larger yield changes?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 3。</p></div>
+            <ol class="steps">
+              <li>(a) 五年零息债（久期 = 5 年）更敏感。</li>
+              <li>(b) 八年零息债更敏感。</li>
+              <li>(c) 向下倾斜且凸，过 (4%, \$1,000)；涨 &gt; 跌。</li>
+              <li>(d) 溢价收敛至 0。</li>
+              <li>(e) 曲率效应随 \(\Delta y\) 增大而放大。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) The <b>zero</b>. (b) The <b>eight-year</b> zero. (c) Downward-sloping and <b>convex</b>; gains exceed equal-sized losses. (d) The premium declines toward zero as maturity approaches. (e) Duration is a <b>local linear</b> approximation; curvature matters more for large moves.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 零息债；(b) 八年零息；(c) 凸性造成不对称；(d) 拉动至面值；(e) 局部线性近似的局限。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Duration table and repricing <span class="kbd">真题型</span> <span class="kbd">Practice Q13</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Two-year bond, F = $1,000, 5% annual coupon, YTM 5%, annual compounding, next coupon in one year.
+          <br>(a) Price and PV-weight table. (b) Macaulay duration — why below two years? (c) Modified duration; estimate the % and $ change for a 50 bp rise. (d) Reprice at 5.5% and compare. (e) Macaulay duration of a two-year zero; why can't maturity alone describe sensitivity?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。</p></div>
+            <ol class="steps">
+              <li>(a) \(P=\$1{,}000.00\)；权重 0.04761905 / 0.95238095。</li>
+              <li>(b) \(D_{mac}=1.952381\) 年。</li>
+              <li>(c) \(D_{mod}=1.859410\)；估计 −0.93% / −\$9.30。</li>
+              <li>(d) 精确 \$990.77，实际 −\$9.23；久期高估损失约 \$0.07。</li>
+              <li>(e) 两年零息债久期 = 2 年；同期限债券的票息与收益率可以不同 → 期限不足以描述敏感性。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$1,000.00</b>; weights 0.04761905 / 0.95238095. (b) <b>1.952381 years</b>. (c) \(D_{mod}=1.859410\); <b>−0.93%</b>, <b>−\$9.30</b>. (d) Exact <b>\$990.77</b>, actual <b>−\$9.23</b>; duration overstates the loss by ~\$0.07. (e) <b>2 years</b>; coupon timing and yield also matter.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$1,000</strong>；(b) <strong>1.952 年</strong>；(c) <strong>−0.93% / −\$9.30</strong>；(d) <strong>\$990.77</strong>，误差 \$0.07；(e) <strong>2 年</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Dollar change with a different bond <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A five-year bond with F = $1,000 and an 8% annual coupon is priced to yield 6% (annual compounding). Its modified duration is 4.24 and its Macaulay duration is 4.49 years.
+          <br>(a) Compute the current price. (b) Estimate the price change for a 25 bp rise in yield. (c) Estimate the change for a 150 bp rise, and say whether the estimate is more or less reliable than in (b).</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>价格用年金公式；金额变化 = \(-D_{mod}\times\Delta y\times P\)。(c) 的估计更不可靠，因为凸性误差随 \(\Delta y\) 非线性放大。</p></div>
+            <ol class="steps">
+              <li>(a) 年金现值因子 \(=\dfrac{1-(1.06)^{-5}}{0.06}=4.212364\)；票息现值 \(=80\times4.212364=336.99\)。</li>
+              <li>本金现值 \(=1{,}000/1.06^5=747.258\) → \(P=\mathbf{\$1{,}084.25}\)（溢价，因为 \(c=8\%&gt;y=6\%\)）。</li>
+              <li>(b) \(\Delta P\approx-4.24\times0.0025\times1{,}084.25=-\mathbf{\$11.49}\)（约 −1.06%）。</li>
+              <li>(c) \(\Delta P\approx-4.24\times0.015\times1{,}084.25=-\mathbf{\$68.96}\)（约 −6.36%）。</li>
+              <li>可靠性：25 bp 的估计更可靠；150 bp 时<strong>曲率（凸性）误差显著</strong>，久期会<strong>高估</strong>损失，必须用凸性修正或直接重定价。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) \(P=80\times4.212364+1{,}000/1.06^5=\mathbf{\$1{,}084.25}\). (b) \(\Delta P\approx-4.24(0.0025)(1{,}084.25)=\mathbf{-\$11.49}\). (c) \(\Delta P\approx\mathbf{-\$68.96}\); this estimate is <b>less reliable</b> — the ignored convexity term grows with \((\Delta y)^2\) and duration alone overstates the loss.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$1,084.25</strong>；(b) 约 <strong>−\$11.49</strong>；(c) 约 <strong>−\$68.96</strong>，但可靠性明显下降——变动越大，凸性误差越大，久期会高估损失。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Computing duration from first principles <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A 10-year bond pays a <b>6% annual coupon</b> on ¥100 face; the YTM is <b>8%</b>.
+          <br>(a) Compute the price.
+          <br>(b) Compute the Macaulay duration and the modified duration.
+          <br>(c) Use modified duration to estimate the price change if the YTM rises by 100 bp, then compute the <b>exact</b> new price at 9%. How large is the error?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>麦考利久期是<strong>以现金流现值为权重的平均收款时间</strong>；修正久期把它换算成「收益率变动 1% 时价格的百分比变动」。公式：\(D_{\text{mac}}=\dfrac{\sum t\cdot PV(CF_t)}{P}\)，\(D_{\text{mod}}=\dfrac{D_{\text{mac}}}{1+y}\)。</p></div>
+            <ol class="steps">
+              <li>(a) 年金因子 \((1-1.08^{-10})/0.08=(1-0.463194)/0.08=6.710081\)。</li>
+              <li>(a) \(P=6\times6.710081+100\times0.463194=40.2605+46.3194=\) <strong>¥86.58</strong>。</li>
+              <li>(b) 计算 \(\sum t\cdot PV(CF_t)\)：票息部分合计 <strong>168.330</strong>，最后一期 (6+100) 的现值 49.098 乘以 10 = <strong>490.985</strong>。</li>
+              <li>(b) 合计 = 168.330 + 490.985 = <strong>659.315</strong>。</li>
+              <li>(b) \(D_{\text{mac}}=659.315\div86.5798=\) <strong>7.615 年</strong>；\(D_{\text{mod}}=7.615\div1.08=\) <strong>7.051</strong>。</li>
+              <li>(c) 久期估计：\(\Delta P\approx-7.051\times0.01\times86.5798=\) <strong>−¥6.10</strong>（−7.05%），估计价 ≈ ¥80.47。</li>
+              <li>(c) 精确：y=9% 时 \(P=6\times6.417655+100\times0.422411=38.5059+42.2411=\) <strong>¥80.75</strong>，实际变动 <strong>−¥5.83</strong>（−6.74%）。</li>
+              <li>(c) 误差 ≈ <strong>¥0.27（0.31%）</strong>——久期<strong>高估了损失</strong>，因为它忽略凸性。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) P = 6 × 6.710081 + 100 × 0.463194 = <b>¥86.58</b>. (b) Σ t·PV(CF) = 659.315, so D<sub>mac</sub> = 659.315/86.5798 = <b>7.615 years</b> and D<sub>mod</sub> = 7.615/1.08 = <b>7.051</b>. (c) Duration estimate: ΔP ≈ −7.051 × 0.01 × 86.5798 = <b>−¥6.10</b>. Exact at 9%: <b>¥80.75</b>, a change of <b>−¥5.83</b>. The error is about <b>¥0.27</b>: duration overstates the loss because it ignores convexity.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>¥86.58</strong>。(b) 麦考利久期 <strong>7.615 年</strong>，修正久期 <strong>7.051</strong>。(c) 久期估计 −¥6.10，精确值 −¥5.83（新价 <strong>¥80.75</strong>），误差约 <strong>¥0.27</strong>——久期高估损失，需凸性修正。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Duration matching: immunising a pension liability <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A pension fund must pay <b>¥10,000,000 in 8 years</b>. The yield curve is flat at <b>6.50%</b>. The fund can buy 5-year zero-coupon bonds and 15-year zero-coupon bonds.
+          <br>(a) Compute the present value of the liability.
+          <br>(b) Find the portfolio weights that make the <b>asset duration equal to 8 years</b>, and the amount to invest in each bond.
+          <br>(c) Why is duration matching alone <b>not sufficient</b> for full immunisation?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>零息债券的麦考利久期<strong>就等于它的期限</strong>，所以组合久期是两档期限的<strong>加权平均</strong>：\(w\times5+(1-w)\times15=8\)。这就是<strong>免疫（immunisation）</strong>的第一条件。</p></div>
+            <ol class="steps">
+              <li>(a) \(PV=10{,}000{,}000\div(1.065)^{8}=10{,}000{,}000\div1.654995=\) <strong>¥6,042,312</strong>。</li>
+              <li>(b) 令 5 年期权重为 w：\(5w+15(1-w)=8\) → \(15-10w=8\) → \(w=\) <strong>70%</strong>；15 年期 <strong>30%</strong>。</li>
+              <li>(b) 5 年期投入 = 0.70 × 6,042,312 = <strong>¥4,229,618</strong>。</li>
+              <li>(b) 15 年期投入 = 0.30 × 6,042,312 = <strong>¥1,812,694</strong>。</li>
+              <li>(b) 校验：0.70 × 5 + 0.30 × 15 = 3.5 + 4.5 = <strong>8 年</strong> ✓。</li>
+              <li>(c) 久期匹配只对<strong>微小平行移动</strong>有效；还需<strong>资产凸性 ≥ 负债凸性</strong>，且必须<strong>定期再平衡</strong>（久期随时间与利率变化而漂移）。</li>
+              <li>(c) 收益率曲线<strong>非平行移动</strong>（陡峭化/平坦化）也会使久期匹配失效。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) PV = 10,000,000/1.065<sup>8</sup> = <b>¥6,042,312</b>. (b) 5w + 15(1 − w) = 8 → w = <b>70%</b> in the 5-year zero (<b>¥4,229,618</b>) and <b>30%</b> in the 15-year zero (<b>¥1,812,694</b>); check 0.7 × 5 + 0.3 × 15 = 8. (c) Duration matching protects only against small <i>parallel</i> shifts; you also need asset convexity ≥ liability convexity, periodic <b>rebalancing</b> (duration drifts with time and rates), and the assumption fails under non-parallel curve moves.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 负债现值 <strong>¥6,042,312</strong>。(b) 5 年期零息 <strong>70%</strong>（¥4,229,618），15 年期零息 <strong>30%</strong>（¥1,812,694），组合久期 = 8 年 ✓。(c) 还需资产凸性不低于负债凸性、定期再平衡，且非平行移动会使久期匹配失效。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Adding the convexity correction <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Use the same bond as the previous question: 10-year, 6% annual coupon, YTM 8%, price ¥86.58, modified duration 7.051.
+          <br>(a) Compute the <b>convexity</b> of the bond.
+          <br>(b) Estimate the price change for a +100 bp shift using duration <b>plus</b> convexity.
+          <br>(c) Compare with the exact change (−¥5.83) and state the remaining error. What does convexity measure in words?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>凸性衡量的是<strong>价格—收益率曲线的弯曲程度</strong>（久期本身随收益率变化的速率）。公式：\(C=\dfrac{\sum t(t+1)\,PV(CF_t)}{P(1+y)^2}\)，价格修正项 \(\tfrac12 C P (\Delta y)^2\) 恒为<strong>正</strong>。</p></div>
+            <ol class="steps">
+              <li>(a) \(\sum t(t+1)PV(CF_t)\)：票息部分合计 <strong>1,168.225</strong>，末期 (6+100) 贡献 110 × 49.098 = <strong>5,400.831</strong>。</li>
+              <li>(a) 合计 = <strong>6,569.062</strong>。</li>
+              <li>(a) \(C=6{,}569.056\div\left[86.5798\times(1.08)^{2}\right]=6{,}569.056\div100.9848=\) <strong>65.05</strong>。</li>
+              <li>(b) 久期项 = −7.051 × 86.5798 × 0.01 = <strong>−6.105</strong>。</li>
+              <li>(b) 凸性项 = ½ × 65.05 × 86.5798 × (0.01)<sup>2</sup> = <strong>+0.282</strong>。</li>
+              <li>(b) 合计 \(\Delta P\approx-6.105+0.282=\) <strong>−¥5.82</strong>。</li>
+              <li>(c) 精确值 −¥5.83，误差仅约 <strong>¥0.01</strong>（久期单独使用时误差 ¥0.27）→ 凸性把精度提升约 30 倍。</li>
+              <li>(c) 含义：凸性越大，<strong>收益率下降时涨得更多、上升时跌得更少</strong>——对债券持有人总是好事，所以投资者愿意为高凸性支付更高价格。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Σ t(t+1)·PV(CF) = 6,569.062; C = 6,569.062/(86.5798 × 1.08<sup>2</sup>) = <b>65.05</b>. (b) ΔP ≈ −7.051 × 86.5798 × 0.01 + ½ × 65.05 × 86.5798 × 0.01<sup>2</sup> = −6.105 + 0.282 = <b>−¥5.82</b>. (c) The exact change is −¥5.83, so the residual error is only about <b>¥0.01</b> versus ¥0.27 for duration alone. Convexity measures the <b>curvature</b> of the price-yield curve: higher convexity means prices rise more when yields fall and fall less when yields rise.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 凸性 <strong>65.05</strong>。(b) 含凸性修正的估计 <strong>−¥5.82</strong>。(c) 与精确值 −¥5.83 相差仅约 <strong>¥0.01</strong>；凸性衡量价格—收益率曲线的弯曲度，凸性越大越有利于持有人。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="5. 术语对照">5. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Price sensitivity 价格敏感性</span><span>Malkiel's theorems 马尔基尔定理</span><span>Price-yield curve 价格—收益率曲线</span>
+        <span>Macaulay duration 麦考利久期</span><span>Modified duration 修正久期</span><span>Convexity 凸性</span>
+        <span>PV weight 现值权重</span><span>Local linear approximation 局部线性近似</span>
+        <span>Pull to par 拉动至面值</span><span>Option-free bond 无期权债券</span><span>Basis point (bp) 基点</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>债券的折现逻辑讲完了。Part 7 把同样的思路用到<strong>股票</strong>：相对估值（P/E）与绝对估值（DDM），并用 CAPM 与三因子模型确定折现率。</p>
+        <p><a href="part7-equity-valuation.html">前往 Part 7 股票估值 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 6 债券价格风险：久期与凸性 · 内容依据 Chapter 3.3 课件、Homework 1 与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

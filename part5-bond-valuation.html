@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 5 债券估值 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part5" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 3.1 Interest Rates and Security Valuation: Bond Pricing</div>
+      <h1>Part 5 债券估值</h1>
+      <p>本部分把 Part 3–4 得到的折现率代入债券：<strong>价格就是未来现金流按到期收益率折现的和</strong>。核心考点有三个——三种收益率（票息率 / 要求回报率 / 实现回报率）的区分、溢价折价平价的判断、以及付息频率改变时如何调整周期利率与期数。这些是考试计算题的<strong>最密集区域</strong>。</p>
+      <div class="tags">
+        <span>债券定价</span><span>到期收益率 YTM</span><span>溢价 / 折价 / 平价</span><span>半年付息</span><span>零息债</span><span>浮息债 FRN</span><span>拉动至面值</span><span>持有期回报</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 三种收益率 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 三种收益率">1. 三种收益率必须分清 <span class="badge">Three Rates</span></h2>
+      <div class="lec-meta"><span>Chapter 3.1 · slides 3–20</span><span>Practice Q10(e)</span></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:150px;">名称</th><th>英文</th><th>由什么决定</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td><strong>票息率</strong></td><td>Coupon rate</td><td><strong>合同约定</strong>：票息 ÷ 面值</td><td>决定每期付多少钱</td></tr>
+          <tr><td><strong>要求回报率</strong></td><td>Required return</td><td>与该证券<strong>风险匹配</strong>的折现率</td><td>用于计算公允价值</td></tr>
+          <tr><td><strong>到期收益率</strong></td><td>Yield to maturity (YTM)</td><td>由<strong>市场价格</strong>反解出的内部收益率</td><td>衡量按市价买入能拿到多少</td></tr>
+          <tr><td><strong>实现持有期回报</strong></td><td>Realized HPR</td><td><strong>实际</strong>买入价、收到的票息、实际卖出价</td><td>衡量真正赚了多少</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 核心结论：这三者不需要相等</div>
+        <p><strong>票息率</strong>是合同参数，发行时就固定；<strong>要求回报率</strong>随市场与风险变化；<strong>实现回报率</strong>取决于你实际的买卖时点与价格。只有在极特殊的情形下（按公允价值买入并持有到期、无违约、票息按 YTM 再投资），三者才会一致。
+        <br>答题句式：<em>The coupon rate determines the contractual payment; the required return is the discount rate appropriate for risk; the realized return uses the actual purchase price, coupons and sale proceeds, so it can differ from both.</em></p>
+      </div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition：到期收益率</div>
+        <p><span class="en"><b>Yield to maturity (YTM)</b>: the single discount rate that equates the bond's <b>current market price</b> to the present value of all its remaining promised cash flows (coupons plus face value at redemption).</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">债券定价通式</span>
+        \[ P=\sum_{t=1}^{T}\frac{CF_t}{(1+y)^t}=\sum_{t=1}^{T}\frac{C}{(1+y)^t}+\frac{F}{(1+y)^T} \]
+        <div class="fnote">\(P\) = 价格；\(C\) = 每期票息（\(C=c\times F\)，\(c\) 为票息率）；\(F\) = 面值 face value；\(y\) = 到期收益率 / 要求回报率；\(T\) = 剩余期数。</div>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 三个最常见的计算错误</div>
+        <ol>
+          <li><strong>折现用错利率</strong>：用票息率折现是错的，必须用<strong>要求回报率 / YTM</strong>。</li>
+          <li><strong>末期现金流漏掉本金</strong>：最后一期是 \(C+F\)（如 \$1,060），不是只有票息。</li>
+          <li><strong>判断低估/高估时拿面值当基准</strong>：比较对象是<strong>你算出的公允价值</strong>，不是面值。</li>
+        </ol>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 溢价折价平价 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 溢价、折价与平价">2. 溢价、折价与平价 <span class="badge">Premium / Discount / Par</span></h2>
+      <div class="lec-meta"><span>Chapter 3.1 · slides 21–25, 29–46</span><span>Practice Q10, Q11(c)</span></div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 判定规则（一条就够）</div>
+        <ul>
+          <li>\(y &lt; c\)（收益率低于票息率）→ 价格 <strong>&gt; 面值</strong> → <strong>溢价 premium</strong>；</li>
+          <li>\(y = c\) → 价格 <strong>= 面值</strong> → <strong>平价 par</strong>；</li>
+          <li>\(y &gt; c\) → 价格 <strong>&lt; 面值</strong> → <strong>折价 discount</strong>。</li>
+        </ul>
+        <p class="muted">直觉：票息率高于市场要求时，投资者愿意多付一点钱来拿到这份「高于市场」的票息，于是价格被推到面值之上。</p>
+      </div>
+
+      <div data-fig="pullToPar" data-cap="收益率保持不变时，溢价债与折价债的价格随到期临近收敛至面值（pull to par）。图片来源：Chapter 3.1" data-src="Chapter 3"></div>
+
+      <div class="box note">
+        <div class="box-title">▸ 拉动至面值 Pull to par</div>
+        <p><strong>收益率不变且承诺现金流不变</strong>时，随着到期日临近，溢价幅度会<strong>逐渐收敛到 0</strong>（折价同理向上收敛）。比较「每次付息后的价格」可以剔除票息累积的干扰，看到纯粹的收敛趋势。注意：票息本身仍然是投资者总回报的一部分。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Bond value, under/overpricing, and realized HPR</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A default-free bond has a face value of $1,000, pays a 6% annual coupon and matures in three years. The next coupon is exactly one year away. The required annual return is 5%.
+            <br>(a) List the bond's cash flows and calculate its fair value.
+            <br>(b) The market price is $1,015. Compare it with your valuation and explain whether the bond is underpriced or overpriced.
+            <br>(c) Without solving for the yield numerically, explain whether the yield implied by $1,015 is above or below 5%.
+            <br>(d) An investor pays $1,015 and sells the bond for $990 immediately after receiving the first $60 coupon. Calculate the one-year realized holding-period return.
+            <br>(e) Explain why the coupon rate, required return and realized holding-period return need not be equal.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 现金流：第 1、2 年 \$60，第 3 年 \$1,060。按 5% 折现求和。
+            <br>(b) 市场价 \$1,015 低于公允价值 → <strong>被低估</strong>（按此价买入能获得高于 5% 的回报）。
+            <br>(c) 用「价格与收益率反向」定性判断，不必解方程。
+            <br>(d) 实现回报 =（收到的票息 + 卖出价 − 买入价）÷ 买入价。注意分子要<strong>包含票息</strong>，且分母是<strong>买入价</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ P=\frac{60}{1.05}+\frac{60}{1.05^2}+\frac{1{,}060}{1.05^3} \qquad HPR=\frac{\text{Coupon}+P_{sale}-P_{buy}}{P_{buy}} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 现金流：\(CF_1=60\)，\(CF_2=60\)，\(CF_3=60+1{,}000=1{,}060\)。</li>
+              <li>(a) 折现：\(60/1.05=57.14\)；\(60/1.05^2=54.42\)；\(1{,}060/1.05^3=915.67\)。</li>
+              <li>(a) 求和：\(P=\mathbf{\$1{,}027.23}\)。</li>
+              <li>(b) \(1{,}027.23-1{,}015.00=12.23\) → 市场价更低 → <strong>被低估 \$12.23</strong>。</li>
+              <li>(c) 现金流为正时价格与收益率反向；\(\$1{,}015&lt;\$1{,}027.23\) → 隐含收益率 <strong>高于 5%</strong>。</li>
+              <li>(d) \(HPR=(60+990-1{,}015)/1{,}015=35/1{,}015=3.4483\%\approx\mathbf{3.45\%}\)。</li>
+              <li>(d) 拆解：票息贡献 \(60/1{,}015=5.91\%\)，资本损失 \((990-1{,}015)/1{,}015=-2.46\%\)，合计 3.45%。</li>
+              <li>(e) 票息率由合同定；要求回报率由风险定；实现回报率由实际买卖价与票息定 → 三者不必相等。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \(CF_1=CF_2=\$60\), \(CF_3=\$1{,}060\); \(P=60/1.05+60/1.05^2+1{,}060/1.05^3=\mathbf{\$1{,}027.23}\).
+                <br>(b) Underpriced by <b>\$12.23</b> relative to the stated valuation.
+                <br>(c) The price is below the value at 5%, and price falls as yield rises, so the implied yield is <b>above 5%</b>.
+                <br>(d) \(HPR=(60+990-1{,}015)/1{,}015=\mathbf{3.45\%}\), including coupon income and the capital loss.
+                <br>(e) The coupon rate sets the contractual payment; the required return is the risk-appropriate discount rate; the realized return uses actual prices, coupons and proceeds, so it can differ from both.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 公允价值 <strong>\$1,027.23</strong>；(b) 市场价 \$1,015 使其<strong>被低估 \$12.23</strong>；(c) 隐含收益率<strong>高于 5%</strong>；(d) 一年实现回报 <strong>3.45%</strong>。
+                <br>(e) 三者由不同因素决定，不必相等。
+                <br>本题的陷阱在 (d)：实现回报<strong>低于</strong>票息率 6%，因为卖出价低于买入价产生了资本损失。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 付息频率 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 付息频率、零息债与浮息债">3. 付息频率、零息债与浮息债 <span class="badge">Frequency, Zeros &amp; Floaters</span></h2>
+      <div class="lec-meta"><span>Chapter 3.1 · slides 21–25, 29–46</span><span>Practice Q11</span></div>
+
+      <div class="box key">
+        <div class="box-title">▸ 付息频率调整的三步</div>
+        <ol>
+          <li><strong>每期票息</strong> = 年票息 ÷ \(m\)（\(m\) = 每年付息次数）；</li>
+          <li><strong>每期折现率</strong> = 报价年收益率 ÷ \(m\)；</li>
+          <li><strong>总期数</strong> = 剩余年数 × \(m\)。</li>
+        </ol>
+        <p class="muted">半年度付息（\(m=2\)）是最常考的情形。报价的 YTM 是<strong>名义年利率</strong>，不是有效年利率；若要比较，需换算为 \((1+y/2)^2-1\)。</p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">半年付息定价</span>
+        \[ P=\sum_{t=1}^{2T}\frac{C/2}{(1+y/2)^t}+\frac{F}{(1+y/2)^{2T}} \qquad \text{EAY}=\left(1+\frac{y}{2}\right)^2-1 \]
+      </div>
+
+      <div class="grid2">
+        <div class="box note">
+          <div class="box-title">▸ 零息债 Zero-coupon bond</div>
+          <p>不付票息，只到期兑付面值：\(P=F/(1+y)^T\)。投资者的回报<strong>全部来自购买时的折价</strong>——低价买入、到期收回面值。</p>
+        </div>
+        <div class="box note">
+          <div class="box-title">▸ 浮息债 Floating-rate note (FRN)</div>
+          <p>票息 = <strong>参考利率 + 利差（spread）</strong>，在每个重置日（reset date）重新确定。因为票息随市场利率走，其<strong>利率风险显著低于</strong>同期限固息债。</p>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Semiannual coupon, zero-coupon and floaters</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Bond A has a face value of $1,000, a 6% annual coupon paid semiannually, and two years to maturity. Its quoted annual yield is 4%, compounded semiannually. Valuation occurs on a coupon date just after payment.
+            <br>(a) Calculate the coupon per half-year, periodic discount rate, number of remaining payments and price of Bond A.
+            <br>(b) Calculate the price of a two-year zero-coupon bond with the same face value and quoted yield. Explain how a zero-coupon investor earns a return without receiving coupons.
+            <br>(c) For Bond A, explain whether its price would be above, equal to, or below par if its quoted yield were 6% or 8%, with the same compounding convention.
+            <br>(d) A floating-rate note resets its annual coupon to the reference rate plus 1 percentage point. Calculate the coupon rate when the reference rate is 3% and when it is 4%. Contrast this with Bond A's fixed coupon.
+            <br>(e) Explain the assumptions needed for a coupon bond's YTM to equal the investor's compound annual return over the full holding period to maturity.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 半年付息：每期票息 \$30、每期折现率 2%、共 4 期。四项现金流折现求和。
+            <br>(c) 用「\(y\) 与 \(c\) 比较」的规则：报价收益率 6% 时，周期利率 3% = 半年票息率 3% → <strong>平价</strong>；8% 时高于票息率 → <strong>折价</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ P_A=\frac{30}{1.02}+\frac{30}{1.02^2}+\frac{30}{1.02^3}+\frac{1{,}030}{1.02^4} \qquad P_{zero}=\frac{1{,}000}{1.02^4} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 每期票息：\(1{,}000\times6\%/2=\$30\)。</li>
+              <li>(a) 周期折现率：\(4\%/2=2\%\)；剩余期数：\(2\times2=4\)。</li>
+              <li>(a) 折现：\(30/1.02=29.41\)；\(30/1.02^2=28.84\)；\(30/1.02^3=28.27\)；\(1{,}030/1.02^4=951.56\)。</li>
+              <li>(a) 求和：\(P_A=\mathbf{\$1{,}038.08}\)（溢价，因为 \(y=4\%&lt;c=6\%\)）。</li>
+              <li>(b) 零息债：\(1{,}000/1.02^4=\mathbf{\$923.85}\)。</li>
+              <li>(b) 回报来源：以低于面值的价格买入，到期收回 \$1,000，差额 \$76.15 即为回报。</li>
+              <li>(c) 报价 6%：周期 3% = 半年票息率 3% → <strong>平价 \$1,000</strong>；报价 8%：周期 4% &gt; 3% → <strong>折价</strong>（低于 \$1,000）。</li>
+              <li>(d) FRN：参考 3% → 票息 <strong>4%</strong>；参考 4% → 票息 <strong>5%</strong>；而 Bond A 的票息恒为 6%。</li>
+              <li>(e) 假设：持有至到期、所有承诺现金流按约支付（无违约、无提前赎回）、且期间票息能<strong>以 YTM 再投资</strong>；半年报价时还要区分名义 YTM 与有效年收益。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Semiannual coupon = \$30; periodic yield = 2%; remaining payments = 4; \(P_A=30/1.02+30/1.02^2+30/1.02^3+1{,}030/1.02^4=\mathbf{\$1{,}038.08}\).
+                <br>(b) \(P_{zero}=1{,}000/1.02^4=\mathbf{\$923.85}\). The return comes from buying below face value and receiving \$1,000 at maturity.
+                <br>(c) At a quoted 6% the bond is <b>at par</b>; at 8% it is <b>below par</b>, because the fixed 6% coupon cannot deliver the market yield without a purchase discount.
+                <br>(d) The floating coupon is <b>4%</b> at a 3% reference rate and <b>5%</b> at 4%, once reset; Bond A's contractual coupon remains 6%.
+                <br>(e) The investor must hold to maturity, receive all promised payments without default or early call, and <b>reinvest interim coupons at the YTM</b>. For semiannual quotations, compare annual compound returns with \((1+y/2)^2-1\).</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 每期 \$30、周期 2%、4 期，价格 <strong>\$1,038.08</strong>；(b) 零息债 <strong>\$923.85</strong>，收益来自折价；
+                <br>(c) 报价 6% → <strong>平价</strong>，报价 8% → <strong>折价</strong>；(d) FRN 票息 <strong>4% / 5%</strong>，Bond A 恒为 6%；
+                <br>(e) 需持有到期、无违约/提前赎回、票息按 YTM 再投资。
+                <br>易错点：报价 8% 时容易误以为周期利率是 8%，正确是 <strong>4%/期</strong>。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="4. 练习（真题型）">4. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q10、Q11）。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Bond value and realized return <span class="kbd">真题型</span> <span class="kbd">Practice Q10</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Default-free bond, F = $1,000, 6% annual coupon, 3 years to maturity, next coupon in one year, required return 5%.
+          <br>(a) Cash flows and fair value. (b) Market price $1,015 — underpriced or overpriced? (c) Is the implied yield above or below 5%? (d) Pay $1,015, sell for $990 right after the first $60 coupon: one-year realized HPR? (e) Why need the three rates not be equal?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1。</p></div>
+            <ol class="steps">
+              <li>(a) \(P=\$1{,}027.23\)。</li>
+              <li>(b) 低估 \$12.23。</li>
+              <li>(c) 隐含收益率高于 5%。</li>
+              <li>(d) \(HPR=35/1{,}015=3.45\%\)。</li>
+              <li>(e) 三者由不同因素决定。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$1,027.23</b>. (b) <b>Underpriced</b> by \$12.23. (c) <b>Above 5%</b>. (d) <b>3.45%</b>. (e) Coupon = contractual; required return = risk-appropriate discount rate; realized return = actual prices and proceeds.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$1,027.23</strong>；(b) 低估 \$12.23；(c) 高于 5%；(d) <strong>3.45%</strong>；(e) 三者不必相等。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Semiannual coupon, zeros and floaters <span class="kbd">真题型</span> <span class="kbd">Practice Q11</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Bond A: F = $1,000, 6% annual coupon paid semiannually, 2 years to maturity, quoted annual yield 4% compounded semiannually, valued on a coupon date just after payment.
+          <br>(a) Coupon per half-year, periodic rate, number of payments, price. (b) Price of a two-year zero at the same quoted yield; how does a zero earn a return without coupons? (c) Price relative to par at quoted yields of 6% and 8%. (d) FRN coupon at reference rates 3% and 4%. (e) Assumptions for YTM to equal the compound annual return to maturity.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。</p></div>
+            <ol class="steps">
+              <li>(a) \$30 / 2% / 4 期 / \(P=\$1{,}038.08\)。</li>
+              <li>(b) \(P=\$923.85\)，收益来自折价。</li>
+              <li>(c) 6% → 平价；8% → 折价。</li>
+              <li>(d) 4% / 5%；Bond A 恒 6%。</li>
+              <li>(e) 持有到期、无违约/提前赎回、票息按 YTM 再投资。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>\$30; 2%; 4; \$1,038.08</b>. (b) <b>\$923.85</b>; return from the purchase discount. (c) <b>Par at 6%, below par at 8%</b>. (d) <b>4% and 5%</b>; Bond A stays at 6%. (e) Hold to maturity, no default/call, coupons reinvested at the YTM.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>\$1,038.08</strong>；(b) <strong>\$923.85</strong>；(c) 6% 平价、8% 折价；(d) <strong>4% / 5%</strong>；(e) 三个假设。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Solving for YTM by trial and interpolation <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A two-year bond with F = $1,000 and a 5% annual coupon trades at $977.50. The next coupon is one year away.
+          <br>(a) Is the YTM above or below 5%, and why?
+          <br>(b) Compute the price at 6% and at 7%, then estimate the YTM by linear interpolation.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>价格低于面值 → 折价 → \(y&gt;c=5\%\)。插值法：在两个试算收益率之间，价格随收益率近似线性变化，用价格差的比例推算收益率。</p></div>
+            <ol class="steps">
+              <li>(a) 价格 \$977.50 &lt; 面值 → 折价 → YTM <strong>高于 5%</strong>。</li>
+              <li>(b) 6% 时：\(P=50/1.06+1{,}050/1.06^2=47.17+934.50=\$981.67\)。</li>
+              <li>(b) 7% 时：\(P=50/1.07+1{,}050/1.07^2=46.73+917.29=\$964.02\)。</li>
+              <li>目标价 \$977.50 位于 981.67 与 964.02 之间。</li>
+              <li>比例：\(\dfrac{981.67-977.50}{981.67-964.02}=\dfrac{4.17}{17.65}=0.2363\)。</li>
+              <li>估计 \(YTM\approx6\%+0.2363\times1\%=\mathbf{6.24\%}\)（精确解约 6.23%）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>Above 5%</b>: the bond trades below par. (b) \(P(6\%)=\$981.67\), \(P(7\%)=\$964.02\). Interpolating: \(6\%+\frac{981.67-977.50}{981.67-964.02}\times1\%\approx\mathbf{6.24\%}\).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>高于 5%</strong>（折价交易）。(b) 6% → \$981.67，7% → \$964.02，插值估计 YTM ≈ <strong>6.24%</strong>。插值只是近似，因为价格—收益率关系是弯的（凸性）。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Decomposing a bond's one-year return <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A 5-year bond pays an <b>8% annual coupon</b> on ¥100 face. The YTM is <b>6%</b> and stays at 6%.
+          <br>(a) Compute the price today and the price one year from now (4 years remaining).
+          <br>(b) Decompose the one-year holding return into <b>current yield</b> and <b>capital gain yield</b>.
+          <br>(c) Verify that the two components add up to the YTM, and explain why the capital gain yield is <b>negative</b>.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>溢价债券（票息率 &gt; YTM）的价格会<strong>沿着到期日「被拉回面值」</strong>（pull to par），所以资本利得为负。<strong>总回报 = 当期收益率 + 资本利得率</strong>；当收益率不变时，这个总回报<strong>恰好等于 YTM</strong>。</p></div>
+            <ol class="steps">
+              <li>(a) 年金因子 \((1-1.06^{-5})/0.06=(1-0.747258)/0.06=4.212364\)。</li>
+              <li>(a) \(P_0=8\times4.212364+100\times0.747258=33.6989+74.7258=\) <strong>¥108.42</strong>。</li>
+              <li>(a) 4 年期：\((1-1.06^{-4})/0.06=(1-0.792094)/0.06=3.465106\)。</li>
+              <li>(a) \(P_1=8\times3.465106+100\times0.792094=27.7208+79.2094=\) <strong>¥106.93</strong>。</li>
+              <li>(b) 当期收益率 = 8 ÷ 108.4247 = <strong>7.378%</strong>。</li>
+              <li>(b) 资本利得率 = (106.9302 − 108.4247) ÷ 108.4247 = −1.4945 ÷ 108.4247 = <strong>−1.378%</strong>。</li>
+              <li>(c) 7.378% + (−1.378%) = <strong>6.000% = YTM</strong> ✓。资本利得为负是因为它是<strong>溢价债券</strong>，价格必然向 ¥100 回落。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) P<sub>0</sub> = 8 × 4.212364 + 100 × 0.747258 = <b>¥108.42</b>; P<sub>1</sub> = 8 × 3.465106 + 100 × 0.792094 = <b>¥106.93</b>. (b) Current yield = 8/108.4247 = <b>7.378%</b>; capital gain yield = (106.9302 − 108.4247)/108.4247 = <b>−1.378%</b>. (c) 7.378% − 1.378% = <b>6.000% = the YTM</b>. The capital gain is negative because a premium bond's price is pulled toward par as maturity approaches.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) P<sub>0</sub> = <strong>¥108.42</strong>，P<sub>1</sub> = <strong>¥106.93</strong>。(b) 当期收益率 <strong>7.378%</strong>，资本利得率 <strong>−1.378%</strong>。(c) 两者相加 = <strong>6.000% = YTM</strong>；资本利得为负源于溢价债券价格被拉回面值。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Ranking four bonds by price sensitivity (Malkiel) <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Four bonds all currently yield <b>7%</b>: <b>A</b> = 1-year, 5% coupon; <b>B</b> = 10-year, 5% coupon; <b>C</b> = 10-year, 9% coupon; <b>D</b> = 20-year, 5% coupon. The YTM on every bond rises to <b>8%</b>.
+          <br>(a) Compute the exact percentage price change of each bond.
+          <br>(b) Rank them from largest to smallest percentage decline.
+          <br>(c) Name the Malkiel theorems that explain the ranking, and explain why D's decline is <b>less than double</b> B's even though its maturity is double.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>四条 Malkiel 定理里，这里直接用到<strong>定理 2（期限越长越敏感）</strong>、<strong>定理 3（票息越低越敏感）</strong>与<strong>定理 4（敏感度随期限递增但增速递减）</strong>。注意：定理 4 意味着期限翻倍，敏感度<strong>不到两倍</strong>。</p></div>
+            <ol class="steps">
+              <li>(a) <strong>A</strong>：P(7%) = 105/1.07 = 98.1308；P(8%) = 105/1.08 = 97.2222 → <strong>−0.93%</strong>。</li>
+              <li>(a) <strong>B</strong>：P(7%) = 5 × 7.023582 + 50.8349 = <strong>85.9528</strong>；P(8%) = 5 × 6.710081 + 46.3193 = <strong>79.8698</strong> → <strong>−7.08%</strong>。</li>
+              <li>(a) <strong>C</strong>：P(7%) = 9 × 7.023582 + 50.8349 = <strong>114.0472</strong>；P(8%) = 9 × 6.710081 + 46.3193 = <strong>106.7101</strong> → <strong>−6.43%</strong>。</li>
+              <li>(a) <strong>D</strong>：P(7%) = 5 × 10.594014 + 25.8419 = <strong>78.8120</strong>；P(8%) = 5 × 9.818147 + 21.4548 = <strong>70.5456</strong> → <strong>−10.49%</strong>。</li>
+              <li>(b) 排序（跌幅由大到小）：<strong>D (10.49%) &gt; B (7.08%) &gt; C (6.43%) &gt; A (0.93%)</strong>。</li>
+              <li>(c) 定理 2 解释 D、B、C 都远大于 A；定理 3 解释同期限下 B（低票息 5%）跌幅大于 C（高票息 9%）。</li>
+              <li>(c) 定理 4：D 的期限是 B 的两倍，但跌幅 −10.49% <strong>小于</strong> −7.08% 的两倍（−14.15%）——敏感度随期限<strong>递增但增速递减</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) A: 98.1308 → 97.2222 = <b>−0.93%</b>; B: 85.9528 → 79.8698 = <b>−7.08%</b>; C: 114.0472 → 106.7101 = <b>−6.43%</b>; D: 78.8120 → 70.5456 = <b>−10.49%</b>. (b) <b>D &gt; B &gt; C &gt; A</b>. (c) Theorem 2 (longer maturity → more sensitive) explains D, B, C over A; Theorem 3 (lower coupon → more sensitive) explains B over C; Theorem 4 (sensitivity rises with maturity at a <i>decreasing</i> rate) explains why D's −10.49% is smaller than twice B's −7.08% (−14.15%).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) A <strong>−0.93%</strong>、B <strong>−7.08%</strong>、C <strong>−6.43%</strong>、D <strong>−10.49%</strong>。(b) <strong>D &gt; B &gt; C &gt; A</strong>。(c) 定理 2 与定理 3 解释排序；定理 4 解释 20 年跌幅 −10.49% 小于 10 年跌幅 −7.08% 的两倍（−14.15%）。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Semiannual coupons and compounding frequency <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A 3-year bond with a <b>6% coupon rate</b> and ¥100 face, YTM quoted at <b>5%</b>.
+          <br>(a) If coupons are paid <b>semiannually</b>, compute the price.
+          <br>(b) Compute the effective annual yield in that case.
+          <br>(c) If instead the coupon were paid <b>annually</b> with the same 5% YTM, compute the price. Which price is higher, and why?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>处理半年付息债券的三步：<strong>票息减半、期数加倍、收益率减半</strong>。报价的 YTM 是 APR（名义年利率），必须<strong>除以 2</strong> 才能作为每期折现率。</p></div>
+            <ol class="steps">
+              <li>(a) 每期票息 = 6% × 100 ÷ 2 = <strong>¥3</strong>；期数 = 3 × 2 = <strong>6</strong>；每期折现率 = 5% ÷ 2 = <strong>2.5%</strong>。</li>
+              <li>(a) 年金因子 \((1-1.025^{-6})/0.025=(1-0.862297)/0.025=5.508125\)。</li>
+              <li>(a) \(P=3\times5.508125+100\times0.862297=16.5244+86.2297=\) <strong>¥102.75</strong>。</li>
+              <li>(b) \(\text{EAR}=(1.025)^{2}-1=\) <strong>5.0625%</strong>。</li>
+              <li>(c) 年付息：年金因子 \((1-1.05^{-3})/0.05=(1-0.863838)/0.05=2.723248\)。</li>
+              <li>(c) \(P=6\times2.723248+100\times0.863838=16.3395+86.3838=\) <strong>¥102.72</strong>。</li>
+              <li>(c) 半年付息价格更高（102.75 &gt; 102.72），因为<strong>半年的票息可以更早收到并再投资</strong>，即复利频率更高。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Half-year coupon ¥3, 6 periods, 2.5% per period: P = 3 × 5.508125 + 100 × 0.862297 = <b>¥102.75</b>. (b) EAR = (1.025)<sup>2</sup> − 1 = <b>5.0625%</b>. (c) Annual coupon: P = 6 × 2.723248 + 100 × 0.863838 = <b>¥102.72</b>. The semiannual price is higher because coupons arrive earlier and can be reinvested sooner — more frequent compounding.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>¥102.75</strong>。(b) EAR = <strong>5.0625%</strong>。(c) 年付息 <strong>¥102.72</strong>；半年付息更高，因为票息更早到手、复利频率更高。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="5. 术语对照">5. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Face value / par value 面值</span><span>Coupon rate 票息率</span><span>Coupon 票息</span><span>Required return 要求回报率</span>
+        <span>Yield to maturity (YTM) 到期收益率</span><span>Realized holding-period return 实现持有期回报</span>
+        <span>Premium 溢价</span><span>Discount 折价</span><span>Par 平价</span><span>Pull to par 拉动至面值</span>
+        <span>Semiannual compounding 半年复利</span><span>Quoted (nominal) yield 报价（名义）收益率</span>
+        <span>Effective annual yield 有效年收益率</span><span>Zero-coupon bond 零息债券</span>
+        <span>Floating-rate note (FRN) 浮动利率票据</span><span>Reference rate 参考利率</span><span>Reset date 重置日</span>
+        <span>Current yield 当期收益率</span><span>Underpriced / overpriced 低估 / 高估</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>Part 5 解决「价格是多少」。Part 6 解决「价格会变多少」——Malkiel 五定理、久期与凸性，是本章的另一半分值。</p>
+        <p><a href="part6-bond-risk.html">前往 Part 6 债券价格风险：久期与凸性 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 5 债券估值 · 内容依据 Chapter 3.1 课件与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

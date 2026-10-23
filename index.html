@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIN 4060 中国与世界的金融市场 · 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+/* Fallback: if the local MathJax bundle is unavailable (e.g. on the deployed
+   copy where only the HTML/CSS/JS are published), load it from jsDelivr. */
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="index" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">CUHK-Shenzhen · School of Management and Economics</div>
+      <h1>FIN 4060 中国与世界的金融市场 · 完整学习站</h1>
+      <p>本站按课程主线整理 Lecture 0–5 的全部内容：概念讲解以中文为主、专业术语与 Definition 保留英文原文，公式逐一列出并解释；课件中的每一道例题、Homework 1 与 <em>Midterm Practice</em> 的 28 道练习题全部收录（英文原题 → 中文分析 → 公式 → 解题步骤 → 中英文答案），并按「场景 + 理论」的方式补充了大量解释性训练题。</p>
+      <div class="tags">
+        <span>市场与机构</span><span>中国市场</span><span>利率决定</span><span>期限结构</span><span>债券估值</span><span>久期与凸性</span><span>股票估值</span><span>货币政策</span><span>货币市场</span>
+      </div>
+      <div class="hero-stats">
+        <div><b>11</b><span>章节页面</span></div>
+        <div><b>40</b><span>课件例题</span></div>
+        <div><b>34</b><span>真题型练习</span></div>
+        <div><b>35</b><span>拓展训练题</span></div>
+        <div><b>28</b><span>手绘知识图</span></div>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <section id="how">
+      <h2 class="sec" data-short="如何使用本站">如何使用本站 <span class="badge">How to use</span></h2>
+      <div class="grid2">
+        <div class="box def">
+          <div class="box-title">▸ 从右上角选择主题</div>
+          <p>点击右上角「<strong>主题选择</strong>」下拉菜单，或使用顶部导航栏，可以按课程 <em>Part</em> 顺序进入各个子页面。左侧目录会随页面滚动自动高亮当前小节。</p>
+        </div>
+        <div class="box tip">
+          <div class="box-title">▸ 练习答案默认折叠</div>
+          <p>每道练习的完整解答放在「<strong>查看解答</strong>」折叠区里。建议先自己动手算一遍，再展开对照——尤其是标有 <span class="kbd">拓展</span> 的题目，那是为巩固知识点额外准备的。</p>
+        </div>
+      </div>
+      <div class="box note">
+        <div class="box-title">▸ 阅读约定</div>
+        <ul>
+          <li><strong>英文加粗</strong>的是 Finance 专业术语，第一次出现时给出英文 Definition。</li>
+          <li><span style="color:var(--blue);font-weight:600;">蓝色框</span>= Definition / 核心概念；<span style="color:var(--amber);font-weight:600;">橙色框</span>= 解题关键与易错点；<span style="color:var(--green);font-weight:600;">绿色框</span>= 直觉理解与记忆技巧；<span style="color:var(--purple);font-weight:600;">紫色框</span>= 理论背景与拓展。</li>
+          <li>所有公式用 LaTeX 渲染，符号含义在公式下方解释。</li>
+          <li>标记 <span class="kbd">真题型</span> 的题目来自 Homework 1 或 Midterm Practice Set，考试题型会参考它们。</li>
+        </ul>
+      </div>
+      <div class="box key">
+        <div class="box-title">▸ 本课程的两类考点</div>
+        <p>课程明确说明考试同时考察<strong>解释性题目</strong>（概念、场景判断、理论对比、政策解读）与<strong>计算题</strong>。因此本站在每个知识点下同时提供：</p>
+        <ol>
+          <li><strong>场景化解释训练</strong>：给出一个真实市场情境（如央行操作、保证金追缴、拍卖中标），要求你指认概念并说明机制；</li>
+          <li><strong>完整计算训练</strong>：从公式代入到数值结果，逐步写出，并标注 360 天 / 365 天等易错约定。</li>
+        </ol>
+        <p class="muted">建议复习节奏：先用「知识地图」回顾主干 → 再刷解释题 → 最后限时做计算题。</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="parts">
+      <h2 class="sec" data-short="课程地图">课程地图 <span class="badge">Course Roadmap</span></h2>
+      <p class="lede">课程围绕两条主线展开：<strong>价格线</strong>——利率如何被决定、证券如何被定价；<strong>制度线</strong>——市场如何组织、央行如何调控。前七部分处理价格与估值，后三部分处理货币与政策。</p>
+
+      <div class="cards">
+        <a class="card" href="part1-markets-institutions.html">
+          <div class="n">PART 1 · CHAPTER 1.1 / 1.3</div>
+          <h3>金融市场与金融机构</h3>
+          <p>一级市场与二级市场、货币市场与资本市场、外汇与衍生品，金融机构的四大类别、五大功能与十大风险。</p>
+          <div class="meta">Primary/Secondary · Money vs Capital · Direct vs Intermediated · FI Risks</div>
+        </a>
+        <a class="card" href="part2-china-markets.html">
+          <div class="n">PART 2 · CHAPTER 1.2</div>
+          <h3>中国金融市场</h3>
+          <p>A 股与 B 股、QFII/QDII 与互联互通、交易所格局、2014–2016 杠杆牛与股灾、银行间与交易所债券市场。</p>
+          <div class="meta">A/B Shares · Stock Connect · Margin &amp; 2015 Crash · Interbank Bond Market</div>
+        </a>
+        <a class="card" href="part3-interest-rates.html">
+          <div class="n">PART 3 · CHAPTER 2.0 / 2.1</div>
+          <h3>利率的决定</h3>
+          <p>货币时间价值复习，可贷资金模型下的均衡利率，费雪效应，以及名义利率的加总分解式。</p>
+          <div class="meta">TVM · Loanable Funds · Fisher Effect · DRP / LRP / MRP</div>
+        </a>
+        <a class="card" href="part4-term-structure.html">
+          <div class="n">PART 4 · CHAPTER 2.2</div>
+          <h3>利率的期限结构</h3>
+          <p>收益率曲线的三种形状与三个经验事实，无偏预期理论、流动性溢价理论、市场分割理论，远期利率与曲线移动分类。</p>
+          <div class="meta">Yield Curve · UET · Liquidity Premium · Forward Rate</div>
+        </a>
+        <a class="card" href="part5-bond-valuation.html">
+          <div class="n">PART 5 · CHAPTER 3.1</div>
+          <h3>债券估值</h3>
+          <p>现金流折现定价，票息率 / 要求回报率 / 实现回报率的区分，到期收益率，溢价折价平价，付息频率、零息债与浮息债。</p>
+          <div class="meta">Bond Pricing · YTM · Premium/Discount · Semiannual · FRN</div>
+        </a>
+        <a class="card" href="part6-bond-risk.html">
+          <div class="n">PART 6 · CHAPTER 3.3</div>
+          <h3>债券价格风险：久期与凸性</h3>
+          <p>Malkiel 五大定理的数值验证，麦考利久期、修正久期与凸性的计算，以及久期近似的误差来源。</p>
+          <div class="meta">Malkiel's Theorems · Macaulay Duration · Modified Duration · Convexity</div>
+        </a>
+        <a class="card" href="part7-equity-valuation.html">
+          <div class="n">PART 7 · CHAPTER 3.2</div>
+          <h3>股票估值</h3>
+          <p>相对估值（trailing / forward P/E），股利折现模型（零增长、固定增长、非常规增长、优先股），CAPM 与 Fama-French 三因子。</p>
+          <div class="meta">P/E · DDM · CAPM · SMB / HML / MOM</div>
+        </a>
+        <a class="card" href="part8-monetary-policy.html">
+          <div class="n">PART 8 · CHAPTER 4A / 4C</div>
+          <h3>货币政策与美联储</h3>
+          <p>FOMC 与双重使命，公开市场操作、贴现窗与法定准备金，存款创造与货币乘数，FOMC 公告、点阵图与 FedWatch 的读法。</p>
+          <div class="meta">FOMC · OMO · Discount Window · Money Multiplier · Dot Plot</div>
+        </a>
+        <a class="card" href="part9-monetary-policy-china.html">
+          <div class="n">PART 9 · CHAPTER 4B</div>
+          <h3>中国货币政策</h3>
+          <p>央行多目标与冲突，数量型与价格型工具，7 天逆回购、MLF、SLF、PSL 的分工，抵押品与利率走廊机制。</p>
+          <div class="meta">PBOC · RRR · MLF / SLF / PSL · Interest-Rate Corridor</div>
+        </a>
+        <a class="card" href="part10-money-markets.html">
+          <div class="n">PART 10 · CHAPTER 5A / 5B / 5C</div>
+          <h3>货币市场</h3>
+          <p>折现收益率、单利收益率、BEY 与 EAR 四种报价及其转换，国库券拍卖、联邦基金与回购，商业票据、大额可转让 CD、银行承兑汇票与欧洲美元。</p>
+          <div class="meta">Yield Conventions · T-bill Auction · Repo · CP · CD · BA · Eurodollar</div>
+        </a>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="syllabus">
+      <h2 class="sec" data-short="课程信息">课程信息 <span class="badge">Chapter 0</span></h2>
+
+      <h3 class="sub" data-short="什么是这门课">什么是这门课 <span class="eninline">What is this course about?</span></h3>
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en">Financial markets are the venues and mechanisms through which funds flow from suppliers (surplus units) to users (deficit units), and through which financial claims are created, priced, and traded.</span><br>
+        金融市场是资金从<strong>盈余方（suppliers of funds）</strong>流向<strong>短缺方（users of funds）</strong>的场所与机制。本课程在<strong>中国与世界</strong>的双重视角下研究三件事：</p>
+        <ol>
+          <li><strong>市场如何分类与运作</strong>（Market structure）：一级/二级、货币/资本、交易所/场外、境内/跨境；</li>
+          <li><strong>价格如何决定</strong>（Pricing）：利率由什么决定？期限结构如何形成？债券与股票如何估值？</li>
+          <li><strong>政策如何传导</strong>（Policy）：央行用哪些工具影响流动性与利率？货币市场如何承接这些操作？</li>
+        </ol>
+      </div>
+
+      <div data-fig="marketStructure" data-cap="金融市场按「是否新发行」与「期限」两条轴的分类。图片来源：Chapter 1 Introduction 1" data-src="Chapter 1"></div>
+
+      <div class="box key">
+        <div class="box-title">▸ 一条贯穿全课的主线</div>
+        <p>所有证券的价格都来自同一件事：<strong>未来现金流按合适的折现率折现</strong>。全课的展开顺序因此是——先搞清楚「合适的折现率」是什么（Part 3–4：利率与期限结构），再把它代入债券（Part 5–6）与股票（Part 7），最后说明这个折现率如何被央行改变（Part 8–9），以及短期端的市场如何报价（Part 10）。</p>
+      </div>
+
+      <h3 class="sub" data-short="课程结构">课程结构 <span class="eninline">Course Syllabus</span></h3>
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:96px;">Part</th><th>主题 Topic</th><th>关键词 Key concepts</th></tr></thead>
+        <tbody>
+          <tr><td>Part 1</td><td>Introduction: Markets &amp; Institutions</td><td>Primary vs secondary markets, money vs capital markets, financial intermediaries, risks of FIs</td></tr>
+          <tr><td>Part 2</td><td>Markets in China</td><td>A-shares &amp; B-shares, QFII/QDII, Stock Connect, margin boom-bust, bond market structure</td></tr>
+          <tr><td>Part 3</td><td>Determinants of Interest Rates</td><td>Loanable funds, Fisher effect, inflation premium, default &amp; liquidity risk premiums</td></tr>
+          <tr><td>Part 4</td><td>Term Structure of Interest Rates</td><td>Yield curve, unbiased expectations theory, liquidity premium, market segmentation, forward rates</td></tr>
+          <tr><td>Part 5</td><td>Interest Rates and Security Valuation: Bonds</td><td>Bond pricing, YTM, premium/discount/par, coupon frequency, floaters</td></tr>
+          <tr><td>Part 6</td><td>Advanced Bond Pricing</td><td>Malkiel's theorems, duration, convexity, price sensitivity</td></tr>
+          <tr><td>Part 7</td><td>Equity Valuation</td><td>Relative valuation (P/E), dividend discount models, CAPM, Fama-French three-factor model</td></tr>
+          <tr><td>Part 8</td><td>Monetary Policy</td><td>Fed &amp; FOMC, open market operations, discount window, reserve requirements, money multiplier</td></tr>
+          <tr><td>Part 9</td><td>Monetary Policy in China</td><td>PBOC objectives, RRR, MLF/SLF/PSL, quantity vs price instruments, rate corridor</td></tr>
+          <tr><td>Part 10</td><td>Money Markets</td><td>Yield conventions, T-bills &amp; auctions, federal funds, repos, commercial paper, CDs, BAs, Eurodollar</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="grid2">
+        <div class="box note">
+          <div class="box-title">▸ 授课教师 Instructor</div>
+          <p>Han Xiao（肖寒），School of Management and Economics, CUHK-Shenzhen。</p>
+        </div>
+        <div class="box note">
+          <div class="box-title">▸ 资料来源 Source</div>
+          <p>本站所有讲解与练习均以课程课件（Chapter 0–5）、Homework 1 与 Midterm Practice Set 为唯一事实来源整理，未夸大或虚构数据。</p>
+        </div>
+      </div>
+
+      <h3 class="sub" data-short="开课例题">开课例题：一次完整的债券定价与敏感性判断 <span class="eninline">Warm-up Example</span></h3>
+      <p>这道题把 Part 5 的定价、Part 6 的敏感性与 Part 4 的折现率概念串在一起，用来检验你是否具备本课程的前置计算能力。建议先自己算一遍再看解答。</p>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">QUESTION</span> Bond Pricing and Interest-Rate Sensitivity</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A default-free bond has a face value of $1,000 and pays a 6% <b>annual</b> coupon. It matures in three years and the next coupon is exactly one year away. The required annual return is 5%.
+            <br>(a) List the cash flows and calculate the fair value of the bond.
+            <br>(b) The market price is $1,015. Is the bond underpriced or overpriced relative to your valuation?
+            <br>(c) Without solving for the yield numerically, state whether the yield implied by $1,015 is above or below 5%, and explain why.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 债券价格就是所有未来现金流按<strong>要求回报率</strong>折现的和。这里现金流是固定的：第 1、2 年各 \$60 票息，第 3 年 \$60 票息加 \$1,000 本金，合计 \$1,060。折现率取 5%（注意：不是票息率 6%）。
+            <br>(b) 「低估 / 高估」是比较<strong>公允价值</strong>与<strong>市场价</strong>：市场价低于我算出的价值，说明按这个价格买入能获得高于 5% 的回报，因此债券被低估。
+            <br>(c) 不需要解方程。对于现金流为正的债券，<strong>价格与收益率反向变动</strong>：市场价 \$1,015 低于 5% 对应的价值，说明对应的收益率一定高于 5%。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ P=\sum_{t=1}^{T}\frac{CF_t}{(1+y)^t}=\frac{60}{1.05}+\frac{60}{1.05^2}+\frac{1{,}060}{1.05^3} \]
+            <div class="formula">
+              <div class="fnote">其中 \(P\) = 债券价格，\(CF_t\) = 第 \(t\) 期现金流，\(y\) = 到期收益率 / 要求回报率，\(T\) = 剩余期数。</div>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>列出现金流：\(CF_1=60\)，\(CF_2=60\)，\(CF_3=60+1000=1{,}060\)。</li>
+              <li>逐项折现：\(\dfrac{60}{1.05}=57.14\)；\(\dfrac{60}{1.05^2}=54.42\)；\(\dfrac{1{,}060}{1.05^3}=915.67\)。</li>
+              <li>求和：\(P=57.14+54.42+915.67=\mathbf{\$1{,}027.23}\)。</li>
+              <li>与市场价比较：\(1{,}027.23-1{,}015.00=\$12.23\)，市场价更低 → 债券<strong>被低估 \$12.23</strong>。</li>
+              <li>判断隐含收益率方向：价格低于 5% 对应的价值 → 隐含收益率 <strong>高于 5%</strong>。</li>
+              <li>直觉校验：票息率 6% &gt; 要求回报率 5%，所以债券应当<strong>溢价</strong>交易（价格 &gt; \$1,000）。\$1,027.23 与 \$1,015 都大于面值，方向一致。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) \(CF_1=CF_2=\$60\), \(CF_3=\$1{,}060\). \(P=60/1.05+60/1.05^2+1{,}060/1.05^3=\mathbf{\$1{,}027.23}\).
+                <br>(b) The market price of \$1,015 is \$12.23 below the value implied by a 5% required return, so the bond is <b>underpriced</b> (cheap) at that required return.
+                <br>(c) For fixed positive cash flows, price falls as yield rises. Since \$1,015 &lt; \$1,027.23, the implied yield is <b>above 5%</b>.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>公允价值约为 <strong>\$1,027.23</strong>；市场价 \$1,015 使其<strong>被低估 \$12.23</strong>；隐含收益率<strong>高于 5%</strong>。
+                <br>三个易错点：① 折现用的是要求回报率 5%，不是票息率 6%；② 第 3 期现金流必须把本金加进去（\$1,060 而非 \$60）；③ 判断「低估/高估」时，比较对象是<em>你自己算出的价值</em>，不是面值。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="formulas">
+      <h2 class="sec" data-short="核心公式速查表">核心公式速查表 <span class="badge">Formula Sheet</span></h2>
+      <p>把整门课最常用的公式集中在这里，便于考前快速回顾。每个公式的详细推导与使用条件见对应 Part 页面。</p>
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:150px;">主题</th><th>公式</th><th>含义 / 约定</th></tr></thead>
+        <tbody>
+          <tr><td>现值 / 终值</td><td>\(PV=\dfrac{FV}{(1+r)^n}\)，\(FV=PV(1+r)^n\)</td><td>单笔现金流的折算</td></tr>
+          <tr><td>年金现值 / 终值</td><td>\(PV=C\cdot\dfrac{1-(1+r)^{-n}}{r}\)，\(FV=C\cdot\dfrac{(1+r)^n-1}{r}\)</td><td>期末支付的等额现金流</td></tr>
+          <tr><td>费雪效应</td><td>\(r_{nom}\approx r_{real}+E(\pi)\)</td><td>近似式；精确式为相乘</td></tr>
+          <tr><td>利率分解</td><td>\(r=r_{real}+IP+DRP+LRP+MRP\)</td><td>各溢价逐项相加</td></tr>
+          <tr><td>无偏预期理论</td><td>\((1+z_n)^n=\prod_{t=1}^{n}(1+i_t^e)\)</td><td>长端 = 预期短端的几何平均</td></tr>
+          <tr><td>远期利率</td><td>\((1+z_2)^2=(1+z_1)(1+f_{1,2})\)</td><td>由两条即期利率解出</td></tr>
+          <tr><td>债券定价</td><td>\(P=\sum_{t=1}^{T}\dfrac{CF_t}{(1+y)^t}\)</td><td>半年付息时用 \(y/m\) 与 \(mT\) 期</td></tr>
+          <tr><td>麦考利久期</td><td>\(D_{mac}=\sum_t t\cdot\dfrac{PV(CF_t)}{P}\)</td><td>单位为年；零息债 = 期限</td></tr>
+          <tr><td>修正久期</td><td>\(D_{mod}=\dfrac{D_{mac}}{1+y/m}\)，\(\dfrac{\Delta P}{P}\approx -D_{mod}\Delta y\)</td><td>局部线性近似</td></tr>
+          <tr><td>固定增长 DDM</td><td>\(P_0=\dfrac{D_1}{r-g}\)，\(D_1=D_0(1+g)\)</td><td>要求 \(r&gt;g\)；用下一期股利</td></tr>
+          <tr><td>CAPM</td><td>\(E(r_i)=r_f+\beta_i[E(r_M)-r_f]\)</td><td>只对系统性风险给溢价</td></tr>
+          <tr><td>三因子模型</td><td>\(r-r_f=\alpha+b_M\,\text{MKTRF}+b_S\,\text{SMB}+b_H\,\text{HML}+\varepsilon\)</td><td>因子是收益时间序列</td></tr>
+          <tr><td>货币乘数</td><td>\(\Delta \text{Deposits}_{max}=\dfrac{\Delta \text{Reserves}}{rr}\)</td><td>假设无漏损、无超额准备金</td></tr>
+          <tr><td>折现收益率</td><td>\(r_D=\dfrac{F-P}{F}\cdot\dfrac{360}{n}\)</td><td>分母用面值；360 天</td></tr>
+          <tr><td>单利收益率</td><td>\(r_{SPY}=\dfrac{F-P}{P}\cdot\dfrac{360}{n}\)</td><td>分母用投资额；360 天</td></tr>
+          <tr><td>债券等价收益率</td><td>\(BEY=\dfrac{F-P}{P}\cdot\dfrac{365}{n}\)</td><td>线性年化；365 天</td></tr>
+          <tr><td>实际年化收益率</td><td>\(EAR=(1+HPR)^{365/n}-1\)</td><td>复利年化；365 天</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 考前提点</div>
+        <p>本站覆盖了课件第 0–5 章以及配套的 Homework 1 与 Midterm Practice Set。复习时请特别留意三类「送分但易错」的地方：</p>
+        <ol>
+          <li><strong>天数约定</strong>：折现收益率与单利收益率用 360 天，BEY 与 EAR 用 365 天；</li>
+          <li><strong>方向判断</strong>：折现收益率越高 → 价格越低；二级市场价越低 → 新买家收益率越高；</li>
+          <li><strong>回购方向</strong>：央行买入并约定卖回 = 逆回购 = 投放流动性；卖出并约定买回 = 正回购 = 回笼流动性。</li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · 学习站 · 内容依据课程 Chapter 0–5 课件、Homework 1 与 Midterm Practice Set 整理，术语与定义保留英文原文。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 8 货币政策与美联储 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part8" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 4a Monetary Policy · Chapter 4c FOMC Announcement</div>
+      <h1>Part 8 货币政策与美联储</h1>
+      <p>本部分回答：<strong>央行用什么工具、通过什么链条影响利率与实体经济</strong>。核心框架是「准备金 → 信贷 → 支出 → 产出与通胀」，三大传统工具是公开市场操作、贴现率与法定准备金率。后半部分讲<strong>如何读一份 FOMC 公告</strong>：双重使命、PCE 通胀目标、点阵图与 FedWatch 概率。这里解释题与计算题各占一半。</p>
+      <div class="tags">
+        <span>FOMC</span><span>双重使命</span><span>公开市场操作 OMO</span><span>贴现窗</span><span>法定准备金率</span><span>货币乘数</span><span>最后贷款人</span><span>PCE / Core PCE</span><span>点阵图</span><span>FedWatch</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 央行与 FOMC ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 美联储与 FOMC">1. 美联储与 FOMC <span class="badge">The Fed &amp; the FOMC</span></h2>
+      <div class="lec-meta"><span>Chapter 4a · slides 3–20</span><span>Practice Q17(a)</span><span>Practice Q21(a)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>FOMC (Federal Open Market Committee)</b>: the Federal Reserve's policy-making body. It sets the <b>target range for the federal funds rate</b> and directs open market operations.</span><br>
+        <span class="en"><b>Dual mandate（双重使命）</b>: the Federal Reserve's two statutory objectives — <b>price stability</b> and <b>maximum employment</b>.</span></p>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 必考辨析：FOMC 与商业银行的分工</div>
+        <p><strong>FOMC</strong> 制定的是<strong>货币政策立场</strong>和联邦基金利率目标区间，它面向整个经济；<strong>商业银行</strong>做的是<strong>逐笔的放贷决策</strong>，依据自身资金成本、借款人风险、资本充足与经营考虑。商业银行<strong>不制定</strong>国家货币政策。
+        <br>答题句式：<em>The FOMC sets the monetary-policy stance and the federal funds target range. Commercial banks make individual lending decisions based on funding, borrower risk, capital and business considerations.</em></p>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 双重使命的两个度量指标</div>
+        <ul>
+          <li><strong>物价稳定 Stable prices</strong>：用 <strong>PCE 通胀率</strong>衡量，长期目标 <strong>2%</strong>。</li>
+          <li><strong>充分就业 Maximum employment</strong>：用<strong>失业率</strong>衡量。</li>
+        </ul>
+        <p class="muted">两者可能冲突：通胀高于目标要求<strong>收紧</strong>，就业走弱要求<strong>宽松</strong>。降息并不是「认为通胀不重要」，而是对<strong>风险平衡的judgment</strong>。</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 三大工具 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 三大传统政策工具">2. 三大传统政策工具 <span class="badge">Policy Tools</span></h2>
+      <div class="lec-meta"><span>Chapter 4a · slides 3–20, 21–30, 31–35</span><span>Practice Q17(b)(c)(d)(e)</span></div>
+
+      <div data-fig="policyTransmission" data-cap="货币政策传导链：工具 → 准备金 → 短期利率与信贷 → 支出与投资 → 产出与通胀。图片来源：Chapter 4a" data-src="Chapter 4"></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:150px;">工具</th><th>英文</th><th>操作</th><th>对准备金的影响</th><th>方向</th></tr></thead>
+        <tbody>
+          <tr><td><strong>公开市场操作</strong></td><td>Open market operations (OMO)</td><td>央行<strong>买入</strong>证券</td><td>准备金<strong>增加</strong></td><td><strong>扩张</strong></td></tr>
+          <tr><td>公开市场操作（反向）</td><td>OMO sale</td><td>央行<strong>卖出</strong>证券</td><td>准备金<strong>减少</strong></td><td>收缩</td></tr>
+          <tr><td><strong>贴现率</strong></td><td>Discount rate</td><td>央行对机构贷款的利率</td><td>影响借款成本与意愿</td><td>提高 → 收缩</td></tr>
+          <tr><td><strong>法定准备金率</strong></td><td>Required reserve ratio (RRR)</td><td>存款中必须留存的比率</td><td>同样准备金下放贷能力下降</td><td>提高 → 收缩</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 场景：央行从商业银行买入证券，资产负债表上发生了什么？</div>
+        <ol>
+          <li>央行<strong>贷记</strong>卖出银行的准备金账户；</li>
+          <li>该银行的资产负债表上：<strong>证券减少、准备金增加</strong>（总资产不变，资产结构变化）；</li>
+          <li>在简化框架中，更宽松的准备金条件<strong>支持放贷</strong>并<strong>压低短期利率</strong>；</li>
+          <li>进而鼓励消费与投资，推高经济活动。</li>
+        </ol>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 必考对比：贴现窗 vs 联邦基金</div>
+        <ul>
+          <li><strong>贴现窗 Discount window</strong>：<strong>央行</strong>是贷款人，向符合条件的机构提供贷款；</li>
+          <li><strong>联邦基金 Federal funds</strong>：<strong>机构之间</strong>拆借准备金余额，通常<strong>隔夜且无抵押</strong>。</li>
+        </ul>
+        <p class="muted">两者都是「借准备金」，但交易对手与抵押安排完全不同，答题时要分别写出<strong>谁是贷款人</strong>。</p>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 最后贷款人 Lender of Last Resort</div>
+        <p>央行向面临融资压力的合格机构提供<strong>紧急流动性</strong>。关键区分：</p>
+        <ul>
+          <li><strong>流动性短缺</strong>：到期付不出钱（时点问题）→ <strong>借款可以过渡</strong>；</li>
+          <li><strong>资不抵债</strong>：资产价值不足以偿付负债（存量问题）→ <strong>借款无法解决</strong>。</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Transmission, contractionary tools, and the two lending channels</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Describe the FOMC's policy-making role and distinguish it from a commercial bank's lending decisions.
+            <br>(b) Explain the initial effect on banking-system reserves when the central bank buys securities from a commercial bank. Trace the intended effects on credit, spending and economic activity.
+            <br>(c) Explain how an open-market sale, an increase in the discount rate, and an increase in the required reserve ratio work in a contractionary direction.
+            <br>(d) Distinguish a discount-window loan from an overnight federal funds loan. Identify the lender in each case.
+            <br>(e) Explain the lender-of-last-resort function. Why is a temporary liquidity shortage conceptually different from insolvency?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(b) 关键是<strong>资产负债表语言</strong>：证券减少、准备金增加。(c) 三个工具要<strong>分别说明收缩机制</strong>，不能只写「都会收缩」。(d) 明确写出贷款人：贴现窗 = 央行；联邦基金 = 有盈余准备金的机构。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) FOMC：制定货币政策立场与联邦基金利率目标区间；商业银行：依据资金、风险、资本做逐笔放贷决策，<strong>不制定</strong>国家货币政策。</li>
+              <li>(b) 央行贷记卖出行的准备金账户 → 该行<strong>证券减少、准备金增加</strong>。</li>
+              <li>(b) 传导：准备金更宽松 → 支持放贷、压低短期利率 → 鼓励消费与投资 → 经济活动走强。</li>
+              <li>(c) 公开市场<strong>卖出</strong>：<strong>回笼</strong>准备金。</li>
+              <li>(c) <strong>提高贴现率</strong>：央行借款变贵 → 机构少借。</li>
+              <li>(c) <strong>提高法定准备金率</strong>：同样准备金下<strong>可放贷部分减少</strong>。</li>
+              <li>(c) 三者共同方向：<strong>抑制信贷与支出</strong>。</li>
+              <li>(d) 贴现窗：<strong>央行</strong>贷给机构（有抵押、常被视为最后手段）；联邦基金：<strong>机构</strong>贷给机构（隔夜、通常无抵押）。</li>
+              <li>(e) 最后贷款人 = 向融资受压的合格机构提供紧急流动性；流动性短缺是<strong>时点</strong>问题（可过渡），资不抵债是<strong>存量</strong>问题（借款无法修复资产缺口）。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) The FOMC sets the policy stance and the federal funds target range; commercial banks make individual lending decisions and do not set national monetary policy.
+                <br>(b) The central bank credits the selling bank's reserve account: <b>securities fall and reserves rise</b>. Easier reserve conditions support lending and lower short-term rates, encouraging spending, investment and activity.
+                <br>(c) An open-market sale <b>drains reserves</b>; a higher discount rate makes central-bank borrowing <b>more expensive</b>; a higher required reserve ratio reduces <b>lending capacity</b> per unit of reserves. Each restrains credit and spending.
+                <br>(d) At the discount window the <b>central bank</b> lends to an eligible institution. In the federal funds market an institution with surplus reserves lends to another institution, generally overnight and without collateral.
+                <br>(e) A lender of last resort supplies emergency liquidity to eligible institutions. A <b>liquidity shortage</b> is about meeting payments when due; <b>insolvency</b> is about asset value relative to liabilities. Borrowing bridges a timing gap without repairing an asset-value shortfall.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) FOMC 定政策立场，银行做逐笔决策；(b) 证券↓、准备金↑ → 信贷↑、短端利率↓ → 支出与活动↑；
+                <br>(c) 卖出国债回笼准备金、提高贴现率抬高借款成本、提高准备金率压缩放贷能力 → 均为<strong>收缩</strong>；
+                <br>(d) 贴现窗 = <strong>央行</strong>放款；联邦基金 = <strong>机构之间</strong>拆借；
+                <br>(e) 流动性短缺是时点问题，资不抵债是存量问题，借款只能解决前者。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 存款创造 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 存款创造与货币乘数">3. 存款创造与货币乘数 <span class="badge">Deposit Creation</span></h2>
+      <div class="lec-meta"><span>Chapter 4a · slides 34–41</span><span>Practice Q18</span></div>
+
+      <div class="formula hi">
+        <span class="tag">简单货币乘数</span>
+        \[ \Delta \text{Deposits}_{max}=\frac{\Delta \text{Reserves}}{rr}=\frac{1}{rr}\times\Delta \text{Reserves} \]
+        \[ \Delta \text{Loans}_{max}=\Delta \text{Deposits}_{max}-\Delta \text{Reserves}_{initial} \]
+        <div class="fnote">\(rr\) = 法定准备金率 required reserve ratio。前提假设：<strong>银行不留超额准备金、公众不持有现金、每笔贷款都被支出并全额再存入银行体系</strong>。</div>
+      </div>
+
+      <div data-fig="moneyMultiplier" data-cap="存款创造的多轮过程（准备金率 10%）：每一轮的新增贷款都变成下一家银行的存款。图片来源：Chapter 4a" data-src="Chapter 4"></div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 为什么简单乘数是「条件模型」而非承诺？</div>
+        <p>倍数成立需要一堆条件同时满足：银行<strong>愿意贷</strong>、借款人<strong>愿意借</strong>、资金<strong>全额再存入</strong>、<strong>不留超额准备金</strong>、且没有其他约束（资本、风险、融资条件）。现实中任一条不满足，实际放贷都会小于理论值。
+        <br>答题句式：<em>The multiplier is a conditional model, not a promise that a given reserve injection produces an exact increase in lending.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Deposit expansion with a 10% reserve ratio</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">In a simplified banking system the required reserve ratio is 10%. Banks hold no excess reserves after lending and the public holds no cash. A central-bank purchase from a nonbank seller creates $100 million of new reserves and an equal initial bank deposit.
+            <br>(a) Show the initial deposit, required reserves and maximum new loan at the first bank. Show the next two rounds if every loan is spent and fully redeposited.
+            <br>(b) Calculate the maximum total increase in deposits, including the initial deposit. Calculate the total increase in loans.
+            <br>(c) Repeat the maximum total deposit calculation with a 20% reserve ratio and the same $100 million injection.
+            <br>(d) Explain qualitatively how cash withdrawals by the public and voluntary excess-reserve holdings affect the expansion relative to the simple model.
+            <br>(e) Why is the simple multiplier a conditional model rather than a promise?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>这是一个<strong>等比级数</strong>：每轮的存款是上一轮的 90%（因为留 10% 准备金）。总存款 = \(100+90+81+\cdots=100/0.10=1{,}000\)。
+            <br>注意 (b) 中<strong>贷款增量不等于存款增量</strong>：初始的 \$100M 存款来自央行购债，<strong>不是商业银行发放的贷款</strong>，因此贷款增量 = \(1{,}000-100=900\)。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ \Delta D_{max}=100+90+81+\cdots=\frac{100}{0.10} \qquad \Delta L_{max}=90+81+\cdots=900 \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 第 1 家：存款 <strong>100</strong>，法定准备金 \(100\times10\%=\) <strong>10</strong>，可放贷款 <strong>90</strong>。</li>
+              <li>(a) 第 2 家：存款 <strong>90</strong>，准备金 <strong>9</strong>，贷款 <strong>81</strong>。</li>
+              <li>(a) 第 3 家：存款 <strong>81</strong>，准备金 <strong>8.1</strong>，贷款 <strong>72.9</strong>。（单位：百万美元）</li>
+              <li>(b) 存款总增量 \(=100/0.10=\mathbf{\$1{,}000}\) 百万。</li>
+              <li>(b) 贷款总增量 \(=1{,}000-100=\mathbf{\$900}\) 百万（初始 \$100M 是央行购债形成的，不是贷款）。</li>
+              <li>(c) 准备金率 20%：\(100/0.20=\mathbf{\$500}\) 百万。</li>
+              <li>(d) <strong>现金漏损</strong>：资金不再全额回流银行体系 → 可贷资金减少 → 扩张变小。</li>
+              <li>(d) <strong>超额准备金</strong>：银行放贷少于理论最大值 → 扩张变小。</li>
+              <li>(e) 倍数依赖一系列条件（愿意借贷、全额再存入、无超额准备金、无其他约束），因此是<strong>条件模型</strong>而非承诺。</li>
+            </ol>
+            <div class="tablewrap">
+            <table class="data">
+              <thead><tr><th>轮次</th><th>新增存款</th><th>法定准备金</th><th>可放贷款</th></tr></thead>
+              <tbody>
+                <tr><td>第 1 家</td><td>100</td><td>10</td><td>90</td></tr>
+                <tr><td>第 2 家</td><td>90</td><td>9</td><td>81</td></tr>
+                <tr><td>第 3 家</td><td>81</td><td>8.1</td><td>72.9</td></tr>
+                <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+                <tr><td><strong>合计</strong></td><td><strong>1,000</strong></td><td><strong>100</strong></td><td><strong>900</strong></td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Amounts in \$ millions. First bank: deposit 100, required reserves 10, loan 90. Second: deposit 90, reserves 9, loan 81. Third: deposit 81, reserves 8.1, loan 72.9.
+                <br>(b) \(\Delta\)Deposits \(=100/0.10=\mathbf{\$1{,}000m}\); \(\Delta\)Loans \(=\mathbf{\$900m}\). The initial \$100m deposit is included in deposits but is not a commercial-bank loan.
+                <br>(c) With a 20% ratio: \(100/0.20=\mathbf{\$500m}\).
+                <br>(d) Cash withdrawals prevent full redeposit and excess reserves mean banks lend less than the maximum; both <b>reduce</b> expansion relative to the simple model.
+                <br>(e) The calculation depends on willing lenders and borrowers, complete redepositing, no excess reserves and no other binding constraints; credit demand, risk, capital and funding conditions may limit actual lending.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 100/10/90 → 90/9/81 → 81/8.1/72.9（百万）；(b) 存款增量 <strong>\$1,000M</strong>、贷款增量 <strong>\$900M</strong>；(c) 20% 时为 <strong>\$500M</strong>；
+                <br>(d) 现金漏损与超额准备金都会<strong>缩小</strong>扩张；(e) 依赖多重条件，故为条件模型。
+                <br>易错点：把贷款增量也算成 \$1,000M——初始存款不是贷款，必须减去。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 读 FOMC 公告 ============ -->
+    <section id="s4">
+      <h2 class="sec" data-short="4. 如何读一份 FOMC 公告">4. 如何读一份 FOMC 公告 <span class="badge">Reading the Announcement</span></h2>
+      <div class="lec-meta"><span>Chapter 4c FOMC Announcement · slides 3–11</span><span>Chapter 4a · slides 6–14</span><span>Practice Q21</span></div>
+
+      <div class="grid2">
+        <div class="box def">
+          <div class="box-title">▸ PCE vs Core PCE</div>
+          <p><strong>PCE 物价指数</strong>：衡量家庭消费的所有商品与服务的价格变化，<strong>包含食品与能源</strong>。
+          <br><strong>Core PCE</strong>：<strong>剔除食品与能源</strong>，波动更小，更能反映<strong>潜在通胀趋势</strong>。</p>
+        </div>
+        <div class="box key">
+          <div class="box-title">▸ 长期通胀目标</div>
+          <p>美联储的长期目标是：<strong>以整体 PCE（headline PCE）衡量的年通胀率为 2%</strong>。
+          <br>注意：<em>目标锚定在整体 PCE 上</em>，core PCE 只是辅助判断趋势的工具。</p>
+        </div>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 为什么用 PCE 而不是 CPI？</div>
+        <p>PCE 指数的构造方式会<strong>反映消费者当下的实际支出结构</strong>，并能<strong>更快适应支出模式的变化</strong>（替代效应），因此在政策判断上优于 CPI。</p>
+      </div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 点阵图 Dot Plot</div>
+        <ul>
+          <li>每个点 = <strong>一位 FOMC 参会者</strong>对某一时点<strong>合适政策利率</strong>的预测；</li>
+          <li>它<strong>不是</strong>集体的单一预测，也<strong>不是</strong>有约束力的承诺；</li>
+          <li>参会者可以<strong>意见分歧</strong>，也会随信息变化而修正自己的点。</li>
+        </ul>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 政策预测 vs FedWatch 市场概率</div>
+        <ul>
+          <li><strong>政策制定者的预测</strong>：参会者对「合适政策路径」的判断；</li>
+          <li><strong>FedWatch 类市场概率</strong>：由 <strong>30 天联邦基金期货价格</strong>在模型假设下<strong>反推</strong>出的概率，反映<strong>市场定价</strong>；</li>
+          <li>两者<strong>都不是确定结果</strong>。</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> Reading a hypothetical FOMC statement</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A hypothetical statement says: "Inflation remains above our longer-run objective, while employment growth has slowed. The Committee has reduced the federal funds target range by 25 basis points. Future decisions will depend on incoming data."
+            <br>(a) Identify the two sides of the dual mandate and explain the policy trade-off described in the statement.
+            <br>(b) The previous target range was 4.25%–4.50%. Calculate the new range. Does this decision alone establish the future path of all market interest rates?
+            <br>(c) Distinguish headline PCE inflation from core PCE inflation. State the longer-run PCE inflation objective discussed in the lecture and explain why core PCE can still inform analysis.
+            <br>(d) Explain what one dot in the dot plot represents. Why is the plot neither a binding commitment nor a single agreed Committee forecast?
+            <br>(e) Explain the difference between policymakers' projections and market-implied probabilities such as those discussed in the FedWatch example.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 双重使命的两端指向<strong>相反</strong>的政策方向：通胀高于目标要求<strong>维持紧缩</strong>，就业走弱要求<strong>宽松</strong>。降息 25 bp 表明委员会判断<strong>就业侧的风险更需要关注</strong>。
+            <br>(b) 目标区间整体下移 25 bp：<strong>两端各减 25 bp</strong>，不是只减一端。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 双重使命：<strong>物价稳定</strong> + <strong>充分就业</strong>。</li>
+              <li>(a) 权衡：通胀高于目标 → 倾向维持限制；就业增长放缓 → 倾向支持；降息反映的是对<strong>风险平衡</strong>的判断，而非「通胀不重要」。</li>
+              <li>(b) 新区间：4.25%−0.25% = <strong>4.00%</strong>，4.50%−0.25% = <strong>4.25%</strong> → <strong>4.00%–4.25%</strong>。</li>
+              <li>(b) 是否决定所有市场利率：<strong>不能</strong>。预期、期限溢价、信用风险与后续数据都会影响市场利率。</li>
+              <li>(c) Headline PCE 含食品与能源；Core PCE 剔除两者。长期目标：<strong>整体 PCE 年通胀 2%</strong>。Core 的价值：剔除波动项，更能反映<strong>潜在趋势</strong>。</li>
+              <li>(d) 一个点 = 一位参会者对某一时点合适政策利率的<strong>个人预测</strong>；参会者可分歧、可修正 → 既非集体预测也非承诺。</li>
+              <li>(e) 政策预测 = 参会者判断；FedWatch 概率 = 由期货价格<strong>反推</strong>的市场定价；两者都不是确定结果。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) The two objectives are <b>price stability</b> and <b>maximum employment</b>. Above-target inflation argues for restraint while slowing employment argues for support; the cut reflects a judgment about the balance of risks, not evidence that inflation is irrelevant.
+                <br>(b) New range <b>4.00%–4.25%</b>. The decision changes the current target but does not fix every market rate or future policy decision; expectations, term premiums, credit risk and incoming data also matter.
+                <br>(c) Headline PCE includes food and energy; core PCE excludes them. The longer-run objective is <b>2% inflation measured by headline PCE</b>. Core PCE helps assess underlying trends because food and energy prices are volatile.
+                <br>(d) Each dot is one participant's projection of an appropriate policy rate for the indicated horizon. Participants can disagree and revise; the dots are neither a binding promise nor a single collective forecast.
+                <br>(e) Policymaker projections describe participants' assessments of appropriate policy; FedWatch-style probabilities are inferred from market prices under modelling assumptions and reflect market pricing. <b>Neither is a certainty.</b></p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 物价稳定 + 充分就业；降息是对风险平衡的判断；(b) 新区间 <strong>4.00%–4.25%</strong>，<strong>不能</strong>决定所有市场利率；
+                <br>(c) 整体 PCE 含食品能源，Core 剔除；目标为<strong>整体 PCE 2%</strong>；Core 用于看趋势；
+                <br>(d) 一个点 = 一位参会者的个人预测，非承诺非共识；(e) 政策预测 vs 市场隐含概率，都不是确定结果。
+                <br>易错点：(b) 中区间<strong>两端都要减</strong> 25 bp。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 补充：真实公告里的实施细节（课件材料）</div>
+        <p>课件使用的真实公告（2026 年 9 月 16 日）除了声明本身，还包含一份「货币政策实施决定」，其中可以看到三件事的实际形态：</p>
+        <ul>
+          <li><strong>准备金余额利率（IORB）</strong>被设定在某一水平（如 3.90%）；</li>
+          <li><strong>常备隔夜回购便利</strong>的利率构成<strong>上限</strong>（如 4.00%）；</li>
+          <li><strong>常备隔夜逆回购便利</strong>的报价利率构成<strong>下限</strong>（如 3.75%，并带每对手方额度限制）。</li>
+        </ul>
+        <p class="muted">这三个数字正好构成我们在 Part 9 会正式展开的<strong>利率走廊</strong>——上下限设施把市场利率夹在政策目标附近。</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 5. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="5. 练习（真题型）">5. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q17、Q18、Q21）。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Central banks and transmission <span class="kbd">真题型</span> <span class="kbd">Practice Q17</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">(a) FOMC role vs commercial bank lending decisions. (b) Reserves when the central bank buys from a commercial bank; trace to credit, spending, activity. (c) How do an OMO sale, a higher discount rate and a higher RRR work contractionarily? (d) Discount-window loan vs overnight federal funds loan: who lends? (e) Lender of last resort; liquidity shortage vs insolvency.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1。</p></div>
+            <ol class="steps">
+              <li>(a) FOMC 定政策立场；银行做逐笔放款决策。</li>
+              <li>(b) 证券↓、准备金↑ → 信贷↑、短端利率↓ → 支出与活动↑。</li>
+              <li>(c) 卖出回笼准备金；贴现率↑使借款变贵；准备金率↑压缩放贷能力。</li>
+              <li>(d) 贴现窗 = 央行放款；联邦基金 = 机构间拆借。</li>
+              <li>(e) 流动性短缺 = 时点；资不抵债 = 存量。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) FOMC sets the stance and target range; banks lend individually. (b) Securities fall, reserves rise; easier reserves support lending and lower short rates. (c) All three restrain credit and spending. (d) Central bank vs surplus-reserve institution. (e) Timing gap vs asset-value shortfall.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>见分析。重点：(b) 用资产负债表语言；(d) 明确写出贷款人。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Deposit creation and reserve requirements <span class="kbd">真题型</span> <span class="kbd">Practice Q18</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Required reserve ratio 10%; no excess reserves; public holds no cash; a central-bank purchase from a nonbank seller creates $100m of new reserves and an equal initial deposit.
+          <br>(a) First bank and next two rounds. (b) Maximum total deposit increase and total loan increase. (c) Repeat with a 20% ratio. (d) Effect of cash withdrawals and excess reserves. (e) Why is the multiplier conditional?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。</p></div>
+            <ol class="steps">
+              <li>(a) 100/10/90 → 90/9/81 → 81/8.1/72.9。</li>
+              <li>(b) 存款 <strong>\$1,000M</strong>、贷款 <strong>\$900M</strong>。</li>
+              <li>(c) 20% 时存款 <strong>\$500M</strong>。</li>
+              <li>(d) 现金漏损与超额准备金都<strong>缩小</strong>扩张。</li>
+              <li>(e) 依赖多重条件 → 条件模型。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) 100/10/90; 90/9/81; 81/8.1/72.9. (b) Deposits <b>\$1,000m</b>, loans <b>\$900m</b>. (c) <b>\$500m</b>. (d) Both <b>reduce</b> expansion. (e) It depends on willing borrowers/lenders, full redeposit, no excess reserves and no other constraints.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 见上；(b) <strong>1,000M / 900M</strong>；(c) <strong>500M</strong>；(d) 都缩小；(e) 条件模型。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Reading a hypothetical FOMC announcement <span class="kbd">真题型</span> <span class="kbd">Practice Q21</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">"Inflation remains above our longer-run objective, while employment growth has slowed. The Committee has reduced the federal funds target range by 25 bp. Future decisions will depend on incoming data."
+          <br>(a) Dual mandate and the trade-off. (b) Previous range 4.25%–4.50%: new range? Does this fix all market rates? (c) Headline vs core PCE; the longer-run objective; why core still informs. (d) What is one dot? Why neither commitment nor single forecast? (e) Policymaker projections vs FedWatch probabilities.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 3。</p></div>
+            <ol class="steps">
+              <li>(a) 物价稳定 + 充分就业；两端方向相反。</li>
+              <li>(b) 新区间 <strong>4.00%–4.25%</strong>；<strong>不能</strong>决定所有市场利率。</li>
+              <li>(c) 整体 vs 核心 PCE；目标为整体 PCE <strong>2%</strong>。</li>
+              <li>(d) 一个点 = 一位参会者的个人预测。</li>
+              <li>(e) 政策判断 vs 市场定价，都不是确定结果。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Price stability and maximum employment; the cut reflects a balance-of-risks judgment. (b) <b>4.00%–4.25%</b>; no. (c) Headline includes food and energy, core excludes them; objective is <b>2% headline PCE</b>. (d) One participant's projection; neither promise nor consensus. (e) Assessments vs market-implied probabilities; neither certain.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 两端权衡；(b) <strong>4.00%–4.25%</strong>，不能；(c) <strong>2% 整体 PCE</strong>；(d) 个人预测；(e) 都非确定。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Reserve ratio change <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">The banking system holds $2,000 billion in deposits and the required reserve ratio is 8%, with no excess reserves.
+          <br>(a) How much are required reserves, and how much has been lent out?
+          <br>(b) The central bank raises the ratio to 10%. If reserves are unchanged, what happens to lending capacity?
+          <br>(c) Why might the actual contraction in lending be smaller than your answer to (b)?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>准备金 = 存款 × 比率；已贷出 = 存款 − 准备金。提高比率后，同样的准备金能支撑的<strong>最大存款量</strong>下降 → 可贷资金减少。</p></div>
+            <ol class="steps">
+              <li>(a) 法定准备金 \(=2{,}000\times8\%=\mathbf{\$160}\) bn。</li>
+              <li>(a) 已贷出 \(=2{,}000-160=\mathbf{\$1{,}840}\) bn。</li>
+              <li>(b) 准备金仍为 \$160 bn，比率 10% → 最大存款 \(=160/0.10=\mathbf{\$1{,}600}\) bn。</li>
+              <li>(b) 最大贷款 \(=1{,}600-160=\mathbf{\$1{,}440}\) bn → 放贷能力减少 \(1{,}840-1{,}440=\mathbf{\$400}\) bn。</li>
+              <li>(c) 实际收缩可能更小：银行可以<strong>动用超额准备金</strong>、从市场或央行融入准备金、调整资产结构；且借款人可能转向其他融资渠道。此外倍数本身依赖「全额再存入」等条件。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Required reserves <b>\$160bn</b>; lent out <b>\$1,840bn</b>. (b) Max deposits fall to \(160/0.10=\)<b>\$1,600bn</b>, so max lending falls to <b>\$1,440bn</b>, a reduction of <b>\$400bn</b>. (c) Banks can run down excess reserves, borrow reserves, or restructure assets; borrowers may find alternative funding, and the multiplier itself is conditional.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 法定准备金 <strong>\$160 bn</strong>（约 1,600 亿美元），已贷出 <strong>\$1,840 bn</strong>（约 1.84 万亿美元）。
+            <br>(b) 最大存款降至 <strong>\$1,600 bn</strong>，最大放贷降至 <strong>\$1,440 bn</strong>，即放贷能力减少 <strong>\$400 bn</strong>。
+            <br>(c) 实际收缩通常小于理论值：银行可动用超额准备金、从市场或央行融入准备金、或调整资产结构；借款人也可转向其他融资渠道。倍数本身还依赖「全额再存入」等条件。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Open market operations and the money multiplier <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">The banking system holds <b>$500 billion</b> of reserves. The required reserve ratio is <b>10%</b>; banks hold no excess reserves and the public holds no cash.
+          <br>(a) Compute the money multiplier, total deposits and the money supply.
+          <br>(b) The Fed <b>buys $30 billion</b> of Treasury bills from banks. Compute the new reserves, deposits and money supply, and the change.
+          <br>(c) Instead the Fed <b>sells $30 billion</b>. Compute the result. Why is the change exactly ten times the size of the operation?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>在无漏损、无超额准备金的简化模型里，<strong>货币乘数 = 1 / 法定准备金率</strong>，存款 = 准备金 × 乘数。公开市场操作<strong>直接改变准备金基数</strong>，再被乘数放大。</p></div>
+            <ol class="steps">
+              <li>(a) 乘数 = 1 ÷ 0.10 = <strong>10</strong>；存款 = 500 × 10 = <strong>$5,000 billion</strong>；货币供给 = <strong>$5,000 bn</strong>。</li>
+              <li>(b) 买入 → 准备金 500 + 30 = <strong>$530 bn</strong>；存款 = 530 × 10 = <strong>$5,300 bn</strong>。</li>
+              <li>(b) 货币供给变化 = 5,300 − 5,000 = <strong>+$300 bn</strong> = 30 × 10。</li>
+              <li>(c) 卖出 → 准备金 500 − 30 = <strong>$470 bn</strong>；存款 = <strong>$4,700 bn</strong>，变化 <strong>−$300 bn</strong>。</li>
+              <li>(c) 原因：乘数恰好为 10，准备金基数的 ¥30 bn 变动被放大 10 倍；操作方向决定扩张还是收缩。</li>
+              <li>(c) 现实提示：若银行持有<strong>超额准备金</strong>或公众持有现金，实际乘数更小、传导更弱。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Multiplier = 1/0.10 = <b>10</b>; deposits = <b>$5,000 bn</b>; money supply = <b>$5,000 bn</b>. (b) Reserves rise to <b>$530 bn</b>, deposits to <b>$5,300 bn</b>, money supply <b>+$300 bn</b>. (c) A sale leaves reserves at <b>$470 bn</b>, deposits at <b>$4,700 bn</b>, money supply <b>−$300 bn</b>. The change is exactly ten times the operation because the multiplier is 10; in practice excess reserves and cash leakage make it smaller.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 乘数 <strong>10</strong>，货币供给 <strong>$5,000 bn</strong>。(b) 买入后准备金 $530 bn、货币供给 <strong>$5,300 bn</strong>（+ $300 bn）。(c) 卖出后 $4,700 bn（− $300 bn）。变动恰为操作额的 10 倍，即乘数效应；现实中超额准备金与现金漏损会削弱它。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Three easing tools compared <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">The Fed wants to ease policy. Explain the <b>mechanism</b> of each of the following, and say which one is the Fed's main day-to-day instrument and why:
+          <br>(a) open market purchases; (b) cutting the discount rate; (c) cutting the required reserve ratio.
+          <br>(d) In the modern "floor" framework, how do the interest on reserve balances (IORB) and the overnight reverse repo (ON RRP) rate set the floor for the federal funds rate?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>三个工具的差别在于：<strong>谁是决策者</strong>（央行主动 vs 银行主动）、<strong>作用对象</strong>（准备金数量 vs 利率价格）与<strong>信号强度</strong>。现代美联储在<strong>准备金充裕</strong>的环境下用<strong>管理利率（administered rates）</strong>而非数量操作来调控。</p></div>
+            <ol class="steps">
+              <li>(a) <strong>公开市场买入</strong>：央行向银行买入国债，向银行体系注入准备金 → 准备金供给增加、联邦基金利率下行。优点是<strong>主动、灵活、可逆、规模可控</strong> → 日常首选工具。</li>
+              <li>(b) <strong>下调贴现率</strong>：降低银行从央行借钱的利率，但<strong>由银行主动申请</strong>，且存在「污名效应」（stigma）——市场可能认为该行处境不佳 → 效果不确定，更多作为<strong>最后贷款人</strong>的备援。</li>
+              <li>(c) <strong>下调法定准备金率</strong>：一次性释放大量被冻结的准备金、提高货币乘数；但<strong>力度过大、不够精细</strong>，且频繁调整会扰乱银行的流动性管理 → 很少使用。</li>
+              <li>(d) <strong>利率下限体系</strong>：银行不会以低于 <strong>IORB</strong> 的利率把钱拆给同业（因为可以无风险地存放在央行赚 IORB）。</li>
+              <li>(d) <strong>ON RRP</strong> 把同样的下限扩及<strong>非银行机构</strong>（如货币市场基金），它们不会以低于 ON RRP 的利率出借。</li>
+              <li>(d) 因此 <strong>ON RRP 是硬下限、IORB 是主要下限</strong>，联邦基金利率被夹在走廊内；FOMC 通过<strong>调整这两个管理利率</strong>来移动目标区间。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) OMO purchases inject reserves, lowering the federal funds rate; they are proactive, flexible, reversible and precisely sized, which is why they are the main day-to-day tool. (b) Cutting the discount rate lowers the cost of Fed borrowing, but it is <b>bank-initiated</b> and carries <b>stigma</b>, so its effect is uncertain — mainly a lender-of-last-resort backstop. (c) Cutting reserve requirements releases a large block of reserves at once and raises the multiplier, but it is too blunt and disruptive to bank liquidity management, so it is rarely used. (d) Banks will not lend below the <b>IORB</b> rate (they can park funds risk-free at the Fed), and the <b>ON RRP</b> rate extends the same floor to non-banks such as money market funds. These administered rates therefore set the floor and let the FOMC move the target range directly.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 公开市场买入注入准备金，主动灵活可逆 → <strong>日常主要工具</strong>。(b) 降贴现率由银行主动申请且有污名效应，效果不确定。(c) 降准力度过大、不够精细，很少使用。(d) <strong>IORB 与 ON RRP 构成利率下限</strong>：机构不会以低于无风险存放央行的利率出借，央行借此直接移动目标区间。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> The Taylor rule as a policy benchmark <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Assume the neutral real rate r* = <b>2.00%</b>, the inflation target π* = <b>2.00%</b>, current inflation π = <b>3.00%</b>, and the output gap is <b>−1.50%</b> (the economy is running below potential).
+          <br>(a) Using \(r=r^{*}+\pi+0.5(\pi-\pi^{*})+0.5\times(\text{output gap})\), compute the policy rate prescribed by the Taylor rule.
+          <br>(b) The actual federal funds rate is <b>5.25%</b>. Is policy tighter or looser than the rule, and by how much?
+          <br>(c) Explain why the output gap term enters with a <b>negative</b> contribution here, and list two reasons why the Fed does not follow the rule mechanically.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>泰勒规则把政策利率拆成四块：<strong>中性实际利率 + 当前通胀 + 通胀缺口的一半 + 产出缺口的一半</strong>。它是<strong>参考基准</strong>而非机械公式。注意产出缺口为负（经济偏冷）时，该项<strong>拉低</strong>建议利率。</p></div>
+            <ol class="steps">
+              <li>(a) 中性 + 通胀 = 2.00 + 3.00 = <strong>5.00%</strong>。</li>
+              <li>(a) 通胀缺口项 = 0.5 × (3.00 − 2.00) = <strong>+0.50%</strong>。</li>
+              <li>(a) 产出缺口项 = 0.5 × (−1.50) = <strong>−0.75%</strong>。</li>
+              <li>(a) 合计 \(r=2.00+3.00+0.50-0.75=\) <strong>4.75%</strong>。</li>
+              <li>(b) 实际 5.25% − 规则 4.75% = <strong>+0.50% (50 bp)</strong> → 政策比规则<strong>更紧</strong>。</li>
+              <li>(c) 产出缺口为负说明经济<strong>低于潜在水平</strong>，需要<strong>降息刺激</strong>，因此该项为负。</li>
+              <li>(c) 不机械执行的原因：① r* 与产出缺口<strong>不可直接观测</strong>，估计误差大；② 还需考虑<strong>金融稳定、就业结构、国际传导</strong>等规则外的因素。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) r = 2.00 + 3.00 + 0.5(1.00) + 0.5(−1.50) = <b>4.75%</b>. (b) Actual 5.25% is <b>50 bp tighter</b> than the rule. (c) The output gap is negative because output is below potential, so the rule calls for easier policy; the Fed does not follow it mechanically because r* and the output gap are <b>unobservable and estimated with error</b>, and because financial stability, labour-market structure and international spillovers also matter.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 规则建议利率 <strong>4.75%</strong>。(b) 实际 5.25% 比规则<strong>紧 50 bp</strong>。(c) 产出缺口为负 → 该模型项拉低利率；央行不机械执行，因为 r* 与产出缺口不可直接观测，且需兼顾金融稳定等因素。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="6. 术语对照">6. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>FOMC 联邦公开市场委员会</span><span>Federal funds rate 联邦基金利率</span><span>Target range 目标区间</span>
+        <span>Dual mandate 双重使命</span><span>Price stability 物价稳定</span><span>Maximum employment 充分就业</span>
+        <span>Open market operations (OMO) 公开市场操作</span><span>Discount rate 贴现率</span><span>Discount window 贴现窗</span>
+        <span>Required reserve ratio 法定准备金率</span><span>Excess reserves 超额准备金</span><span>Reserves 准备金</span>
+        <span>Money multiplier 货币乘数</span><span>Deposit creation 存款创造</span><span>Cash leakage 现金漏损</span>
+        <span>Federal funds sold / purchased 联邦基金拆出 / 拆入</span><span>Lender of last resort 最后贷款人</span>
+        <span>Liquidity shortage 流动性短缺</span><span>Insolvency 资不抵债</span>
+        <span>PCE price index PCE 物价指数</span><span>Core PCE 核心 PCE</span><span>Headline PCE 整体 PCE</span>
+        <span>Dot plot 点阵图</span><span>Summary of Economic Projections 经济预测摘要</span><span>FedWatch 利率概率</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>Part 8 是美联储的框架。Part 9 把同样的思路应用到<strong>中国人民银行</strong>：多目标冲突、数量型与价格型工具、MLF/SLF/PSL 的分工，以及利率走廊。</p>
+        <p><a href="part9-monetary-policy-china.html">前往 Part 9 中国货币政策 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 8 货币政策与美联储 · 内容依据 Chapter 4a / 4c 课件与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

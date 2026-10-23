@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 1 金融市场与金融机构 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part1" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 1.1 Markets Overview · Chapter 1.3 Institutions</div>
+      <h1>Part 1 金融市场与金融机构</h1>
+      <p>本部分回答两个问题：资金如何从盈余方流到短缺方（市场如何分类、如何组织），以及谁在中间做转换（金融机构的功能与风险）。这是全课的制度底座——后面讲利率、估值与货币政策时，都会回到这里提到的市场与机构。</p>
+      <div class="tags">
+        <span>一级/二级市场</span><span>货币 vs 资本市场</span><span>外汇与衍生品</span><span>直接与间接融资</span><span>金融机构</span><span>风险分类</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 市场分类 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 金融市场的分类">1. 金融市场的分类 <span class="badge">Market Classification</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 1 · Markets Overview</span><span>Practice Q1</span><span>HW1 Q1 Part A</span></div>
+
+      <h3 class="sub" data-short="1.1 一级市场与二级市场">1.1 一级市场与二级市场 <span class="eninline">Primary vs Secondary Markets</span></h3>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Primary market（一级市场）</b>: the market in which new securities are <b>issued</b> and sold for the first time; the <b>issuer</b> receives the proceeds.</span><br>
+        一级市场是新证券<strong>首次发行</strong>并出售的市场，<strong>发行人（issuer）</strong>获得资金。典型形式包括 IPO（首次公开发行）、SEO（增发）与债券首发。</p>
+        <p><span class="en"><b>Secondary market（二级市场）</b>: the market in which <b>previously issued</b> securities are traded among investors; the <b>selling investor</b> receives the proceeds, not the issuer.</span><br>
+        二级市场是<strong>已发行证券</strong>在投资者之间交易的市场，钱付给出售证券的<strong>原投资者</strong>，发行人不收到任何新资金。</p>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 判定口诀：看「谁收到钱」</div>
+        <ul>
+          <li>发行人收到钱 → <strong>一级市场</strong>（Primary）。</li>
+          <li>原持有人收到钱 → <strong>二级市场</strong>（Secondary）。</li>
+          <li>同一批证券可以有多次二级市场交易，但只有<strong>第一次</strong>发行属于一级市场。</li>
+        </ul>
+      </div>
+
+      <div data-fig="marketStructure" data-cap="金融市场先按「是否新发行」分为一级与二级，再按期限分为货币市场与资本市场。图片来源：Chapter 1 Introduction 1" data-src="Chapter 1"></div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Classifying primary and secondary transactions</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">A technology company issues new shares to finance a factory. Six months later, an original investor sells those shares to a pension fund through a stock exchange.
+            <br>(a) Classify each transaction as a primary-market or secondary-market transaction. Identify who receives the money in each case.
+            <br>(b) Explain how an active secondary market can help the company raise funds even though the company receives no proceeds from the later trade.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 判断标准只有一条：<strong>发行人是否收到钱</strong>。第一次是公司发行新股，钱进公司口袋 → 一级市场；第二次是老股东把股票卖给养老金，钱进老股东口袋 → 二级市场。
+            <br>(b) 二级市场虽然不直接给公司钱，但它决定了投资者<strong>能不能随时退出</strong>。退出越容易，投资者要求的回报率越低，公司未来的新股才越好发、价格才越高。这是「流动性溢价」的逻辑在股权上的体现。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>第一次交易：新股发行 → <strong>一级市场</strong>，<strong>公司</strong>获得发行收入。</li>
+              <li>第二次交易：存量股转让 → <strong>二级市场</strong>，<strong>原投资者</strong>获得养老金支付的钱。</li>
+              <li>二级市场的作用：提供流动性（liquidity）与价格发现（price discovery）。</li>
+              <li>传导到一级市场：流动性高 → 投资者要求的回报率降低 → 新股发行更容易、定价更高。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) The new share issue is a <b>primary-market</b> transaction and the company receives the proceeds. The later sale is a <b>secondary-market</b> transaction and the <b>original investor</b> receives the pension fund's payment.
+                <br>(b) A liquid secondary market lets investors sell their holdings easily, which makes new issues more attractive and <b>lowers the return investors require</b>, thereby supporting the company's future fundraising.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 新股发行 = <strong>一级市场</strong>（公司收钱）；六个月后的转让 = <strong>二级市场</strong>（原投资者收钱）。
+                <br>(b) 活跃的二级市场让投资者能随时变现，降低了他们要求的回报率，从而使公司未来的融资更容易、成本更低。注意：公司从后一笔交易中<strong>拿不到任何钱</strong>，这一点常被写错。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <h3 class="sub" data-short="1.2 货币市场与资本市场">1.2 货币市场与资本市场 <span class="eninline">Money vs Capital Markets</span></h3>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Money market（货币市场）</b>: the market for short-term debt instruments, typically with original maturity of <b>one year or less</b>, characterized by high liquidity and low default risk.</span><br>
+        <span class="en"><b>Capital market（资本市场）</b>: the market for longer-term debt (maturity <b>greater than one year</b>) and <b>equity</b> securities.</span></p>
+      </div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:110px;">维度</th><th>货币市场 Money Market</th><th>资本市场 Capital Market</th></tr></thead>
+        <tbody>
+          <tr><td>期限</td><td>≤ 1 年（多为 1 天–1 年）</td><td>&gt; 1 年，或无固定到期日（股票）</td></tr>
+          <tr><td>典型工具</td><td>T-bill、商业票据 CP、大额可转让 CD、银行承兑汇票 BA、回购 repo</td><td>普通股、长期公司债、国债、抵押贷款</td></tr>
+          <tr><td>流动性</td><td>高</td><td>视品种而定，股权通常较好</td></tr>
+          <tr><td>信用风险</td><td>低（发行人资质高）</td><td>差异大</td></tr>
+          <tr><td>主要参与者</td><td>银行、货币市场基金、企业财务部门</td><td>养老金、保险公司、共同基金、个人</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 易错点：股票没有到期日，为什么属于资本市场？</div>
+        <p>货币/资本市场的划分本质是<strong>融资期限的长短</strong>，而不是「有没有到期日」。股票代表的是<strong>永久性长期资本</strong>，永远不会在一年内被偿还，因此归入资本市场。答题时要说明：<em>Equity represents long-term financing with no contractual maturity, rather than short-term debt.</em></p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Classify instruments: money vs capital market</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Classify newly issued 90-day Treasury bills, five-year corporate bonds, and ordinary shares as money-market or capital-market instruments. Explain how shares fit the classification despite having no maturity date.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>三个工具分别对应「短期 / 长期债务 / 永久权益」。90 天国库券明显 ≤ 1 年 → 货币市场；5 年公司债 &gt; 1 年 → 资本市场；普通股无到期日但属于长期融资 → 资本市场。答题的关键在于<strong>不能只写分类，要给出理由</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>90 天 T-bill：期限 90 天 &lt; 1 年 → <strong>货币市场</strong>，且为债务工具。</li>
+              <li>5 年公司债：期限 5 年 &gt; 1 年 → <strong>资本市场</strong>，债务工具。</li>
+              <li>普通股：无到期日 → 仍为<strong>资本市场</strong>，股权工具。</li>
+              <li>解释股票部分：它提供的是<strong>永久性</strong>资本，不属于短期债务，因此按「长期融资」归类。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>The 90-day Treasury bills are <b>money-market</b> instruments. Five-year corporate bonds and ordinary shares are <b>capital-market</b> instruments. Equity represents <b>long-term financing with no contractual maturity</b>, rather than short-term debt, so it belongs to the capital market even though it has no maturity date.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>90 天国库券 → <strong>货币市场</strong>；5 年公司债与普通股 → <strong>资本市场</strong>。普通股虽无到期日，但它提供的是永久性长期资本，而非短期债务性质的融资，因此归入资本市场。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 市场类型 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 市场类型与交易方式">2. 市场类型与交易方式 <span class="badge">Market Types &amp; Trading</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 1 · slides 3–22</span><span>Practice Q1(d)</span></div>
+
+      <div class="grid2">
+        <div class="box note">
+          <div class="box-title">▸ 按组织形式</div>
+          <ul>
+            <li><strong>交易所 Exchange / auction market</strong>：集中撮合，价格公开透明（如 NYSE、上交所）。</li>
+            <li><strong>场外市场 OTC / dealer market</strong>：做市商（dealer）双向报价，投资者与做市商成交（如 NASDAQ 早期、银行间市场）。</li>
+          </ul>
+        </div>
+        <div class="box note">
+          <div class="box-title">▸ 按交割时间</div>
+          <ul>
+            <li><strong>现货市场 Spot market</strong>：立即（或 T+2 内）交割。</li>
+            <li><strong>远期 / 期货 / 期权</strong>：约定未来交割的价格与条件 → 衍生品市场。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 场景：进口商的汇率风险管理</div>
+        <p>这是课件与练习中最常出现的衍生品场景题。核心区别是：</p>
+        <ul>
+          <li><strong>即期 Spot</strong>：今天按今天的汇率换汇，然后持有美元到付款日。汇率风险<strong>没有被转移</strong>——未来汇率变动会改变这笔美元的实际价值。</li>
+          <li><strong>远期 Forward</strong>：今天<strong>锁定</strong>三个月后的汇率。无论到期时市场汇率是多少，都按约定汇率交割，把汇率风险<strong>转移给了对手方</strong>。</li>
+        </ul>
+        <p class="muted">注意：对手方承担了反向的合约敞口，但它可以在别处再对冲自己的敞口。因此远期合约是<em>风险转移</em>，不是<em>风险消失</em>。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> Spot versus forward for an importer</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">An importer must pay US dollars in three months. Explain the difference between buying dollars in the spot market today and agreeing today on a forward exchange rate. How can the forward contract transfer exchange-rate risk?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>关键在于<strong>「不确定性何时被消除」</strong>。即期买入：今天就知道花了多少本币，但三个月后美元头寸的本币价值仍然随汇率波动；远期买入：今天就把三个月后的汇率定死，本币成本从一开始就是确定的。两种做法都「今天做了决定」，但只有远期<strong>消除了未来的价格不确定性</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>即期方案：今天按 spot rate 买入美元，持有三个月后用于付款。</li>
+              <li>即期方案的残留风险：美元头寸的本币价值仍随未来汇率变动。</li>
+              <li>远期方案：今天约定三个月后的汇率，到期按约定汇率交割。</li>
+              <li>远期方案的效果：把「美元的本币成本」变为确定值 → 汇率风险转移到对手方。</li>
+              <li>补充说明：对手方承担反向敞口，但可另行对冲，因此风险被转移而非消灭。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>A <b>spot purchase</b> exchanges currencies now at today's spot rate; the importer then holds the dollars until payment. A <b>forward</b> fixes today the exchange rate for a transaction in three months. Matching the dollar obligation with a forward purchase <b>reduces uncertainty about its domestic-currency cost</b>. The counterparty takes the opposite contractual exposure, although it may hedge that exposure elsewhere.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>即期买入是「今天按今天的汇率换汇并持有美元」；远期是「今天约定三个月后的汇率」。远期把美元支出的本币成本固定下来，从而<strong>降低不确定性</strong>。对手方承接了反向敞口，但它可以在别处对冲——所以风险是<strong>转移</strong>而非消失。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 直接融资与间接融资 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 直接与间接融资">3. 直接融资与间接融资 <span class="badge">Direct vs Intermediated Finance</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 3 · slides 8–9</span><span>HW1 Q1 Part A(d), Part B</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Direct finance（直接融资）</b>: suppliers of funds hold the <b>primary securities</b> issued by users of funds; the claim is created directly between the two parties (typically with help from an investment bank).</span><br>
+        <span class="en"><b>Indirect finance（间接融资）</b>: a financial intermediary stands between the two sides — it issues <b>secondary claims</b> (e.g. deposits) to savers and holds <b>primary claims</b> (e.g. loans, bonds) against borrowers. This is called <b>asset transformation</b>.</span></p>
+      </div>
+
+      <div data-fig="flowOfFunds" data-cap="直接融资（左）中盈余方直接持有短缺方发行的证券；间接融资（右）中金融中介做资产转换。图片来源：Chapter 1 Introduction 3" data-src="Chapter 1"></div>
+
+      <div class="box key">
+        <div class="box-title">▸ 判定标准：看「你手里拿的是什么」</div>
+        <ul>
+          <li>储蓄者持有<strong>借款人的证券</strong>（股票 / 债券）→ 直接融资。</li>
+          <li>储蓄者持有<strong>中介的负债</strong>（存款 / 保单 / 基金份额）→ 间接融资。</li>
+          <li>即使用投行承销（underwriting），只要最终持有的是公司证券，仍然是<strong>直接融资</strong>——投行只是中介服务，不承担资产负债表转换。</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 4</span> Direct or indirect? Who holds what claim?</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) BrightTech Co. raises funds by issuing newly issued 8-year bonds that are purchased by a pension fund through an organized bond market. Is this direct or indirect finance? Primary or secondary market?
+            <br>(b) Suppose instead that BrightTech borrows from Sunrise Bank, and the bank finances the loan mainly with household deposits. Is this direct or indirect finance? What claim do households hold, and what claim does the bank hold?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 养老金直接持有 BrightTech 发行的债券 → 直接融资；债券是<strong>新发行</strong>的 → 一级市场。两个问题是独立的，要分别作答。
+            <br>(b) 家庭把钱存入银行，拿到的是<strong>银行存款</strong>（银行的负债）；银行把钱贷给企业，拿到的是<strong>贷款</strong>（企业的负债，银行的资产）。家庭与企业之间没有直接证券关系 → 间接融资。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 融资方式：养老金持有 BrightTech 的<strong>一级证券</strong> → <strong>直接融资</strong>。</li>
+              <li>(a) 市场层级：债券为<strong>新发行</strong> → <strong>一级市场</strong>，BrightTech 获得资金。</li>
+              <li>(b) 融资方式：资金经银行转换 → <strong>间接融资</strong>。</li>
+              <li>(b) 家庭持有的索取权：<strong>银行存款</strong>（对银行的债权）。</li>
+              <li>(b) 银行持有的索取权：<strong>对 BrightTech 的贷款</strong>（债权）。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) <b>Direct finance</b> and a <b>primary-market</b> transaction: the pension fund buys newly issued bonds directly from the issuer through the market.
+                <br>(b) <b>Indirect finance</b>: households hold <b>bank deposits</b> (claims on the bank), while the bank holds a <b>loan claim on BrightTech</b>.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>直接融资 + 一级市场</strong>：养老金直接买入新发行的债券，公司获得资金。
+                <br>(b) <strong>间接融资</strong>：家庭持有<strong>银行存款</strong>（对银行的债权），银行持有<strong>对 BrightTech 的贷款</strong>。这就是典型的资产转换（asset transformation）。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 金融机构 ============ -->
+    <section id="s4">
+      <h2 class="sec" data-short="4. 金融机构">4. 金融机构 <span class="badge">Financial Institutions</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 3 · slides 3–20</span><span>Practice Q2</span><span>HW1 Q1 Part B, D</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Financial institutions (FIs)</b> are institutions through which suppliers of funds channel money to users of funds.</span><br>
+        金融机构是资金从盈余方流向短缺方的通道。课件把它们按功能分为四大类：</p>
+      </div>
+
+      <div data-fig="fiCategories" data-cap="金融机构的四大类别与十大风险。注意同一家机构可同时承担多个功能。图片来源：Chapter 1 Introduction 3" data-src="Chapter 1"></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:150px;">类别</th><th>成员</th><th>核心业务</th><th>中国的对应</th></tr></thead>
+        <tbody>
+          <tr><td><strong>存款类<br>Depository</strong></td><td>商业银行 commercial bank、信用社 credit union、储蓄机构 thrift</td><td>吸收存款、发放贷款；主要资产是贷款与证券</td><td>商业银行；<br>农村信用社 / 农村信用合作联社；<br>中德住房储蓄银行</td></tr>
+          <tr><td><strong>契约储蓄<br>Contractual savings</strong></td><td>寿险 life insurer、财险 P&amp;C insurer、养老金 pension fund</td><td>按合约定期收付，负债久期长且可预测</td><td>中国人寿、平安养老等</td></tr>
+          <tr><td><strong>投资集合<br>Investment pools</strong></td><td>共同基金 mutual fund、ETF、对冲基金 hedge fund、私募 private fund</td><td>集合小额资金投资证券组合，实现分散化</td><td>公募基金、私募基金</td></tr>
+          <tr><td><strong>市场中介<br>Intermediaries</strong></td><td>投行 investment bank、经纪商 broker、做市商 dealer、交易所 exchange</td><td>承销、撮合、做市、持续双向报价</td><td>券商、交易所、中金等</td></tr>
+          <tr><td><strong>基础设施<br>Infrastructure / fintech</strong></td><td>托管行 custodian、清算所 clearing house、支付机构、数据服务商</td><td>结算、托管、支付与信息服务</td><td>中登公司、银联、第三方支付</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 记忆要点</div>
+        <p>课件原话：<em>One firm may perform several functions; one function may be performed by several legal entities.</em>（一家机构可以承担多个功能；一个功能也可以由多家法人实体承担。）因此分类时看的是<strong>这项业务在做什么</strong>，而不是这家机构叫什么名字。</p>
+      </div>
+
+      <h3 class="sub" data-short="4.1 中介的五大功能">4.1 金融中介的五大功能 <span class="eninline">Five Benefits to Suppliers of Funds</span></h3>
+
+      <div class="box theory">
+        <div class="box-title">▸ 为什么需要中介：五个「降低 / 提供」</div>
+        <ol>
+          <li><strong>降低监控成本 Reduce monitoring costs</strong>：储蓄者单独监督借款人会产生<strong>代理成本 agency costs</strong>（管理层可能做出违背证券契约承诺的行为）。中介把众多小额储蓄汇集起来，由它<strong>集中监督（delegated monitoring）</strong>。</li>
+          <li><strong>提高流动性、降低价格风险 Increase liquidity &amp; lower price risk</strong>：中介向家庭提供<strong>二级索取权</strong>（存款、保单），其流动性优于一级证券；同时通过大额分散化降低组合风险。</li>
+          <li><strong>降低交易成本 Reduce transaction costs</strong>：规模经济（economies of scale）与批量买卖，缩小买卖价差（buy-sell spread）。</li>
+          <li><strong>提供期限转换 Maturity intermediation</strong>：中介承担资产与负债期限错配（mismatch）的风险，让家庭拿活期存款、企业拿长期贷款。<em>这正是流动性风险的来源（如 SVB 事件）。</em></li>
+          <li><strong>提供面额转换 Denomination intermediation</strong>：许多资产最小面额很大，个人买不起；货币市场基金等单位信托让小额投资者间接进入大额市场。</li>
+        </ol>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 中介对整个经济的作用（FIs benefit the overall economy）</div>
+        <ul>
+          <li>是央行传导货币政策的<strong>通道</strong>（conduit for monetary policy）；</li>
+          <li>提供<strong>有效率的信用配置</strong>（efficient credit allocation）；</li>
+          <li>实现<strong>代际财富转移</strong>（intergenerational wealth transfers）；</li>
+          <li>提供<strong>支付服务</strong>（payment services）。</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 5</span> Which intermediary function is illustrated?</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">For each case, name the intermediary function and explain briefly.
+            <br>(a) A bank collects 20,000 small deposits of ¥5,000 each and uses the pooled funds to make a single ¥100 million term loan to a manufacturing firm.
+            <br>(b) A household wants very high liquidity, but a bank uses demand deposits to help finance a 5-year business loan.
+            <br>(c) A mutual fund invests in 200 different corporate bonds instead of one single bond.
+            <br>(d) Many corporate bonds are issued in denominations too large for a small saver. A managed fund allows a student investor to buy a small number of fund units and indirectly obtain exposure to those bonds.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>四个小题分别对应五种功能中的四种，做题时要<strong>抓住场景里最突出的那个「不匹配」</strong>：
+            <br>· (a) 20,000 笔 ¥5,000 汇成一笔 ¥1 亿 → <strong>规模 / 面额聚合</strong>，核心是让借款人一次性拿到大额资金；
+            <br>· (b) 家庭要流动性 vs 企业要 5 年期 → <strong>期限错配</strong>；
+            <br>· (c) 200 只债券 vs 1 只 → <strong>分散化 / 降低价格风险</strong>；
+            <br>· (d) 学生买不起大额债券 → <strong>面额转换</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 属于<strong>面额转换（配合规模经济）</strong>：把 20,000 笔小额存款聚合成一笔 ¥1 亿元定期贷款，使借款人一次性获得所需规模，无需在公开市场分次发行。</li>
+              <li>(b) 属于<strong>期限转换 maturity intermediation</strong>：银行以活期负债支持 5 年期资产，替双方承担期限错配。</li>
+              <li>(c) 属于<strong>降低价格风险 / 分散化</strong>：持有 200 只债券削弱单一发行人事件对组合的冲击，使预期收益更可预测。</li>
+              <li>(d) 属于<strong>面额转换 denomination intermediation</strong>：基金份额把大额债券拆成小额可投资单位。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) <b>Denomination intermediation</b> (with economies of scale): small balances are pooled into a single ¥100 million loan the borrower could not obtain in small pieces.
+                <br>(b) <b>Maturity intermediation</b>: withdrawable short-term liabilities fund a five-year asset.
+                <br>(c) <b>Risk diversification / lower price risk</b>: idiosyncratic issuer risk is spread across 200 bonds.
+                <br>(d) <b>Denomination intermediation</b>: fund units give indirect access to large-denomination bonds.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>面额转换</strong>（+规模经济）；(b) <strong>期限转换</strong>；(c) <strong>分散化、降低价格风险</strong>；(d) <strong>面额转换</strong>。
+                <br>答这类题时，名词必须写对，且<strong>必须配上「它解决了什么不匹配」的一句话解释</strong>——只写名词通常拿不到满分。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 6</span> Information problems: monitoring and screening</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) A lender cannot perfectly observe how a borrower will use funds after the loan is granted, so the intermediary requires collateral, financial covenants, and regular monitoring. Which information problem is most relevant here?
+            <br>(b) A small start-up cannot issue bonds directly at reasonable cost because investors know little about the firm. A commercial bank screens the firm and then extends a loan. What information problem is the bank helping to reduce?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>两个场景都源自<strong>信息不对称</strong>，但发生在<strong>不同时点</strong>：
+            <br>· (a) 发生在<strong>放款之后</strong>——借款人可能改变资金用途，这叫<strong>道德风险 moral hazard</strong>，对应的成本是课件里说的<strong>代理成本 agency cost</strong>；
+            <br>· (b) 发生在<strong>放款之前</strong>——投资人无法分辨好坏企业，这叫<strong>逆向选择 adverse selection</strong>，解决办法是<strong>筛选 screening</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 时点判断：放款<strong>之后</strong>的行为不可观测 → <strong>道德风险 / 代理成本</strong>。</li>
+              <li>(a) 应对工具：抵押品 collateral、财务契约 covenants、持续监控 monitoring。</li>
+              <li>(b) 时点判断：放款<strong>之前</strong>的信息缺失 → <strong>逆向选择</strong>。</li>
+              <li>(b) 银行的解决办法：<strong>筛选 screening</strong>，用自己的专业能力评估企业，使融资成为可能。</li>
+              <li>(b) 对借款人的好处：原本无法以合理成本直接发债的企业获得了资金。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) <b>Moral hazard / agency costs</b>: post-lending behaviour is not perfectly observable, so the intermediary uses collateral, covenants and monitoring.
+                <br>(b) <b>Adverse selection</b>: investors cannot distinguish good from bad borrowers ex ante. The bank's <b>screening</b> reduces this problem, letting an otherwise-unfundable firm obtain financing.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) <strong>道德风险（代理成本）</strong>：放款后行为不可观测，用抵押、契约与监控来约束。
+                <br>(b) <strong>逆向选择</strong>：事前信息缺失；银行通过<strong>筛选</strong>降低该问题，使原本融资无门的小企业获得贷款。
+                <br>记忆法：<em>事前看不清 = 逆向选择；事后管不住 = 道德风险。</em></p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 5. 风险 ============ -->
+    <section id="s5">
+      <h2 class="sec" data-short="5. 金融机构的风险">5. 金融机构面临的风险 <span class="badge">Risks Faced by FIs</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 3 · slide 17</span><span>Practice Q2(c)</span><span>HW1 Q1 Part C</span></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:150px;">风险</th><th>英文</th><th>一句话定义</th><th>典型场景</th></tr></thead>
+        <tbody>
+          <tr><td>信用风险</td><td>Credit risk</td><td>借款人未能按约偿付本息</td><td>企业贷款违约</td></tr>
+          <tr><td>利率风险</td><td>Interest rate risk</td><td>市场利率变动改变资产/负债价值或净利差</td><td><strong>用短期存款支持 30 年固定利率按揭</strong>，利率骤升</td></tr>
+          <tr><td>市场风险</td><td>Market risk</td><td>交易组合市值因价格变动而下跌</td><td>信用利差走阔，债券组合浮亏</td></tr>
+          <tr><td>流动性风险</td><td>Liquidity risk</td><td>无法在不大幅折价的前提下及时获得现金</td><td>谣言引发挤兑，长期贷款无法快速变现</td></tr>
+          <tr><td>外汇风险</td><td>Foreign exchange risk</td><td>汇率变动改变外币资产/负债的价值</td><td>持有未对冲的外币贷款</td></tr>
+          <tr><td>国家/主权风险</td><td>Country or sovereign risk</td><td>外国政府行为（资本管制、违约）阻断偿付</td><td>资本管制使借款人无法汇出外币还款</td></tr>
+          <tr><td>表外风险</td><td>Off-balance-sheet risk</td><td>担保、承诺等或有负债被触发</td><td>备用信用证 standby LC 被要求兑付</td></tr>
+          <tr><td>技术风险</td><td>Technology risk</td><td>系统故障导致服务中断或数据损失</td><td>核心系统宕机</td></tr>
+          <tr><td>操作风险</td><td>Operational risk</td><td>流程、人员或内控失效造成损失</td><td>结算错误、内部欺诈</td></tr>
+          <tr><td>资不抵债风险</td><td>Insolvency risk</td><td>资产价值不足以偿付负债</td><td>资本被亏损侵蚀至为负</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 三个最易混淆的风险：一次分清</div>
+        <ul>
+          <li><strong>信用风险</strong>：对方<strong>不还钱</strong>（对手方的偿付能力）。</li>
+          <li><strong>流动性风险</strong>：钱<strong>还不上时间</strong>（时点问题，资产本身可能是好的）。银行用活期存款支持长期贷款，即使借款人正常还款，也可能因挤兑而倒下。</li>
+          <li><strong>资不抵债风险</strong>：资产<strong>价值不够</strong>（存量问题，与时间点无关）。</li>
+        </ul>
+        <p class="muted">课件特别强调：<em>Volcker Rule</em> 规定受保（insured）机构不得从事自营交易（proprietary trading），目的就是限制这类风险承担。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 7</span> Classify the risk in each case</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">Classify each case using the most relevant risk category.
+            <br>(i) A bank provides a standby letter of credit to a trading company. No loan appears on the balance sheet today, but the bank may have to pay if the client fails to perform.
+            <br>(ii) A bank funds 30-year fixed-rate mortgages with short-term deposits. Market interest rates suddenly rise sharply.
+            <br>(iii) A bank has many loans to firms in a foreign country. The foreign government imposes capital controls and borrowers cannot transfer foreign currency to repay.
+            <br>(iv) A rumor causes many depositors to withdraw cash on the same day, but most of the bank's assets are long-term loans that cannot be sold quickly without large losses.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>做风险分类题的技巧是<strong>先找「触发事件」，再看「损失来自哪里」</strong>：
+            <br>· (i) 触发事件是客户的或有义务被激活，且当前<strong>不在资产负债表上</strong> → 表外风险；
+            <br>· (ii) 触发事件是<strong>市场利率上升</strong>，损失来自资产端固定利率与负债端浮动成本的错配 → 利率风险；
+            <br>· (iii) 触发事件是<strong>外国政府</strong>的资本管制 → 国家/主权风险（不是普通的信用风险，因为偿付受阻来自政府行为）；
+            <br>· (iv) 触发事件是<strong>同日挤兑</strong>，资产本身可能没有违约，只是无法及时变现 → 流动性风险。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(i) 识别：担保类或有负债、未入表 → <strong>表外风险 off-balance-sheet risk</strong>。</li>
+              <li>(ii) 识别：利率变动 + 期限/重定价错配 → <strong>利率风险 interest rate risk</strong>。</li>
+              <li>(iii) 识别：外国政府的资本管制 → <strong>国家/主权风险 country or sovereign risk</strong>。</li>
+              <li>(iv) 识别：挤兑 + 资产无法快速变现 → <strong>流动性风险 liquidity risk</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(i) <b>Off-balance-sheet risk</b>. (ii) <b>Interest rate risk</b> (a repricing/maturity mismatch). (iii) <b>Country or sovereign risk</b> (government action blocks repayment). (iv) <b>Liquidity risk</b> (withdrawals cannot be met without fire-sale losses).</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(i) <strong>表外风险</strong>；(ii) <strong>利率风险</strong>；(iii) <strong>国家/主权风险</strong>；(iv) <strong>流动性风险</strong>。
+                <br>注意 (ii) 与 (iv) 都涉及「短存长贷」，但<strong>触发事件不同</strong>：前者是利率变动侵蚀价值/利差，后者是提现时点无法变现。答题时要把触发事件写出来。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 6. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="6. 练习（真题型）">6. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong> 与 <strong>Homework 1</strong>，考试题型会参考它们。英文原题保留，中文分析在前，完整解答折叠。建议限时完成后再对照。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Dealers and market function <span class="kbd">真题型</span> <span class="kbd">Practice Q1(e)</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A securities dealer continuously quotes bid and ask prices for Treasury bills and stands ready to trade. Which market function does this most directly support? Why is this useful for suppliers of funds?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>做市商（dealer）持续双向报价、随时准备成交，直接提供的是<strong>流动性（liquidity）</strong>——投资者不必等待找到对手方就能成交。对资金盈余方的价值在于：降低了「想卖却卖不掉」或「只能大幅折价卖出」的风险，从而降低了他们持有该资产所要求的回报。</p></div>
+            <ol class="steps">
+              <li>功能识别：持续双向报价 = <strong>做市 / 提供流动性</strong>。</li>
+              <li>对盈余方的用处：随时可按接近报价的价格买卖 → 降低变现风险与交易成本。</li>
+              <li>延伸：流动性提高 → 投资者要求回报率下降 → 一级市场发行人受益。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>It most directly supports <b>liquidity (market-making)</b>. Suppliers of funds can buy or sell promptly at quoted prices instead of searching for a counterparty, which lowers their trading cost and the return they require for holding the asset.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>最直接支持的是<strong>流动性 / 做市功能</strong>。盈余方可以随时按报价成交，不必自行寻找对手方，因此交易成本更低、要求的回报也更低。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Intermediary benefits: transaction costs <span class="kbd">真题型</span> <span class="kbd">Practice Q2(a)</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A bank accepts many small, withdrawable deposits and uses part of the funds to make long-term business loans. A mutual fund pools small investors' money to buy securities.
+          <br>(a) Explain how these institutions provide denomination intermediation and reduce transaction and monitoring costs.
+          <br>(b) Explain maturity intermediation in the bank's business. Why can it create liquidity risk even when the borrowers continue to repay their loans?
+          <br>(c) Distinguish credit risk, interest rate risk, and liquidity risk using one example of each from the bank's activities.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>三个小问分别考「两个功能 + 三类风险」。答题时要<strong>每个概念都配上银行或基金业务中的具体例子</strong>，抽象定义拿不到满分。</p></div>
+            <ol class="steps">
+              <li>(a) <strong>面额转换</strong>：把众多小额存款/申购聚合成能买大额资产的资金池。</li>
+              <li>(a) <strong>降低交易成本</strong>：批量交易产生规模经济，摊薄固定成本、缩小买卖价差。</li>
+              <li>(a) <strong>降低监控成本</strong>：由中介集中监督借款人，避免每个小额储蓄者重复调查（delegated monitoring）。</li>
+              <li>(b) <strong>期限转换</strong>：用活期/短期负债支持长期资产。</li>
+              <li>(b) <strong>为什么仍有流动性风险</strong>：存款人可以随时提现，而贷款尚未到期；<em>即使借款人正常还款</em>，现金流到达时间也晚于提现需求，银行可能被迫折价出售资产。</li>
+              <li>(c) <strong>信用风险</strong>：借款企业违约不还贷。</li>
+              <li>(c) <strong>利率风险</strong>：市场利率上升使固定利率资产市值下降，或存款成本上升快于资产收益。</li>
+              <li>(c) <strong>流动性风险</strong>：无法在不大幅折价的前提下满足提现。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span>
+              <p>(a) Pooling small balances gives access to large-denomination investments; bulk trading spreads fixed costs and narrows spreads; <b>delegated monitoring</b> avoids every small saver duplicating the same investigation.
+              <br>(b) The bank funds long-term assets with short-term or withdrawable liabilities. Depositors can demand cash before loans are repaid, so an otherwise <b>performing</b> loan book may not produce cash fast enough.
+              <br>(c) <b>Credit risk</b>: a borrower defaults. <b>Interest rate risk</b>: higher market rates cut the value of fixed-rate assets or raise deposit costs faster than asset income. <b>Liquidity risk</b>: the bank cannot meet withdrawals without costly borrowing or fire sales.</p>
+            </div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 集合小额资金获得大额投资准入；批量交易摊薄成本；集中监督替代重复调查。(b) 短债长资造成时点错配——<strong>借款人照常还款也可能出现流动性危机</strong>，因为现金到账时间晚于提现需求。(c) 信用风险 = 不还钱；利率风险 = 利率变动侵蚀价值或利差；流动性风险 = 无法及时变现。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Depository vs non-depository, and diversification <span class="kbd">真题型</span> <span class="kbd">Practice Q2(d)(e)</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">(a) Classify a commercial bank, an insurance company, a pension fund, and a mutual fund as depository or non-depository institutions. Explain why diversification does not eliminate every risk.
+          <br>(b) Explain one way financial institutions support the wider economy beyond providing investment returns to savers.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>分类标准只有一个：<strong>是否吸收存款</strong>（deposit-taking）。商业银行吸存 → 存款类；保险、养老金、共同基金不吸存 → 非存款类。第二问考的是「分散化的边界」：分散化只能消除<strong>个体特有风险</strong>，不能消除<strong>共同的系统性冲击</strong>。</p></div>
+            <ol class="steps">
+              <li>商业银行 = <strong>存款类</strong>（吸收存款、发放贷款）。</li>
+              <li>保险公司、养老金、共同基金 = <strong>非存款类</strong>（契约储蓄与投资集合）。</li>
+              <li>分散化为何不足：它消除的是<strong>公司特有（idiosyncratic）风险</strong>，而共同的经济冲击、融资条件收紧、操作与系统性风险仍然存在。</li>
+              <li>对经济的贡献（任选其一）：处理支付、把信用配置给高回报项目、传导货币政策、便利养老储蓄。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span>
+              <p>(a) A commercial bank is <b>depository</b>; insurers, pension funds and mutual funds are <b>non-depository</b>. Diversification removes firm-specific risk but cannot remove common economic shocks or every funding and operational risk.
+              <br>(b) Examples: processing payments, allocating credit to productive investment, transmitting monetary policy, or facilitating retirement saving. Any one valid function earns credit.</p>
+            </div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 商业银行是<strong>存款类</strong>；保险公司、养老金、共同基金是<strong>非存款类</strong>。分散化只能消除个体特有风险，无法消除共同的系统性冲击，也无法消除融资与操作风险。(b) 例如处理支付、把信用配置给优质项目、传导货币政策、便利养老储蓄——写出任意一个并解释即可得分。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Instrument and institution classification table <span class="kbd">真题型</span> <span class="kbd">HW1 Q1 Part D</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Complete the classification table: for each instrument, classify it as money market or capital market, and as debt, equity, or neither.
+          <br>3-month Treasury bill · newly issued common stock · 20-year corporate bond · 90-day commercial paper issued by a high-quality corporation · a foreign-exchange forward contract used to hedge a future USD payment</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>两张分类轴要独立判断：<strong>期限轴</strong>（≤1 年为货币市场）与<strong>索取权轴</strong>（债 / 股 / 都不是）。远期合约是<strong>衍生品</strong>——它既不是债务也不是股权，而是一种合约敞口。</p></div>
+            <ol class="steps">
+              <li>3 个月国库券：≤1 年 → <strong>货币市场</strong>；<strong>债务</strong>。</li>
+              <li>新发行普通股：无到期日 → <strong>资本市场</strong>；<strong>股权</strong>。</li>
+              <li>20 年公司债：&gt;1 年 → <strong>资本市场</strong>；<strong>债务</strong>。</li>
+              <li>90 天商业票据：≤1 年 → <strong>货币市场</strong>；<strong>债务</strong>（无抵押短期本票）。</li>
+              <li>外汇远期合约：用于管理未来付款 → <strong>衍生品</strong>，<strong>既非债也非股</strong>；它的价值依附于标的汇率，本身不是融资工具。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span>
+              <p>3-month T-bill: money market, debt. Newly issued common stock: capital market, equity. 20-year corporate bond: capital market, debt. 90-day commercial paper: money market, debt. FX forward: a <b>derivative</b> — <b>neither</b> debt nor equity; its value derives from the underlying exchange rate.</p>
+            </div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>3 个月国库券 = 货币市场 + 债务；新股 = 资本市场 + 股权；20 年公司债 = 资本市场 + 债务；90 天商票 = 货币市场 + 债务；外汇远期 = <strong>衍生品，既非债也非股</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Direct versus indirect finance: when is an intermediary preferred? <span class="kbd">真题型</span> <span class="kbd">HW1 Q1 Part D(p)</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Briefly compare direct finance and indirect finance. Under what circumstances might a demander of funds rationally prefer an intermediary rather than borrowing directly from the public? Give at least two reasons tied to the cases above.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>这是一道典型的「综合解释题」，结构上应该<strong>先对比，再给理由，最后点出代价</strong>。理由必须从前面的案例中长出来：信息不对称（小企业无法直接发债）、规模/期限不匹配（需要一笔大额长期资金）。</p></div>
+            <ol class="steps">
+              <li><strong>对比</strong>：直接融资是盈余方直接持有借款人的一级证券；间接融资是中介发行二级索取权给储蓄者、同时持有借款人的一级索取权。</li>
+              <li><strong>理由一（信息）</strong>：借款人太小或不透明，公众无法低成本评估 → 银行的筛选与监督能力让融资成为可能（对应小企业案例）。</li>
+              <li><strong>理由二（规模与期限）</strong>：所需金额与期限难以通过公开市场零散募集 → 银行聚合小额存款提供大额定期贷款（对应 ¥1 亿贷款案例）。</li>
+              <li><strong>理由三（成本）</strong>：批量处理与规模经济降低交易成本，缩短筹资时间。</li>
+              <li><strong>代价</strong>：借款人让渡了一部分利差给中介，且要接受抵押与契约约束。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span>
+              <p>In <b>direct finance</b> savers hold the borrower's primary securities; in <b>indirect finance</b> the intermediary issues secondary claims to savers and holds the primary claim on the borrower. A borrower may rationally prefer an intermediary when (i) it is too small or opaque for the public to evaluate cheaply, so the bank's <b>screening and monitoring</b> adds value, and (ii) it needs a single large, long-term sum that cannot be assembled efficiently from many small public investors. The trade-off is the spread paid to the intermediary plus collateral and covenant constraints.</p>
+            </div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>直接融资：储蓄者直接持有借款人证券；间接融资：中介做资产转换。借款人选择中介的两类合理情形：①自身太小/太不透明，公众难以评估，需要银行的<strong>筛选与监督</strong>；②需要一笔大额长期资金，公开市场无法高效募集。代价是要支付中介利差并接受抵押与契约约束。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Primary versus secondary market: where does the cash go? <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A company sells <b>1,000,000 newly issued shares</b> to the public at ¥25.00 in an IPO. One month later, an investor sells <b>5,000 existing shares</b> to another investor at ¥27.00 on the exchange.
+          <br>(a) Classify each transaction as primary or secondary market.
+          <br>(b) How much cash does the <b>company</b> receive in each case?
+          <br>(c) Why should the company still care about the secondary market, even though it receives no cash from it?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>判别一级/二级市场的唯一标准是<strong>资金是否流向发行人</strong>：一级市场是发行人首次把新证券卖给投资者，公司拿到钱；二级市场是<strong>存量证券在投资者之间换手</strong>，公司一分钱都拿不到。第三问考的是二级市场对一级市场的<strong>反哺作用</strong>。</p></div>
+            <ol class="steps">
+              <li>(a) IPO 发行新股 = <strong>一级市场</strong>；投资者之间买卖老股 = <strong>二级市场</strong>。</li>
+              <li>(b) 一级市场：1,000,000 × ¥25.00 = <strong>¥25,000,000</strong> 流入公司。</li>
+              <li>(b) 二级市场：5,000 × ¥27.00 = ¥135,000 在两个投资者之间转移，公司收到 <strong>¥0</strong>。</li>
+              <li>(c) 二级市场提供<strong>流动性</strong>与<strong>价格发现</strong>：流动性越高，投资者要求的回报率越低 → 公司未来增发时定价更高、融资成本更低。</li>
+              <li>(c) 此外，二级市场价格是管理层决策与股权激励的<strong>信息信号</strong>，也决定并购与再融资的可行性。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) The IPO is a <b>primary-market</b> transaction; the exchange trade in existing shares is <b>secondary-market</b>. (b) The company receives <b>¥25,000,000</b> from the IPO and <b>¥0</b> from the secondary trade (¥135,000 passes between the two investors). (c) The secondary market supplies <b>liquidity and price discovery</b>: better liquidity lowers the return investors require, lowering the company's future cost of equity capital, and the quoted price is the information signal used in management and financing decisions.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) IPO 为一级市场，交易所买卖老股为二级市场。(b) 公司从 IPO 获得 <strong>¥25,000,000</strong>，从二级市场获得 <strong>¥0</strong>。(c) 二级市场提供流动性与价格发现，压低投资者要求回报率从而降低公司未来的股权融资成本，并向管理层提供决策信号。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> The cost of immediacy: dealer bid-ask spread <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A dealer quotes a bond at <b>bid ¥99.80 / ask ¥100.20</b> per ¥100 face. An investor buys ¥200,000 face and later sells it back at the same quoted prices.
+          <br>(a) Compute the spread in yuan per ¥100 face and as a percentage of the ask price.
+          <br>(b) Compute the investor's total round-trip transaction cost.
+          <br>(c) What function does the dealer perform, and what risks does the dealer bear?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>买卖价差是<strong>即时性（immediacy）的价格</strong>。投资者买入按 ask、卖出按 bid，因此一次完整往返的成本就是<strong>整个价差</strong>（而不是半个）。做市商赚这个价差，代价是承担两类风险。</p></div>
+            <ol class="steps">
+              <li>(a) 价差 = 100.20 − 99.80 = <strong>¥0.40</strong> 每 ¥100 面值。</li>
+              <li>(a) 百分比 = 0.40 / 100.20 = <strong>0.399%</strong>（约 40 bp）。</li>
+              <li>(b) 买入付 200,000 × 1.0020 = ¥200,400；卖出收 200,000 × 0.9980 = ¥199,600。</li>
+              <li>(b) 往返成本 = 200,400 − 199,600 = <strong>¥800</strong>（= 200,000 × 0.399% ≈ ¥800）。</li>
+              <li>(c) 功能：提供<strong>流动性 / 即时性</strong>，让投资者不必等待对手方。</li>
+              <li>(c) 风险：<strong>库存风险</strong>（持仓期间价格下跌）与<strong>逆向选择风险</strong>（对手方掌握更多信息）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Spread = ¥0.40 per ¥100 face = 0.40/100.20 = <b>0.399%</b>. (b) Buy at ¥200,400, sell at ¥199,600, round-trip cost = <b>¥800</b>. (c) The dealer provides <b>liquidity/immediacy</b> and bears <b>inventory risk</b> (price moves while holding the position) and <b>adverse-selection risk</b> (trading with better-informed counterparties).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 价差 <strong>¥0.40 / ¥100 面值</strong>，约 <strong>0.399%</strong>。(b) 往返总成本 <strong>¥800</strong>。(c) 做市商提供流动性与即时性，承担库存风险与逆向选择风险。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> A bank run without any default: pure liquidity risk <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">A bank holds <b>¥800 million</b> of withdrawable deposits, keeps <b>10%</b> as reserves, and lends the rest as 5-year business loans. In one week depositors withdraw <b>¥120 million</b>. All borrowers keep repaying on schedule.
+          <br>(a) How much does the bank hold in reserves, and how much is locked in loans?
+          <br>(b) What is the cash shortfall after the withdrawal?
+          <br>(c) Give two ways to cover the shortfall and the cost of each. Is this a credit-risk event?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>这道题的考点是<strong>把「借款人照常还款」与「银行仍可能出事」区分开</strong>。缺口不是因为有人违约，而是因为<strong>现金流到达的时点晚于提现需求</strong>——这正是期限转换（maturity intermediation）的代价。</p></div>
+            <ol class="steps">
+              <li>(a) 准备金 = 800 × 10% = <strong>¥80 million</strong>；贷款 = 800 − 80 = <strong>¥720 million</strong>。</li>
+              <li>(b) 提现 ¥120m，只有 ¥80m 准备金 → 缺口 = 120 − 80 = <strong>¥40 million</strong>。</li>
+              <li>(c) 方式一：同业拆借 / 向央行借款 → 成本是<strong>利息支出</strong>，资产不必贱卖。</li>
+              <li>(c) 方式二：<strong>折价出售贷款（fire sale）</strong> → 成本是<strong>立即实现的资本损失</strong>，且会侵蚀资本金。</li>
+              <li>(c) 方式三：停止新增贷款、吸收新存款 → 成本是<strong>放弃的业务机会</strong>。</li>
+              <li>定性：<strong>不是信用风险事件</strong>——借款人仍在正常还款；这是纯粹的<strong>流动性风险</strong>。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Reserves = <b>¥80m</b>; loans = <b>¥720m</b>. (b) Shortfall = 120 − 80 = <b>¥40m</b>. (c) Cover it by interbank/central-bank borrowing (cost = interest) or by selling loans at a discount (cost = an immediate realised loss that erodes capital); or by slowing new lending (cost = forgone business). This is <b>not</b> credit risk — borrowers are performing; it is pure <b>liquidity risk</b> created by maturity transformation.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 准备金 <strong>¥80 million</strong>，贷款 <strong>¥720 million</strong>。(b) 缺口 <strong>¥40 million</strong>。(c) 可同业拆借（付利息）或折价卖贷款（实现损失、侵蚀资本），也可暂停新增贷款；这是<strong>流动性风险而非信用风险</strong>，因为借款人仍在正常还款。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="7. 术语对照">7. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Primary market 一级市场</span><span>Secondary market 二级市场</span><span>Money market 货币市场</span><span>Capital market 资本市场</span>
+        <span>Spot 即期</span><span>Forward 远期</span><span>Futures 期货</span><span>Option 期权</span>
+        <span>Direct finance 直接融资</span><span>Indirect finance 间接融资</span><span>Asset transformation 资产转换</span>
+        <span>Depository institution 存款类机构</span><span>Non-depository institution 非存款类机构</span><span>Thrift 储蓄机构</span><span>Credit union 信用社</span>
+        <span>Denomination intermediation 面额转换</span><span>Maturity intermediation 期限转换</span><span>Delegated monitoring 委托监督</span>
+        <span>Agency costs 代理成本</span><span>Moral hazard 道德风险</span><span>Adverse selection 逆向选择</span><span>Screening 筛选</span>
+        <span>Liquidity risk 流动性风险</span><span>Interest rate risk 利率风险</span><span>Credit risk 信用风险</span><span>Off-balance-sheet risk 表外风险</span>
+        <span>Country / sovereign risk 国家（主权）风险</span><span>Insolvency risk 资不抵债风险</span><span>Volcker Rule 沃尔克规则</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>Part 1 建立的是「市场的骨架」。接下来 Part 2 把这套骨架套到<strong>中国</strong>身上：A/B 股、跨境通道、杠杆与股灾、银行间债市——这些都是解释性题目的高频考点。</p>
+        <p><a href="part2-china-markets.html">前往 Part 2 中国金融市场 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 1 金融市场与金融机构 · 内容依据 Chapter 1 Introduction 1 / 3 课件与配套练习整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

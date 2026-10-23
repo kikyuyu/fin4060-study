@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 9 中国货币政策 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part9" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 4b Monetary Policy in China</div>
+      <h1>Part 9 中国货币政策</h1>
+      <p>本部分把 Part 8 的框架应用到中国人民银行。与美联储的<strong>双重使命</strong>不同，中国央行面对的是<strong>多目标</strong>；工具箱也更有层次：<strong>数量型</strong>（准备金率、再贷款、PSL）与<strong>价格型</strong>（政策利率）并用，并通过 <strong>7 天逆回购、MLF、SLF</strong> 形成期限分工与<strong>利率走廊</strong>。这一章几乎全是解释题，且极容易考「回购方向」。</p>
+      <div class="tags">
+        <span>多目标冲突</span><span>数量型工具</span><span>价格型工具</span><span>RRR</span><span>7 天逆回购</span><span>MLF</span><span>SLF</span><span>PSL</span><span>抵押品</span><span>利率走廊</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 多目标 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 目标与冲突">1. 央行目标与冲突 <span class="badge">Objectives &amp; Conflicts</span></h2>
+      <div class="lec-meta"><span>Chapter 4b · slides 2–8</span><span>Practice Q19(a)</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p>中国货币政策同时追求多个目标：<strong>物价稳定 price stability</strong>、<strong>经济增长 economic growth</strong>、<strong>就业 employment</strong>、以及<strong>外部平衡 external balance</strong>（汇率与资本流动）。相比之下，美联储的法定目标是<strong>双重使命</strong>两项。</p>
+      </div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 两类典型冲突（答题直接可用）</div>
+        <ol>
+          <li><strong>稳增长 vs 控通胀</strong>：用更宽松的政策支持就业与增长，可能与控制通胀相冲突。</li>
+          <li><strong>内部目标 vs 外部平衡</strong>：降低国内利率可能带来汇率与资本流动压力，从而影响外部平衡。</li>
+        </ol>
+        <p><strong>为什么多目标让沟通变难？</strong>因为各目标的<strong>优先级与取舍关系会随形势变化</strong>——市场难以从单次操作中推断央行的主目标。</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 数量型 vs 价格型 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 数量型与价格型工具">2. 数量型与价格型工具 <span class="badge">Quantity vs Price Instruments</span></h2>
+      <div class="lec-meta"><span>Chapter 4b · slides 9–21</span><span>Practice Q19(b)(c)(d)</span></div>
+
+      <div class="grid2">
+        <div class="box note">
+          <div class="box-title">▸ 数量型 Quantity-oriented</div>
+          <p>作用于<strong>准备金的数量</strong>或<strong>必须持有的规模</strong>。典型例子：<strong>存款准备金率 RRR</strong> 的调整、公开市场操作与央行票据、再贷款与再贴现、<strong>PSL（抵押补充贷款）</strong>。</p>
+        </div>
+        <div class="box note">
+          <div class="box-title">▸ 价格型 Price-oriented</div>
+          <p>作用于<strong>资金的价格</strong>（利率）。典型例子：调整<strong>7 天逆回购政策利率</strong>、MLF 利率、SLF 利率，以及 LPR 报价机制。</p>
+        </div>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 不要把它们当成二元对立</div>
+        <p>同一次操作往往<strong>同时影响数量与价格</strong>：例如央行通过逆回购投放流动性，既增加了准备金（数量），也通过政策利率信号影响了资金价格（价格）。
+        <br>答题句式：<em>One operation may influence both quantities and rates.</em></p>
+      </div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:130px;">工具</th><th>全称</th><th>期限定位</th><th>主要功能</th></tr></thead>
+        <tbody>
+          <tr><td><strong>7 天逆回购</strong></td><td>7-day reverse repo</td><td><strong>短期</strong></td><td>短期流动性的<strong>日常投放与回笼</strong>；其利率是最重要的<strong>短期政策信号</strong></td></tr>
+          <tr><td><strong>MLF</strong></td><td>Medium-term Lending Facility<br>中期借贷便利</td><td><strong>中期</strong></td><td>提供中期基础货币；需<strong>合格抵押品</strong>（国债、政策性金融债、高等级信用债等）</td></tr>
+          <tr><td><strong>SLF</strong></td><td>Standing Lending Facility<br>常备借贷便利</td><td>短期（常备）</td><td>机构<strong>主动向央行申请</strong>；在市场融资困难或昂贵时提供流动性；其利率常构成<strong>利率上限</strong></td></tr>
+          <tr><td><strong>PSL</strong></td><td>Pledged Supplementary Lending<br>抵押补充贷款</td><td>较长期</td><td>以支持特定领域（如棚改、基建）为导向的<strong>结构性</strong>投放</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 抵押品为什么重要？</div>
+        <p>央行放贷时要求合格抵押品，是为了在借款机构<strong>未能偿还时保有追索权</strong>（recourse）。同时，<strong>合格机构若能按常备便利利率从央行借到钱</strong>，就没有理由在市场上支付明显更高的利率——这正是 SLF 能<strong>限制市场融资利率上行压力</strong>的机制。
+        <br>注意限定条件：<strong>准入条件与抵押品可得性</strong>会影响这个机制的实际效果。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> Objectives, instruments and the role of collateral</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Explain two possible conflicts among price stability, economic growth, employment and external balance. Why do multiple objectives complicate policy communication?
+            <br>(b) Distinguish quantity-oriented instruments from interest-rate-oriented instruments, giving one example of each from the course.
+            <br>(c) Compare the main funding roles of a seven-day reverse repo, the medium-term lending facility (MLF), and the standing lending facility (SLF).
+            <br>(d) Explain why collateral matters in central-bank lending and how a standing lending facility can limit upward pressure on market funding rates for eligible borrowers.
+            <br>(e) Compare a central-bank purchase of an existing government bond with the government's issuance of a new bond. In which market does each occur, and who receives the proceeds?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 给出两个冲突并说明来源；(b) 区分「作用于数量」还是「作用于价格」，各举一例；(c) 三个工具按<strong>期限与触发方式</strong>区分；(d) 抵押品提供追索权 + SLF 提供利率上限；(e) 关键区分：<strong>二级市场 vs 一级市场</strong>，以及<strong>谁收到钱</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 冲突一：稳增长/就业的宽松政策 vs 控通胀的紧缩需求。</li>
+              <li>(a) 冲突二：降低国内利率以实现内部目标 vs 由此产生的汇率与资本流动（外部平衡）压力。</li>
+              <li>(a) 沟通变难的原因：<strong>目标优先级与取舍会随形势变化</strong>。</li>
+              <li>(b) 数量型：作用于准备金数量或必须持有的规模，如 <strong>RRR</strong> 调整。</li>
+              <li>(b) 价格型：作用于资金价格，如调整 <strong>7 天逆回购政策利率</strong>。</li>
+              <li>(b) 补充：一次操作可能同时影响数量与价格。</li>
+              <li>(c) <strong>7 天逆回购</strong>：投放/回笼<strong>短期</strong>流动性（滚动操作）；<strong>MLF</strong>：提供<strong>中期</strong>资金，需合格抵押品；<strong>SLF</strong>：市场融资困难或昂贵时，机构<strong>主动申请</strong>的常备支持。</li>
+              <li>(d) 抵押品的作用：借款机构违约时央行有<strong>追索权</strong>；SLF 的效果：合格机构可按该利率借款 → 无需在市场上付更高价 → <strong>限制利率上行</strong>。限定：准入与抵押品可得性会影响效果。</li>
+              <li>(e) 央行<strong>购买存量国债</strong>：<strong>二级市场</strong>交易，<strong>原持有人</strong>收到钱。</li>
+              <li>(e) 政府<strong>发行新债</strong>：<strong>一级市场</strong>发行，<strong>政府</strong>收到钱。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Supporting employment and growth through easier policy can conflict with controlling inflation; lower domestic rates may create exchange-rate or external-balance pressures. Multiple objectives complicate communication because their priorities and trade-offs can change.
+                <br>(b) <b>Quantity-oriented</b> instruments affect reserve quantities or required holdings, e.g. an RRR change. <b>Interest-rate-oriented</b> instruments affect the price of funding, e.g. the reverse repo policy rate. One operation may influence both.
+                <br>(c) A seven-day reverse repo provides <b>short-term</b> liquidity; MLF supplies funding over a <b>medium-term</b> horizon; SLF offers <b>standing</b> liquidity support to eligible institutions when market funding is difficult or expensive.
+                <br>(d) Collateral provides recourse if a borrowing institution fails to repay. Eligible institutions able to borrow at the standing-facility rate have less reason to pay substantially more in the market, limiting upward pressure. Access conditions and collateral availability matter.
+                <br>(e) Buying an existing government bond is a <b>secondary-market</b> transaction: its current holder receives the payment. A new government issue occurs in the <b>primary market</b>: the government receives the proceeds.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 稳增长 vs 控通胀；降息 vs 汇率/资本流动压力；多目标使沟通变难。
+                <br>(b) 数量型（如 RRR）vs 价格型（如逆回购利率）。
+                <br>(c) 7 天逆回购 = 短期；MLF = 中期；SLF = 常备、机构主动申请。
+                <br>(d) 抵押品提供追索权；SLF 为合格机构提供利率上限。
+                <br>(e) 买存量债 = <strong>二级市场</strong>，原持有人收钱；发新债 = <strong>一级市场</strong>，政府收钱。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 利率走廊 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 利率走廊与回购方向">3. 利率走廊与回购方向 <span class="badge">Corridor &amp; Repo Direction</span></h2>
+      <div class="lec-meta"><span>Chapter 4b · slides 13–14</span><span>Chapter 4a · slides 21–30</span><span>Practice Q20</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Interest-rate corridor（利率走廊）</b>: a framework in which a policy rate sits between a <b>floor</b> (the rate at which institutions can place funds with the central bank) and a <b>ceiling</b> (the rate at which they can borrow from it), keeping market rates inside the band.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">走廊上下限</span>
+        \[ \text{Floor}=r_{policy}-\text{下限偏离} \qquad \text{Ceiling}=r_{policy}+\text{上限偏离} \]
+        \[ \text{Width}=\text{Ceiling}-\text{Floor}\quad(\text{以基点 bp 计}) \]
+        <div class="fnote">1 个基点（basis point）= 0.01 个百分点。走廊宽度的单位换算：<strong>0.70 个百分点 = 70 bp</strong>。</div>
+      </div>
+
+      <div data-fig="rateCorridor" data-cap="利率走廊：隔夜逆回购构成下限，隔夜回购 / SLF 构成上限，政策利率位于中间。图片来源：Chapter 4b" data-src="Chapter 4"></div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 回购方向：本部分最容易丢分的地方</div>
+        <p>永远<strong>先说清是哪一方的视角</strong>，再判断方向：</p>
+        <ul>
+          <li><strong>央行买入证券并约定卖回</strong> = 央行的<strong>逆回购</strong>（reverse repo）→ 今天<strong>投放</strong>流动性；到期（不续做）则<strong>收回</strong>流动性。</li>
+          <li><strong>央行卖出证券并约定买回</strong> = 央行的<strong>正回购</strong>（repo）→ 今天<strong>回笼</strong>流动性；到期买回时<strong>归还</strong>流动性。</li>
+        </ul>
+        <p class="muted">同一个交易对另一方而言方向相反：资金融出方记为逆回购，资金融入方记为回购。</p>
+      </div>
+
+      <div data-fig="repoFlow" data-cap="央行逆回购（投放）与正回购（回笼）的现金与证券流向。图片来源：Chapter 4b / 5c" data-src="Chapter 4"></div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Corridor arithmetic and repo liquidity effects</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">In a hypothetical version of the corridor described in class, the seven-day reverse repo policy rate is 2.00%. The temporary overnight repo rate is 20 basis points below it, and the temporary overnight reverse repo rate is 50 basis points above it.
+            <br>(a) Calculate the corridor floor, ceiling and width in basis points.
+            <br>(b) The central bank buys securities from dealers today and agrees to sell them back after seven days. Identify this transaction from the central bank's perspective and explain its initial liquidity effect.
+            <br>(c) Explain the liquidity effect when that transaction matures without replacement.
+            <br>(d) The central bank instead sells securities today and agrees to repurchase them tomorrow. Explain the cash flows and liquidity effects at initiation and maturity.
+            <br>(e) Explain how the two overnight facilities can discourage rates from moving outside the corridor.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 直接加减即可，注意<strong>单位换算</strong>：0.70 个百分点 = 70 bp。
+            <br>(b)(d) 判断方向时牢记「<strong>央行先买</strong> = 投放（逆回购）；<strong>央行先卖</strong> = 回笼（正回购）」。
+            <br>(e) 走廊机制：下限让机构<strong>不必更便宜地借出</strong>，上限让机构<strong>不必更贵地借入</strong>。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 下限 \(=2.00\%-0.20\%=\mathbf{1.80\%}\)。</li>
+              <li>(a) 上限 \(=2.00\%+0.50\%=\mathbf{2.50\%}\)。</li>
+              <li>(a) 宽度 \(=2.50\%-1.80\%=0.70\) 个百分点 \(=\mathbf{70\ bp}\)。</li>
+              <li>(b) 央行今天买券、约定 7 天后卖回 → 从央行视角是<strong>逆回购</strong>；今天<strong>支付现金、收进证券</strong> → <strong>投放流动性</strong>。</li>
+              <li>(c) 到期时交易商<strong>还钱、赎回证券</strong>；若<strong>不续做</strong>，此前投放的流动性<strong>被收回</strong>（连同相应利息）。</li>
+              <li>(d) 央行今天卖券、约定明天买回 → 从央行视角是<strong>正回购</strong>；今天<strong>收回现金、付出证券</strong> → <strong>回笼流动性</strong>；明天买回时<strong>支付现金</strong> → <strong>归还流动性</strong>。</li>
+              <li>(e) 下限设施：合格机构可以把钱<strong>放在央行</strong>拿到 1.80%，因此<strong>不会以更低利率借出</strong>。</li>
+              <li>(e) 上限设施：合格机构可以按 2.50% <strong>从央行借钱</strong>，因此<strong>不会支付更高价格</strong>。</li>
+              <li>(e) 前提：机构<strong>合格</strong>且<strong>有足够抵押品</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) Floor = 2.00% − 0.20% = <b>1.80%</b>; ceiling = 2.00% + 0.50% = <b>2.50%</b>; width = 0.70 pp = <b>70 bp</b>.
+                <br>(b) From the central bank's perspective, buying now and selling back later is a <b>reverse repo</b>: it pays cash and receives securities, <b>injecting</b> liquidity.
+                <br>(c) At maturity dealers pay cash back and recover their securities; without replacement this <b>withdraws</b> the liquidity previously provided, plus the relevant interest.
+                <br>(d) Selling now and repurchasing tomorrow is a <b>repo</b> from the central bank's perspective: dealers pay cash initially (<b>withdrawing</b> liquidity) and the central bank pays cash on repurchase (<b>returning</b> liquidity).
+                <br>(e) Eligible lenders can place funds at the floor rather than lend cheaper; eligible borrowers can obtain funds at the ceiling rather than pay more. With the stated access and collateral assumptions, these alternatives contain market rates.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 下限 <strong>1.80%</strong>、上限 <strong>2.50%</strong>、宽度 <strong>70 bp</strong>；
+                <br>(b) 央行视角为<strong>逆回购</strong>，今天<strong>投放</strong>流动性；(c) 到期不续做 → <strong>收回</strong>流动性；
+                <br>(d) 央行视角为<strong>正回购</strong>，今天<strong>回笼</strong>、明日买回时<strong>归还</strong>；
+                <br>(e) 下限阻止更低价借出、上限阻止更高价借入 → 把市场利率夹在走廊内。
+                <br>易错点：把「央行买券」说成回笼流动性——记牢「<strong>央行先买 = 投放</strong>」。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="4. 练习（真题型）">4. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q19、Q20）。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Monetary policy tools in China <span class="kbd">真题型</span> <span class="kbd">Practice Q19</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">(a) Two conflicts among price stability, growth, employment and external balance; why do multiple objectives complicate communication? (b) Quantity- vs interest-rate-oriented instruments, one example each. (c) Funding roles of the 7-day reverse repo, MLF and SLF. (d) Why does collateral matter, and how can an SLF limit upward pressure on funding rates? (e) Central-bank purchase of an existing government bond vs the government's issuance of a new bond: which market, who receives the proceeds?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 1。</p></div>
+            <ol class="steps">
+              <li>(a) 稳增长 vs 控通胀；降息 vs 外部平衡；优先级变化使沟通变难。</li>
+              <li>(b) 数量型 = RRR；价格型 = 逆回购政策利率。</li>
+              <li>(c) 7 天逆回购短期、MLF 中期、SLF 常备。</li>
+              <li>(d) 抵押品提供追索权；SLF 提供利率上限。</li>
+              <li>(e) 买存量债 = 二级市场，原持有人收钱；发新债 = 一级市场，政府收钱。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Growth/employment easing vs inflation control; domestic easing vs external balance; shifting priorities complicate communication. (b) RRR vs the reverse repo policy rate. (c) Short-term / medium-term / standing. (d) Recourse; a rate ceiling for eligible borrowers. (e) Secondary market (holder receives) vs primary market (government receives).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 两类冲突 + 沟通难点；(b) RRR vs 政策利率；(c) 短/中/常备；(d) 追索权 + 上限；(e) 二级 vs 一级市场。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Repos, liquidity and the corridor <span class="kbd">真题型</span> <span class="kbd">Practice Q20</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Seven-day reverse repo policy rate 2.00%; the temporary overnight repo rate is 20 bp below it and the temporary overnight reverse repo rate is 50 bp above it.
+          <br>(a) Floor, ceiling and width in bp. (b) Central bank buys today and sells back in seven days: identify from the central bank's perspective and give the initial liquidity effect. (c) Effect at maturity without replacement. (d) Instead sells today and repurchases tomorrow: cash flows and liquidity effects at initiation and maturity. (e) How do the two overnight facilities discourage rates from leaving the corridor?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>见本节 EXAMPLE 2。</p></div>
+            <ol class="steps">
+              <li>(a) 下限 1.80%、上限 2.50%、宽度 70 bp。</li>
+              <li>(b) 逆回购，投放流动性。</li>
+              <li>(c) 到期不续做 → 收回流动性（含利息）。</li>
+              <li>(d) 正回购：今天回笼、明日归还。</li>
+              <li>(e) 下限阻止更低价借出、上限阻止更高价借入。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) <b>1.80% / 2.50% / 70 bp</b>. (b) <b>Reverse repo</b>; injects liquidity. (c) <b>Withdraws</b> liquidity. (d) <b>Repo</b>: withdraws at initiation, returns at maturity. (e) Floor stops cheaper lending; ceiling stops costlier borrowing.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>1.80% / 2.50% / 70 bp</strong>；(b) 逆回购 + 投放；(c) 收回；(d) 正回购 + 回笼/归还；(e) 上下限双向约束。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> A corridor with different offsets <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Suppose the seven-day reverse repo policy rate is 1.80%. The overnight facility at which institutions place funds with the central bank is 30 bp below it, and the overnight facility at which they borrow from the central bank is 45 bp above it.
+          <br>(a) Floor, ceiling and width?
+          <br>(b) If the central bank raises the policy rate by 25 bp while keeping both offsets unchanged, what are the new values?
+          <br>(c) If market rates trade at 2.60%, what would eligible institutions do, and what does that imply for the market rate?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>(a)(b) 都是简单加减，注意保留 bp 单位。(c) 市场利率 2.60% 高于上限 2.25% → 合格机构会转向<strong>从央行按上限借款</strong>，而不是在市场上付更高价格；这会<strong>抑制</strong>市场利率进一步上行。</p></div>
+            <ol class="steps">
+              <li>(a) 下限 \(=1.80\%-0.30\%=\mathbf{1.50\%}\)；上限 \(=1.80\%+0.45\%=\mathbf{2.25\%}\)。</li>
+              <li>(a) 宽度 \(=2.25\%-1.50\%=0.75\) pp \(=\mathbf{75\ bp}\)。</li>
+              <li>(b) 政策利率 \(=1.80\%+0.25\%=\mathbf{2.05\%}\)；新下限 \(=\mathbf{1.75\%}\)；新上限 \(=\mathbf{2.50\%}\)；宽度仍 <strong>75 bp</strong>。</li>
+              <li>(c) 市场利率 2.60% &gt; 上限 2.25%（原走廊下）→ 合格机构会选择<strong>按上限从央行借款</strong>。</li>
+              <li>(c) 含义：市场上对该期限资金的需求减少 → 抑制市场利率继续上行，使其<strong>回到走廊内</strong>（前提：机构合格且有足够抵押品）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Floor <b>1.50%</b>, ceiling <b>2.25%</b>, width <b>75 bp</b>. (b) Policy <b>2.05%</b>; floor <b>1.75%</b>, ceiling <b>2.50%</b>, width unchanged at 75 bp. (c) At 2.60% eligible institutions would borrow from the central bank at the ceiling rather than pay more in the market, which curbs further upward pressure and pulls the market rate back inside the corridor (given eligibility and collateral).</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) <strong>1.50% / 2.25% / 75 bp</strong>；(b) 政策 <strong>2.05%</strong>，下限 <strong>1.75%</strong>、上限 <strong>2.50%</strong>，宽度不变；
+                <br>(c) 机构会转向央行按上限借款 → 抑制市场利率上行，使其回落至走廊内。前提是机构合格且抵押品充足。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> From MLF to your mortgage: tracing a rate cut <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">The 1-year MLF rate is cut from <b>2.50%</b> to <b>2.30%</b>. Banks price the 1-year LPR as <b>MLF rate + 95 bp</b>, and a first-home mortgage is priced at the LPR with no spread.
+          <br>(a) Compute the LPR before and after the cut.
+          <br>(b) A household has a <b>¥3,000,000</b>, <b>30-year</b> (360 monthly payments) mortgage. Compute the monthly payment before and after the cut, and the annual saving.
+          <br>(c) Name each link in the transmission chain, and identify one reason the cut might <b>not</b> reach borrowers.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>中国「政策利率 → LPR → 贷款利率」的传导链条是考试重点：<strong>MLF 是银行的中期边际成本</strong>，LPR 在 MLF 上加固定利差报价，贷款利率再以 LPR 为基准加减点。等额本息月供公式：\(PMT=P\dfrac{r_m}{1-(1+r_m)^{-360}}\)，其中 r<sub>m</sub> 为月利率。</p></div>
+            <ol class="steps">
+              <li>(a) 降息前 LPR = 2.50% + 0.95% = <strong>3.45%</strong>；降息后 = 2.30% + 0.95% = <strong>3.25%</strong>（下调 <strong>20 bp</strong>）。</li>
+              <li>(b) 月利率：3.45% ÷ 12 = <strong>0.2875%</strong>；3.25% ÷ 12 = <strong>0.270833%</strong>。</li>
+              <li>(b) 3.45%：\((1.002875)^{360}=2.8109\)，年金因子 \(=0.002875\div(1-1/2.8109)=0.002875\div0.644248=0.0044623\)。</li>
+              <li>(b) 月供 = 3,000,000 × 0.0044623 = <strong>¥13,388</strong>。</li>
+              <li>(b) 3.25%：\((1.00270833)^{360}=2.6477\)，年金因子 \(=0.00270833\div(1-1/2.6477)=0.00270833\div0.622305=0.0043520\)。</li>
+              <li>(b) 月供 = 3,000,000 × 0.0043520 = <strong>¥13,056</strong>。</li>
+              <li>(b) 每月节省 ≈ <strong>¥332</strong>，一年约 <strong>¥3,979</strong>。</li>
+              <li>(c) 链条：<strong>MLF ↓ → 银行负债成本 ↓ → LPR 报价 ↓ → 新发放与重定价贷款利率 ↓ → 信贷需求与资产价格 ↑</strong>。</li>
+              <li>(c) 断点：① 银行净息差承压时<strong>压缩报价利差的意愿不足</strong>；② 存量房贷<strong>重定价日未到</strong>（传导有滞后）；③ 信贷需求疲弱时利率下降也<strong>带不动信贷</strong>（流动性陷阱）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) LPR falls from <b>3.45%</b> to <b>3.25%</b> (−20 bp). (b) Monthly payment = P·r<sub>m</sub>/[1 − (1+r<sub>m</sub>)<sup>−360</sup>]: at 3.45% it is <b>¥13,388</b>, at 3.25% it is <b>¥13,056</b>, saving about <b>¥332 per month</b> (≈¥3,979 a year). (c) Chain: MLF ↓ → banks' funding cost ↓ → LPR quotes ↓ → new and repriced loan rates ↓ → credit demand and asset prices ↑. It may break because banks squeezed by thin margins do not narrow their spread, existing mortgages only reprice on their reset date, or weak credit demand means lower rates do not generate lending.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) LPR 由 <strong>3.45%</strong> 降至 <strong>3.25%</strong>（−20 bp）。(b) 月供由 <strong>¥13,388</strong> 降至 <strong>¥13,056</strong>，每月省约 <strong>¥332</strong>。(c) 链条为 MLF → 银行成本 → LPR → 贷款利率 → 信贷与资产价格；断点可能来自息差压力、重定价滞后或信贷需求疲弱。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> RRR cut versus MLF injection <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">Total bank deposits are <b>¥200 trillion</b>. The central bank is considering two ways to inject liquidity:
+          <br>(a) Cut the required reserve ratio (RRR) from <b>10.5%</b> to <b>10.0%</b>. How much liquidity is released? Compute the money multiplier before and after.
+          <br>(b) Instead, extend the same amount through the MLF. Compare the two: cost to banks, permanence, collateral, and signal.
+          <br>(c) Why does the PBOC still use both, and what does each choice say about the policy stance?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>降准是<strong>数量型、永久性、低成本</strong>工具；MLF 是<strong>价格型、有期限、需抵押品</strong>工具。降准把「被冻结的准备金」变成「可动用的准备金」，因此不增加银行负债，只是<strong>降低了银行的隐性机会成本</strong>。</p></div>
+            <ol class="steps">
+              <li>(a) 释放流动性 = 200 万亿 × (10.5% − 10.0%) = 200 × 0.005 = <strong>¥1 万亿</strong>。</li>
+              <li>(a) 乘数：降准前 1 ÷ 0.105 = <strong>9.52</strong>；降准后 1 ÷ 0.10 = <strong>10.00</strong>。</li>
+              <li>(b) <strong>成本</strong>：降准释放的钱<strong>无需付息</strong>（且降低了银行的机会成本）；MLF 需按 MLF 利率<strong>付息</strong>。</li>
+              <li>(b) <strong>期限</strong>：降准是<strong>永久性</strong>的；MLF 有<strong>到期日</strong>（通常 1 年），需续作，存在滚续风险。</li>
+              <li>(b) <strong>抵押品</strong>：降准不要求抵押品；MLF 需<strong>合格抵押品</strong>（国债、政策性金融债等），会约束中小行。</li>
+              <li>(b) <strong>信号</strong>：降准是较强的<strong>宽松信号</strong>（「全面降准」尤其如此）；MLF 加量续作更温和，便于精细调控。</li>
+              <li>(c) 政策含义：<strong>降准</strong>用于对冲长期流动性缺口、降低银行成本、配合宽信用；<strong>MLF</strong> 用于调节中期流动性与<strong>引导利率</strong>（它是 LPR 的定价锚）。两者搭配体现「<strong>数量 + 价格</strong>双轨调控」。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Liquidity released = 200tn × 0.5% = <b>¥1 trillion</b>; the multiplier rises from <b>9.52</b> to <b>10.00</b>. (b) An RRR cut releases frozen reserves that cost banks nothing and is <b>permanent</b>, needs no collateral and sends a strong easing signal; an MLF injection must be <b>repaid with interest</b>, has a <b>maturity</b> and rollover risk, requires <b>eligible collateral</b> (which constrains smaller banks) and is a subtler signal. (c) The PBOC uses the RRR cut to fill structural liquidity gaps and lower bank funding costs, and the MLF to manage medium-term liquidity and to <b>anchor the pricing of the LPR</b> — a quantity-plus-price framework.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 释放 <strong>¥1 万亿</strong>，乘数由 <strong>9.52</strong> 升至 <strong>10.00</strong>。(b) 降准无偿、永久、无抵押、信号强；MLF 付息、有到期与滚续风险、需合格抵押品、信号温和。(c) 降准对冲长期缺口并降成本，MLF 调节中期流动性并为 LPR 定价，体现<strong>数量+价格</strong>双轨调控。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="5. 术语对照">5. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>Price stability 物价稳定</span><span>Economic growth 经济增长</span><span>External balance 外部平衡</span>
+        <span>Quantity-oriented instrument 数量型工具</span><span>Price/interest-rate-oriented instrument 价格型工具</span>
+        <span>Required reserve ratio (RRR) 存款准备金率</span><span>7-day reverse repo 7 天逆回购</span>
+        <span>MLF 中期借贷便利</span><span>SLF 常备借贷便利</span><span>PSL 抵押补充贷款</span><span>LPR 贷款市场报价利率</span>
+        <span>Collateral 抵押品</span><span>Recourse 追索权</span><span>Eligible institution 合格机构</span>
+        <span>Interest-rate corridor 利率走廊</span><span>Floor 下限</span><span>Ceiling 上限</span><span>Basis point (bp) 基点</span>
+        <span>Repo / reverse repo 正回购 / 逆回购</span><span>Maturity without replacement 到期不续做</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>货币政策讲完了。最后一部分 Part 10 回到<strong>短期端</strong>：货币市场工具的报价惯例与计算——折现收益率、BEY、EAR，以及国库券拍卖、联邦基金与回购。</p>
+        <p><a href="part10-money-markets.html">前往 Part 10 货币市场 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 9 中国货币政策 · 内容依据 Chapter 4b 课件与 Midterm Practice Set 整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 2 中国金融市场 · FIN 4060 学习站</title>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="assets/tex-mml-svg.js" id="MathJax-script" async></script>
+<script>
+(function () {
+  function loadCdn() {
+    if (window.MathJax && window.MathJax.startup) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-svg.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () { setTimeout(loadCdn, 400); });
+})();
+</script>
+    <script src="assets/figures.js"></script>
+    <script src="assets/mindmap.js"></script>
+    <script src="assets/marks.js?v=20261023a"></script>
+</head>
+<body data-page="part2" data-root="">
+
+<header id="site-topbar"></header>
+
+<div class="layout">
+  <aside class="toc" id="site-toc"></aside>
+  <main>
+
+    <div class="hero">
+      <div class="kicker">Chapter 1.2 Markets in China</div>
+      <h1>Part 2 中国金融市场</h1>
+      <p>本部分把 Part 1 的市场骨架套到中国：股票市场有哪些板块、境外资金通过什么通道进来、2014–2016 年的杠杆牛与股灾是如何自我强化的，以及债券市场的双层结构。这些内容是<strong>解释性题目最集中的地方</strong>——几乎每一道题都要求你「指认机制 + 说明后果」。</p>
+      <div class="tags">
+        <span>A 股 / B 股</span><span>QFII / QDII</span><span>沪港通 / 深港通</span><span>融资融券</span><span>场外配资</span><span>2015 股灾</span><span>银行间债市</span><span>CP / MTN</span>
+      </div>
+    </div>
+
+    <div id="mindmap-host"></div>
+
+    <!-- ============ 1. 股票市场结构 ============ -->
+    <section id="s1">
+      <h2 class="sec" data-short="1. 中国股票市场结构">1. 中国股票市场结构 <span class="badge">Equity Market Structure</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 2 · slides 10–23</span><span>Practice Q3(a)(b)</span></div>
+
+      <h3 class="sub" data-short="1.1 A 股与 B 股">1.1 A 股与 B 股 <span class="eninline">A-shares vs B-shares</span></h3>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>A-shares（A 股）</b>: mainland-listed shares <b>quoted and traded in RMB (CNY)</b> on the Shanghai or Shenzhen exchanges.</span><br>
+        <span class="en"><b>B-shares（B 股）</b>: mainland-listed shares quoted in a <b>foreign currency</b> — <b>US dollars</b> on the Shanghai exchange and <b>Hong Kong dollars</b> on the Shenzhen exchange.</span></p>
+      </div>
+
+      <div class="box warn">
+        <div class="box-title">▸ 最常被考的一句话：A 股 ≠ 只能境内投资者持有</div>
+        <p>A 股以<strong>人民币计价</strong>，这只说明<strong>计价与结算货币</strong>，与「谁可以持有」是两件事。通过 <strong>QFII</strong>、<strong>QDII 之外的合格境外投资者制度</strong>以及<strong>沪港通 / 深港通（Stock Connect）</strong>，符合条件的境外投资者完全可以持有 A 股。</p>
+        <p class="muted">答题模板：<em>A-shares are quoted in RMB; B-shares are quoted in USD in Shanghai and HKD in Shenzhen. The access channels described in class allow eligible foreign investors to hold A-shares.</em></p>
+      </div>
+
+      <div data-fig="chinaAccess" data-cap="中国资本市场的跨境通道：QFII 引入境外资金、QDII 输出境内资金，沪深港通把内地与香港市场对接。图片来源：Chapter 1 Introduction 2" data-src="Chapter 1"></div>
+
+      <h3 class="sub" data-short="1.2 跨境投资通道">1.2 跨境投资通道 <span class="eninline">Cross-border Access Channels</span></h3>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:130px;">通道</th><th>全称</th><th>资金方向</th><th>要点</th></tr></thead>
+        <tbody>
+          <tr><td><strong>QFII</strong></td><td>Qualified Foreign Institutional Investor<br>合格境外机构投资者</td><td>境外 → 境内<br>（投境内证券）</td><td>需资格审批与额度；面向<strong>机构</strong></td></tr>
+          <tr><td><strong>QDII</strong></td><td>Qualified Domestic Institutional Investor<br>合格境内机构投资者</td><td>境内 → 境外<br>（投境外证券）</td><td>让境内资金合法出海，同样需额度</td></tr>
+          <tr><td><strong>Stock Connect</strong></td><td>沪港通 / 深港通</td><td><strong>双向</strong></td><td>内地与香港交易所<strong>互联互通</strong>：标的名单 + 额度控制；投资者通过本地券商买卖对方市场股票</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 方向记忆法</div>
+        <ul>
+          <li><strong>QFII</strong>：<em>F</em> = Foreign → 境外投资者进来，投<strong>境内</strong>。</li>
+          <li><strong>QDII</strong>：<em>D</em> = Domestic → 境内投资者出去，投<strong>境外</strong>。</li>
+          <li><strong>Stock Connect</strong>：双向，因此要说明「两地交易所对接、通过本地券商与结算通道完成」。</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 1</span> A-shares, QFII/QDII and Stock Connect</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Distinguish A-shares from B-shares in terms of their quotation currencies. Explain why an A-share is not necessarily held only by a domestic investor.
+            <br>(b) Explain the direction of investment under QFII and QDII. Describe how Stock Connect links mainland and Hong Kong equity markets.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 先给<strong>计价货币</strong>（A 股人民币；B 股上海美元、深圳港币），再破除「A 股 = 境内专属」的误解——理由是存在 QFII 与互联互通等通道。
+            <br>(b) QFII 与 QDII 是<strong>单向额度制</strong>，方向相反；Stock Connect 是<strong>双向</strong>的互联互通安排，核心特征是「通过本地券商买卖对方市场的标的股票」。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) A 股：以<strong>人民币</strong>计价交易。</li>
+              <li>(a) B 股：上海以<strong>美元</strong>、深圳以<strong>港币</strong>计价。</li>
+              <li>(a) 破除误解：合格境外投资者可通过 QFII / 互联互通持有 A 股 → 计价货币 ≠ 持有者身份。</li>
+              <li>(b) QFII：合格<strong>境外</strong>机构投资<strong>境内</strong>证券（资金流入）。</li>
+              <li>(b) QDII：合格<strong>境内</strong>机构投资<strong>境外</strong>证券（资金流出）。</li>
+              <li>(b) Stock Connect：把内地与香港市场连接起来，双向交易、受额度与标的名单约束。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) A-shares are quoted in <b>RMB</b>; B-shares are quoted in <b>US dollars</b> in Shanghai and <b>Hong Kong dollars</b> in Shenzhen. The access channels described in class allow <b>eligible foreign investors</b> to hold A-shares, so RMB quotation does not imply domestic-only ownership.
+                <br>(b) <b>QFII</b> enables qualified foreign institutions to invest in domestic securities; <b>QDII</b> enables qualified domestic institutions to invest abroad. <b>Stock Connect</b> provides cross-border access between eligible mainland and Hong Kong shares through linked trading arrangements.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) A 股以人民币计价，B 股上海美元、深圳港币；A 股<strong>不等于</strong>只能由境内投资者持有，合格境外投资者可通过 QFII / 互联互通持有。
+                <br>(b) QFII 是境外机构投境内（资金流入），QDII 是境内机构投境外（资金流出）；沪深港通通过互联互通安排实现两地市场的<strong>双向</strong>交易。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="box note">
+        <div class="box-title">▸ 补充：交易所格局（课件事实）</div>
+        <ul>
+          <li><strong>上海证券交易所 SSE</strong>：主板 + <strong>科创板 STAR Market</strong>。</li>
+          <li><strong>深圳证券交易所 SZSE</strong>：主板 + <strong>创业板 ChiNext</strong>。</li>
+          <li><strong>北京证券交易所 BSE</strong>：服务创新型中小企业。</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 2. 杠杆与股灾 ============ -->
+    <section id="s2">
+      <h2 class="sec" data-short="2. 杠杆、融资融券与 2015 股灾">2. 杠杆、融资融券与 2015 股灾 <span class="badge">Leverage &amp; the 2015 Crash</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 2 · slides 24–41</span><span>Practice Q4</span></div>
+
+      <div class="box def">
+        <div class="box-title">▸ Definition</div>
+        <p><span class="en"><b>Margin（保证金）</b>: the portion of a purchase financed with the investor's <b>own funds</b>; the remainder is borrowed. <b>Leverage</b> is the ratio of total asset exposure to equity.</span><br>
+        <span class="en"><b>Margin call（保证金追缴）</b>: a demand by the broker/lender for additional cash or eligible collateral to restore the required equity level.</span></p>
+      </div>
+
+      <div class="formula hi">
+        <span class="tag">杠杆倍数</span>
+        \[ \text{Leverage}=\frac{\text{资产敞口}}{\text{自有资金权益}}=\frac{E+B}{E}=1+\frac{B}{E} \]
+        \[ \text{自有资金回报率}=\text{资产收益率}\times \text{Leverage}\quad(\text{忽略利息、股息、税费}) \]
+        <div class="fnote">其中 \(E\) = 自有资金（equity），\(B\) = 借入资金（borrowed）。杠杆把资产端的百分比变动<strong>按倍数放大</strong>到权益端，<strong>上涨与下跌对称放大</strong>。</div>
+      </div>
+
+      <div data-fig="marginLeverage" data-cap="自有资金 4 万 + 借入 6 万 = 10 万敞口，杠杆 2.5 倍：资产 ±10% 变成权益 ±25%。图片来源：Chapter 1 Introduction 2" data-src="Chapter 1"></div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 2</span> Margin return and the leverage multiplier</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">An investor uses RMB 40,000 of personal funds and borrows RMB 60,000 to buy RMB 100,000 of shares. Ignore interest, dividends, fees and taxes.
+            <br>(a) Calculate the investor's equity and percentage return on personal funds if the shares rise by 10%. Repeat if the shares fall by 10%.
+            <br>(b) Compare these returns with those from investing only the RMB 40,000 without borrowing. Explain how leverage magnifies both gains and losses.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>关键有两点：第一，<strong>负债金额不变</strong>，股价变动全部由权益承担；第二，回报率的分母是<strong>自有资金 ¥40,000</strong>，不是 ¥100,000。
+            <br>杠杆倍数 = 100,000 ÷ 40,000 = <strong>2.5 倍</strong>，所以资产的 ±10% 直接变成权益的 ±25%。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-fml">公式</span>
+            \[ \text{Equity}=\text{资产市值}-\text{借款}\qquad r_{equity}=\frac{\text{Equity}_{1}-E_0}{E_0}=\frac{\Delta \text{资产}}{E_0} \]
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>初始：资产 ¥100,000，借款 ¥60,000，权益 \(E_0\) = ¥40,000。</li>
+              <li>上涨 10%：资产变 ¥110,000 → 权益 = 110,000 − 60,000 = <strong>¥50,000</strong>。</li>
+              <li>回报率 = (50,000 − 40,000)/40,000 = <strong>+25%</strong>。</li>
+              <li>下跌 10%：资产变 ¥90,000 → 权益 = 90,000 − 60,000 = <strong>¥30,000</strong>。</li>
+              <li>回报率 = (30,000 − 40,000)/40,000 = <strong>−25%</strong>。</li>
+              <li>不借资对照组：¥40,000 全自有，±10% → ±¥4,000，即 <strong>±10%</strong>。</li>
+              <li>结论：杠杆倍数 2.5 = 100,000/40,000，因此 ±10% × 2.5 = <strong>±25%</strong>，<strong>涨与跌被同等放大</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) After a 10% rise: shares worth RMB 110,000; equity = 110,000 − 60,000 = <b>RMB 50,000</b>; return = (50,000 − 40,000)/40,000 = <b>+25%</b>. After a 10% fall: equity = 90,000 − 60,000 = <b>RMB 30,000</b>; return = <b>−25%</b>.
+                <br>(b) Without borrowing, RMB 40,000 earns ±10%, i.e. ±RMB 4,000. With leverage, a RMB 100,000 exposure is supported by only RMB 40,000 of equity, so the same asset-price change has <b>2.5 times</b> the percentage effect on equity.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>涨 10% → 权益 ¥50,000，回报 <strong>+25%</strong>；跌 10% → 权益 ¥30,000，回报 <strong>−25%</strong>。不借资时同为 ±10%（±¥4,000）。杠杆倍数 = ¥100,000/¥40,000 = <strong>2.5</strong>，因此资产端的 ±10% 在权益端变成 ±25%。
+                <br>易错点：分母永远是<strong>自有资金</strong>，且借款金额不随股价变动而变化。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div data-fig="marginSpiral" data-cap="下跌螺旋：股价下跌 → 保证金追缴 → 强制平仓 → 更深的跌幅。图片来源：Chapter 1 Introduction 2" data-src="Chapter 1"></div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 场景：2014–2016 中国股市的杠杆链条</div>
+        <ol>
+          <li><strong>场内杠杆（受监管）</strong>：融资融券（margin financing &amp; securities lending），杠杆倍数受限、标的名单受限。</li>
+          <li><strong>场外杠杆（监管薄弱）</strong>：场外配资、伞形信托（umbrella trust）、以及 <strong>HOMS 分仓系统</strong>把账户拆分给大量子账户，杠杆更高、透明度更低。</li>
+          <li><strong>上涨阶段</strong>：资金面宽松（融资成本低）+ 羊群效应（herding） → 买入自我强化，价格脱离基本面。</li>
+          <li><strong>下跌阶段</strong>：去杠杆启动 → 保证金追缴 → 强制平仓 → 卖压压低价格 → 触发更多追缴（自我强化螺旋）。</li>
+          <li><strong>流动性枯竭</strong>：熔断机制（circuit breaker）在极端行情下暂停交易，可能加剧流动性问题。</li>
+        </ol>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 一句必背：为什么「最近涨了」不是基本面价值的证据？</div>
+        <p>价格上涨可能来自<strong>更容易的融资条件</strong>与<strong>羊群行为</strong>，而不是<strong>预期现金流变强</strong>。杠杆推动的上涨在去杠杆时会迅速逆转。因此 <em>a recent price increase alone provides weak evidence of fundamental value</em>。</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 3</span> Margin calls and the boom-bust mechanism</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Explain what a margin call requires an investor to do. Describe how forced sales by many investors can reinforce a market decline.
+            <br>(b) Using the boom-and-bust discussion in class, explain how easier funding conditions and herding can reinforce a rising market. Why does a recent price increase alone provide weak evidence of fundamental value?</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 保证金追缴要求投资者<strong>追加现金或合格抵押品</strong>以恢复规定的权益水平；若不满足，券商可<strong>强制平仓</strong>。当大量投资者同时被平仓，抛售压低价格，又触发新的追缴——形成<strong>负反馈螺旋</strong>。
+            <br>(b) 资金面宽松降低融资成本、扩大买入能力；羊群效应让投资者跟随价格上涨或其他投资者行动。二者叠加使上涨自我强化。但价格上涨本身<strong>不区分驱动来源</strong>——它可能是杠杆与情绪，也可能是基本面改善，因此单看涨幅无法推断价值。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 追缴要求：补充现金或合格抵押品，恢复最低权益比例。</li>
+              <li>(a) 未满足的后果：仓位被强制平仓（liquidated）。</li>
+              <li>(a) 螺旋机制：集中抛售 → 价格下跌 → 更多账户触线 → 更多抛售。</li>
+              <li>(b) 上涨端：融资更容易（成本低、额度松）+ 羊群效应 → 买入自我强化。</li>
+              <li>(b) 为什么涨幅不构成证据：价格可能由杠杆与情绪驱动，而非<strong>更强的预期现金流</strong>；去杠杆时涨幅会迅速回吐。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) A margin call requires additional cash or eligible collateral to restore the required equity level; if it is not met, positions may be <b>liquidated</b>. Simultaneous sales depress prices, trigger further margin calls, and force additional sales.
+                <br>(b) Easier funding lowers financing costs and expands buying capacity; herding makes investors follow rising prices or other investors. A recent price rise may reflect <b>leverage or sentiment</b> rather than stronger expected cash flows, so it does not establish fundamental value.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 追缴要求追加现金/抵押品；否则被强平。集中强平压低价格 → 触发更多追缴 → 螺旋式下跌。
+                <br>(b) 融资宽松 + 羊群效应使上涨自我强化；但涨幅可能来自<strong>杠杆与情绪</strong>而非预期现金流，因此不能作为基本面价值的证据。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 3. 债券市场 ============ -->
+    <section id="s3">
+      <h2 class="sec" data-short="3. 中国债券市场">3. 中国债券市场 <span class="badge">Bond Market in China</span></h2>
+      <div class="lec-meta"><span>Chapter 1 Introduction 2 · slides 43–53</span><span>Practice Q3(c)(d)(e)</span></div>
+
+      <div data-fig="chinaBondMarket" data-cap="中国债券市场的双层结构：银行间市场（批发）与交易所市场（零售+机构）。图片来源：Chapter 1 Introduction 2" data-src="Chapter 1"></div>
+
+      <div class="tablewrap">
+      <table class="data">
+        <thead><tr><th style="width:120px;">维度</th><th>银行间市场 Interbank</th><th>交易所市场 Exchange</th></tr></thead>
+        <tbody>
+          <tr><td>典型参与者</td><td><strong>机构为主</strong>：银行、券商、基金、保险</td><td>机构 + <strong>中小投资者</strong>（通过证券账户与券商）</td></tr>
+          <tr><td>单笔规模</td><td><strong>大</strong>（批发市场，wholesale）</td><td>相对较小</td></tr>
+          <tr><td>成交方式</td><td>OTC 询价、双边协商</td><td>竞价撮合</td></tr>
+          <tr><td>券种</td><td>国债、政策性金融债、同业存单、信用债</td><td>国债、地方债、公司债、可转债等</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box tip">
+        <div class="box-title">▸ 易错点：机构也可以进交易所市场</div>
+        <p>两个市场不是「机构 vs 散户」的二分法。正确表述是：<strong>银行间市场以大型机构和批发交易为主</strong>，而<strong>交易所市场通过证券账户为较小投资者提供通道，机构同样可以参与</strong>。答题时若写成「交易所只有散户」会失分。</p>
+      </div>
+
+      <h3 class="sub" data-short="3.1 短期融资工具">3.1 短期融资工具与信用风险 <span class="eninline">CP, SCP and MTN</span></h3>
+
+      <div class="grid2">
+        <div class="box note">
+          <div class="box-title">▸ 短期融资券 CP / 超短融 SCP</div>
+          <p>非金融企业发行的<strong>短期</strong>债务融资工具，期限通常在 <strong>1 年以内</strong>（超短融更短）。用途多为补充流动资金、季节性周转。</p>
+        </div>
+        <div class="box note">
+          <div class="box-title">▸ 中期票据 MTN</div>
+          <p><strong>中长期</strong>债务融资工具，期限更长（通常 3–5 年及以上）。用途多为项目建设、置换存量债务。</p>
+        </div>
+      </div>
+
+      <div class="box key">
+        <div class="box-title">▸ 共同点：都暴露于发行人的信用风险</div>
+        <p>CP 与 MTN 都是<strong>同一家公司</strong>的偿付义务，期限长短不改变这一点。因此答题时要写：<em>Both are obligations of the company, so repayment depends on its ability to meet its promises.</em> 期限只改变<strong>流动性/再融资风险的表现形式</strong>——短期工具需要更频繁地滚动（roll over），在融资环境收紧时更容易出问题。</p>
+      </div>
+
+      <div class="box theory">
+        <div class="box-title">▸ 买断 vs 回购：一道必考的辨析</div>
+        <ul>
+          <li><strong>Outright purchase（买断式买入）</strong>：以现金换券，<strong>所有权转移</strong>，没有约定在未来卖回。</li>
+          <li><strong>Repo（回购）</strong>：卖出证券的同时<strong>约定在未来以指定价格买回</strong>，经济实质是<strong>有抵押的融资</strong>——证券只是抵押品，并不真正转移经济所有权。</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <div class="ex-head"><span class="pill q">EXAMPLE 4</span> Interbank vs exchange market, CP vs MTN, outright vs repo</div>
+        <div class="ex-body">
+          <div class="q-block">
+            <span class="lbl lbl-en">EN</span>
+            <p class="en-q">(a) Contrast the interbank bond market with the exchange bond market in terms of typical participants and transaction size.
+            <br>(b) A nonfinancial company issues short-term commercial paper and a longer-term medium-term note. Compare their financing horizons and explain why both expose investors to the issuer's credit risk.
+            <br>(c) Explain the difference between an outright bond purchase and a repo transaction involving the same bond.</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-cn">中文分析</span>
+            <p>(a) 从<strong>参与者</strong>与<strong>单笔规模</strong>两个维度对比即可，注意「机构也能进交易所」这个限定。
+            <br>(b) 先比期限（短 vs 长），再说明风险同源（都是公司的偿付义务）。
+            <br>(c) 抓「是否约定卖回」与「经济实质是融资还是转移所有权」。</p>
+          </div>
+
+          <div class="q-block">
+            <span class="lbl lbl-step">解题步骤</span>
+            <ol class="steps">
+              <li>(a) 银行间：机构为主、单笔规模大（批发）；交易所：中小投资者可通过证券账户参与，机构亦可参与，单笔较小。</li>
+              <li>(b) CP 提供<strong>短期</strong>融资，MTN 提供<strong>更长期</strong>融资。</li>
+              <li>(b) 风险同源：两者都是<strong>该公司的负债</strong>，偿付取决于公司履约能力。</li>
+              <li>(c) 买断：现金换券、所有权转移、无卖回约定。</li>
+              <li>(c) 回购：卖出 + 约定未来按指定价格/日期买回，经济上是<strong>抵押融资</strong>。</li>
+            </ol>
+          </div>
+
+          <details class="answer">
+            <summary>查看解答 / Answer</summary>
+            <div class="ans-body">
+              <div class="q-block">
+                <span class="lbl lbl-ans">EN Answer</span>
+                <p>(a) The interbank market is principally a <b>wholesale</b> market serving large institutions and large trades; the exchange market also gives smaller investors access through securities accounts and brokers, and institutions may participate there too.
+                <br>(b) Commercial paper supplies <b>short-term</b> finance; an MTN funds over a <b>longer horizon</b>. Both are obligations of the company, so repayment depends on its ability to meet its promises.
+                <br>(c) An outright purchase transfers the bond for cash <b>without an agreed reversal</b>. A repo combines a sale with an agreement to repurchase at a specified future price and date, economically providing <b>collateralised financing</b>.</p>
+              </div>
+              <div class="q-block">
+                <span class="lbl lbl-ans">中文答案</span>
+                <p>(a) 银行间是<strong>批发、机构主导、单笔大</strong>；交易所为<strong>中小投资者</strong>提供通道，机构也可参与。
+                <br>(b) CP 短期、MTN 长期；<strong>两者都是公司负债，都暴露同一份信用风险</strong>。
+                <br>(c) 买断 = 所有权转移且无卖回约定；回购 = 卖出并约定买回，实质是<strong>抵押融资</strong>。</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============ 4. 练习 ============ -->
+    <section id="ex" data-exgroup>
+      <h2 class="sec" data-short="4. 练习（真题型）">4. 练习 <span class="badge">Practice · 真题型</span></h2>
+      <p class="lede">以下题目来自 <strong>Midterm Practice Set</strong>（Q3、Q4），题型与考试一致。</p>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Who can hold A-shares? <span class="kbd">真题型</span> <span class="kbd">Practice Q3(a)</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">"An A-share must be held by a domestic investor, because it is quoted in RMB." Is this statement correct? Explain.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>判断对错类题目要先<strong>给出明确结论</strong>，再拆开两个概念：<strong>计价货币</strong>与<strong>持有者资格</strong>。这两件事由不同规则决定。</p></div>
+            <ol class="steps">
+              <li><strong>结论</strong>：不正确。</li>
+              <li><strong>计价货币</strong>：A 股以人民币计价，B 股分别以美元（上海）和港币（深圳）计价——这部分陈述是对的。</li>
+              <li><strong>持有者资格</strong>：由<strong>准入制度</strong>决定，而非计价货币决定。</li>
+              <li><strong>反例</strong>：QFII 与沪深港通等通道让符合条件的境外投资者可以持有 A 股。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p><b>Incorrect.</b> The quotation currency is RMB (and B-shares are quoted in USD in Shanghai / HKD in Shenzhen), but ownership eligibility is governed by the access channels: QFII and Stock Connect allow <b>eligible foreign investors</b> to hold A-shares. Quotation currency and investor eligibility are separate rules.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p><strong>不正确。</strong>人民币计价只决定结算货币；能否持有由准入制度决定，QFII 与沪深港通都允许符合条件的境外投资者持有 A 股。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Leverage with different equity shares <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">An investor buys RMB 200,000 of shares using RMB 50,000 of personal funds and RMB 150,000 of borrowing. Ignore interest, dividends, fees and taxes.
+          <br>(a) What is the leverage multiple?
+          <br>(b) What is the return on personal funds if shares rise 8%? If they fall 8%?
+          <br>(c) At what percentage price fall would the investor's equity be wiped out entirely?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>杠杆倍数 = 资产敞口 ÷ 自有资金。权益回报 = 资产收益率 × 杠杆。权益归零的临界跌幅是「资产价值跌到正好等于借款额」，即跌幅 = 借款 ÷ 初始资产。</p></div>
+            <ol class="steps">
+              <li>杠杆倍数 = 200,000 ÷ 50,000 = <strong>4 倍</strong>。</li>
+              <li>涨 8%：权益回报 = 8% × 4 = <strong>+32%</strong>（资产变 216,000，权益 = 216,000 − 150,000 = 66,000；66,000/50,000 − 1 = 32%）。</li>
+              <li>跌 8%：权益回报 = <strong>−32%</strong>（资产 184,000，权益 34,000；34,000/50,000 − 1 = −32%）。</li>
+              <li>权益归零：资产价值 = 借款 150,000 → 跌幅 = (200,000 − 150,000)/200,000 = <strong>25%</strong>。</li>
+              <li>直觉校验：4 倍杠杆下，25% × 4 = 100% 的权益损失，正好归零。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Leverage = 200,000/50,000 = <b>4×</b>. (b) ±8% × 4 = <b>±32%</b> on equity. (c) Equity is wiped out when the asset falls to the loan amount: a fall of 150,000/200,000 = <b>25%</b>. Note that in practice a margin call would force liquidation well before equity reaches zero.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 杠杆 <strong>4 倍</strong>；(b) 权益回报 <strong>±32%</strong>（涨 8% → 权益 ¥66,000；跌 8% → 权益 ¥34,000）；(c) 资产下跌 <strong>25%</strong> 时权益归零。现实中保证金追缴会在此前就触发强平。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Herding and fundamental value <span class="kbd">真题型</span> <span class="kbd">Practice Q4(d)</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">"Because prices have risen for three consecutive months, the market must be pricing in stronger future cash flows." Discuss this claim using the boom-and-bust discussion in class.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>这是典型的「判断 + 论证」题。结构上应该：①指出结论不成立；②给出价格上涨的<strong>其他可能驱动</strong>；③说明什么才构成基本面价值的证据。</p></div>
+            <ol class="steps">
+              <li><strong>结论</strong>：该说法不成立，涨幅本身是很弱的证据。</li>
+              <li><strong>替代解释一（杠杆）</strong>：融资条件宽松降低成本、扩大买入能力，价格可被杠杆推高，与现金流无关。</li>
+              <li><strong>替代解释二（羊群）</strong>：投资者跟随价格上涨或其他投资者行动，形成自我强化的上涨。</li>
+              <li><strong>后果</strong>：一旦融资条件收紧或情绪逆转，杠杆头寸被强制平仓，涨幅会迅速回吐（2015 年的情形）。</li>
+              <li><strong>什么才算证据</strong>：预期现金流、盈利与分红前景的改善，或折现率的可持续下降。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>The claim is weak. Easier funding conditions and herding can raise prices <b>without any improvement in expected cash flows</b>; leverage-driven rises reverse quickly when financing tightens and margin calls force sales. Evidence of fundamental value would be stronger expected cash flows, earnings or dividends, or a sustainable fall in the discount rate — not the recent price path itself.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>不成立。宽松融资与羊群效应可以在<strong>没有任何现金流改善</strong>的情况下推高价格；去杠杆时涨幅会快速回吐。基本面价值的证据应是<strong>预期现金流/盈利/分红的改善</strong>或折现率的可持续下降，而<strong>不是最近的价格走势本身</strong>。</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> Margin trading: leverage and the maintenance line <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">An investor deposits <b>¥300,000</b> cash with a broker. The initial <b>margin ratio is 50%</b> and the stock price is <b>¥20.00</b>. The maintenance ratio (维持担保比例) is <b>130%</b>.
+          <br>(a) What is the maximum number of shares that can be bought, and how much is borrowed?
+          <br>(b) If the price falls to ¥16.00, what is the maintenance ratio? Is there a margin call?
+          <br>(c) At what price is the maintenance ratio exactly 130%?
+          <br>(d) If the price rises to ¥24.00, what is the return on the investor's own money, and why does it differ from the 20% stock return?</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>融资融券用两个比例约束：<strong>保证金比例</strong>决定开仓时最多能买多少，<strong>维持担保比例</strong>决定持仓期间何时被追保。维持担保比例 = 担保物市值 ÷ 融资负债，<strong>杠杆倍数 = 1 / 保证金比例</strong>，所以收益与损失都被同倍数放大。</p></div>
+            <ol class="steps">
+              <li>(a) 可买总金额 = 300,000 ÷ 50% = <strong>¥600,000</strong> → 股数 = 600,000 ÷ 20 = <strong>30,000 股</strong>。</li>
+              <li>(a) 借入（融资）= 600,000 − 300,000 = <strong>¥300,000</strong>；杠杆 = 1/0.5 = <strong>2 倍</strong>。</li>
+              <li>(b) 维持担保比例 = 30,000 × 16 ÷ 300,000 = 480,000 ÷ 300,000 = <strong>160%</strong> &gt; 130% → <strong>不触发追保</strong>。</li>
+              <li>(c) 令 30,000 × P ÷ 300,000 = 1.30 → P = 1.30 × 300,000 ÷ 30,000 = <strong>¥13.00</strong>（较 ¥20 下跌 35%）。</li>
+              <li>(d) 涨到 ¥24：市值 = 720,000；还贷 300,000 → 权益 = <strong>¥420,000</strong>。</li>
+              <li>(d) 自有资金回报 = 420,000 ÷ 300,000 − 1 = <strong>40%</strong>，正好是股票涨幅 20% 的 <strong>2 倍</strong>——这就是 2 倍杠杆的放大效应（下跌时同样放大）。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Total purchase = 300,000/0.50 = <b>¥600,000</b> → <b>30,000 shares</b>; borrowed = <b>¥300,000</b> (2× leverage). (b) 480,000/300,000 = <b>160%</b>, above 130%, so <b>no margin call</b>. (c) P = 1.30 × 300,000/30,000 = <b>¥13.00</b>, i.e. a 35% fall. (d) Value 720,000 − 300,000 = 420,000; return = 420/300 − 1 = <b>40%</b> = 2 × the 20% share price gain — the leverage cuts both ways.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 最多买 <strong>30,000 股</strong>（¥600,000），融资 <strong>¥300,000</strong>，2 倍杠杆。(b) 维持担保比例 <strong>160%</strong>，未触发追保。(c) 跌到 <strong>¥13.00</strong> 时恰为 130%。(d) 自有资金回报 <strong>40%</strong>，是股价涨幅 20% 的 2 倍——杠杆双向放大。</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="exercise" data-ex>
+        <div class="ex-title"><span class="lbl lbl-en">Q<span class="num"></span></span> How much must be sold in a deleveraging spiral? <span class="kbd">拓展</span></div>
+        <div class="q-block">
+          <span class="lbl lbl-en">EN</span>
+          <p class="en-q">An investor bought <b>¥1,000,000</b> of stock using <b>¥400,000</b> of his own money and a <b>¥600,000</b> margin loan. The price then falls <b>25%</b>. The maintenance ratio is <b>130%</b>.
+          <br>(a) Compute the maintenance ratio before and after the fall, and the loss on the investor's own money.
+          <br>(b) How much stock must he sell (and use the proceeds to repay debt) to restore the ratio to exactly 130%?
+          <br>(c) Explain why forced selling by many investors like this one makes prices fall further — the deleveraging spiral.</p>
+        </div>
+        <details class="answer">
+          <summary>查看解答 / Answer</summary>
+          <div class="ans-body">
+            <div class="q-block"><span class="lbl lbl-cn">中文分析</span><p>(b) 的关键是<strong>卖股票同时用来还债</strong>，分子分母同时减少。设卖出 x：\(\frac{V-x}{D-x}=1.30\)，解出 x 即可。注意卖出后持股比例不变（同比例缩减），所以持股市值按 x 直接扣除。</p></div>
+            <ol class="steps">
+              <li>(a) 初始维持担保比例 = 1,000,000 ÷ 600,000 = <strong>166.7%</strong>。</li>
+              <li>(a) 跌 25% 后市值 = 750,000；比例 = 750,000 ÷ 600,000 = <strong>125%</strong> &lt; 130% → <strong>触发追保</strong>。</li>
+              <li>(a) 权益 = 750,000 − 600,000 = 150,000；亏损 = 400,000 − 150,000 = <strong>¥250,000</strong>（自有资金亏 62.5%）。</li>
+              <li>(b) 设卖出并还债 x：\(\dfrac{750{,}000-x}{600{,}000-x}=1.30\)。</li>
+              <li>(b) 750,000 − x = 780,000 − 1.30x → 0.30x = 30,000 → x = <strong>¥100,000</strong>。</li>
+              <li>(b) 校验：(750,000 − 100,000) ÷ (600,000 − 100,000) = 650,000 ÷ 500,000 = <strong>130%</strong> ✓。</li>
+              <li>(c) <strong>去杠杆螺旋</strong>：追保 → 被迫抛售 → 价格再跌 → 引发更多追保。抛售由融资条件而非基本面驱动，因此价格会<strong>跌破基本面价值</strong>，且下跌速度与杠杆比例正相关。</li>
+            </ol>
+            <div class="q-block"><span class="lbl lbl-ans">EN Answer</span><p>(a) Before: 1,000,000/600,000 = <b>166.7%</b>. After a 25% fall: 750,000/600,000 = <b>125%</b>, below 130% → margin call; equity falls from 400,000 to 150,000, a <b>¥250,000</b> (62.5%) loss. (b) Solve (750,000 − x)/(600,000 − x) = 1.30 → 0.30x = 30,000 → <b>x = ¥100,000</b> of stock sold and debt repaid; check 650,000/500,000 = 130%. (c) Margin calls force sales, the sales push prices down, and the lower prices trigger further calls — a self-reinforcing spiral driven by <b>financing conditions rather than fundamentals</b>, which can drive prices below fundamental value.</p></div>
+            <div class="q-block"><span class="lbl lbl-ans">中文答案</span><p>(a) 初始 <strong>166.7%</strong>，跌后 <strong>125%</strong>，触发追保；自有资金亏 <strong>¥250,000</strong>（62.5%）。(b) 需卖出并还债 <strong>¥100,000</strong>（650,000 ÷ 500,000 = 130% ✓）。(c) 追保引发抛售、抛售压低价格、再引发更多追保，形成由融资条件驱动的自我强化螺旋，价格可跌破基本面价值。</p></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section id="terms">
+      <h2 class="sec" data-short="5. 术语对照">5. 关键术语对照 <span class="badge">Key Terms</span></h2>
+      <div class="pill-list">
+        <span>A-share A 股</span><span>B-share B 股</span><span>QFII 合格境外机构投资者</span><span>QDII 合格境内机构投资者</span>
+        <span>Stock Connect 沪港通 / 深港通</span><span>SSE 上交所</span><span>SZSE 深交所</span><span>BSE 北交所</span>
+        <span>STAR Market 科创板</span><span>ChiNext 创业板</span><span>Margin 保证金</span><span>Leverage 杠杆</span>
+        <span>Margin call 保证金追缴</span><span>Forced liquidation 强制平仓</span><span>Herding 羊群效应</span>
+        <span>Umbrella trust 伞形信托</span><span>HOMS 分仓系统</span><span>Circuit breaker 熔断机制</span>
+        <span>Interbank bond market 银行间债券市场</span><span>Exchange bond market 交易所债券市场</span>
+        <span>Commercial paper (CP) 短期融资券</span><span>SCP 超短融</span><span>MTN 中期票据</span>
+        <span>Outright purchase 买断式买入</span><span>Repo 回购</span>
+      </div>
+      <div class="box tip">
+        <div class="box-title">▸ 下一步</div>
+        <p>Part 2 讲清了「市场在哪里」。接下来 Part 3 进入<strong>价格</strong>：利率由什么决定。这是全课的计算基础，也是后面所有估值题的折现率来源。</p>
+        <p><a href="part3-interest-rates.html">前往 Part 3 利率的决定 →</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  FIN 4060 Financial Markets in China and the World · Part 2 中国金融市场 · 内容依据 Chapter 1 Introduction 2 课件与配套练习整理。
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
