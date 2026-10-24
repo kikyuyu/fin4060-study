@@ -547,30 +547,30 @@
     var s = "";
     s += txt(340, 24, "曲线移动的四种组合：牛/熊（水平）× 陡/平（斜率）", { size: 13, weight: 700, fill: C.navy });
     var cells = [
-      { t: "牛陡 Bull steepening", d: "收益率整体下行，短端降更多 → 价差扩大", c: C.green, f: C.greenSoft, l: C.greenLine, up: false, st: true },
-      { t: "牛平 Bull flattening", d: "收益率整体下行，长端降更多 → 价差收窄", c: C.blue, f: C.blueSoft, l: C.blueLine, up: false, st: false },
-      { t: "熊陡 Bear steepening", d: "收益率整体上行，长端升更多 → 价差扩大", c: C.amber, f: C.amberSoft, l: C.amberLine, up: true, st: true },
-      { t: "熊平 Bear flattening", d: "收益率整体上行，短端升更多 → 价差收窄", c: C.red, f: C.redSoft, l: C.redLine, up: true, st: false }
+      { t: "牛陡 Bull steepening", c: C.green, f: C.greenSoft, l: C.greenLine, end: "short", dir: -1 },
+      { t: "牛平 Bull flattening", c: C.blue, f: C.blueSoft, l: C.blueLine, end: "long", dir: -1 },
+      { t: "熊陡 Bear steepening", c: C.amber, f: C.amberSoft, l: C.amberLine, end: "long", dir: 1 },
+      { t: "熊平 Bear flattening", c: C.red, f: C.redSoft, l: C.redLine, end: "short", dir: 1 }
     ];
     cells.forEach(function (c, i) {
-      var x = 20 + (i % 2) * 330, y = 40 + Math.floor(i / 2) * 128, w = 316, h = 116;
-      s += rect(x, y, w, h, { fill: c.f, stroke: c.l, rx: 9 });
-      var ts = fitSize(c.t, 160, 12);
-      s += txt(x + 12, y + 22, c.t, { anchor: "start", size: ts, weight: 700, fill: c.c });
-      /* mini curve: old vs new */
-      var mx = x + 176, my = y + 92, mw = 128, mh = 56;
-      s += line(mx, my, mx + mw, my, { stroke: C.axis, w: 1 });
-      s += line(mx, my, mx, my - mh, { stroke: C.axis, w: 1 });
-      function plot(shift, steep, color, dash) {
-        var a = c.up ? 0.30 : 0.70, b = c.up ? 0.62 : 0.34;
-        if (!steep) b = c.up ? 0.72 : 0.28;
-        return line(mx + 8, my - mh * (a + shift), mx + mw - 8, my - mh * (b + shift * (steep ? 0.05 : 0.0)),
-          { stroke: color, w: 2, dash: dash });
-      }
-      s += plot(0.16, c.st, C.gray, "5 3");
-      s += plot(0, c.st, c.c, null);
-      s += txt(x + 12, y + 44, c.d, { anchor: "start", size: 10.2, fill: C.ink });
-      s += txt(x + 12, y + 62, "虚线 = 原曲线，实线 = 新曲线", { anchor: "start", size: 9.5, fill: C.muted });
+      var x = 20 + (i % 2) * 330, y = 40 + Math.floor(i / 2) * 128;
+      s += rect(x, y, 316, 116, { fill: c.f, stroke: c.l, rx: 9 });
+      s += txt(x + 14, y + 21, c.t, { anchor: "start", size: 12.5, weight: 700, fill: c.c });
+      /* mini chart: upward-sloping yield curve, old (dashed gray) vs new (solid) */
+      var ox = x + 36, oy = y + 92, x2 = x + 280, top = y + 36;
+      var sxp = ox + 14, lxp = x2 - 14;
+      s += line(ox, oy, x2, oy, { stroke: C.axis, w: 1 });
+      s += line(ox, oy, ox, top, { stroke: C.axis, w: 1 });
+      s += txt(ox + 12, oy + 15, "短端", { anchor: "start", size: 9.5, fill: C.muted });
+      s += txt(x2 - 6, oy + 15, "长端", { anchor: "end", size: 9.5, fill: C.muted });
+      var hs = 20, hl = 40, big = 13, small = 4;
+      var nhs = c.end === "short" ? hs + c.dir * big : hs + c.dir * small;
+      var nhl = c.end === "long" ? hl + c.dir * big : hl + c.dir * small;
+      s += line(sxp, oy - hs, lxp, oy - hl, { stroke: C.gray, w: 2, dash: "5 3" });
+      s += line(sxp, oy - nhs, lxp, oy - nhl, { stroke: c.c, w: 2.2 });
+      /* arrow marks the end that moves more (outside the curve endpoints) */
+      var ax = (c.end === "short") ? sxp - 9 : lxp + 9;
+      s += arrow(ax, oy - hs - c.dir * 2, ax, oy - nhs + c.dir * 2, { stroke: c.c, w: 1.4, head: 5 });
     });
     return wrap(304, s);
   };
