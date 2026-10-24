@@ -15,11 +15,16 @@
   var PAGE = "index";
   var PAGE_LABEL = {
     index: "课程总览",
-    part1: "Part 1 资产定价",
-    part2: "Part 2 资本结构",
-    part3: "Part 3 股利政策",
-    part4: "Part 4 资本预算",
-    part5: "Part 5 专题"
+    part1: "Part 1 市场与机构",
+    part2: "Part 2 中国市场",
+    part3: "Part 3 利率决定",
+    part4: "Part 4 期限结构",
+    part5: "Part 5 债券估值",
+    part6: "Part 6 债券风险",
+    part7: "Part 7 股票估值",
+    part8: "Part 8 货币政策",
+    part9: "Part 9 中国货币政策",
+    part10: "Part 10 货币市场"
   };
   var COLORS = [
     { k: "yellow", n: "黄色", c: "#fde68a" },
@@ -103,7 +108,7 @@
     var imgs = (n.imgs || []).filter(safeImg);
     if (imgs.length) {
       s += "<div class='nb-imgs'>" + imgs.map(function (u) {
-        return "<img class='nb-img' src='" + esc(u) + "' alt='笔记图片'>";
+        return "<img class='nb-img' src='" + esc(u) + "' alt='笔记图片' title='双击放大'>";
       }).join("") + "</div>";
     }
     return s || "<div class='nb-text muted'>（空笔记，点「编辑」补充内容）</div>";
@@ -173,6 +178,12 @@
       mk.setAttribute("data-hid", h.id);
       n.parentNode.insertBefore(mk, n);
       mk.appendChild(n);
+      mk.addEventListener("mouseenter", function () {
+        /* 正在框选文字时不弹气泡，避免和「新建/重划重点」工具条打架 */
+        if (window.getSelection && window.getSelection().toString()) return;
+        showBubbleFor({ kind: "hl", id: h.id, anchorEl: mk });
+      });
+      mk.addEventListener("mouseleave", function () { scheduleHide(); });
       } catch (e) { /* ignore nodes that changed meanwhile */ }
     });
   }
@@ -278,7 +289,7 @@
       if (el.nextSibling) el.parentNode.insertBefore(chip, el.nextSibling);
       else el.parentNode.appendChild(chip);
       chip.addEventListener("mouseenter", function () { showBubble(chip); });
-      chip.addEventListener("mouseleave", function () { if (!bubbleHold) hideBubble(); });
+      chip.addEventListener("mouseleave", function () { scheduleHide(); });
       chip.addEventListener("mousedown", function (e) {
       if (e.button !== 0) return;
       e.preventDefault();
@@ -298,7 +309,7 @@
     showBubble(chip);
     clearTimeout(jumpToNote._t);
     jumpToNote._t = setTimeout(function () {
-      if (bubble && bubble._chip === chip) hideBubble();
+      if (bubble && bubble._anchor === chip) hideBubble();
     }, 3400);
   }
 
@@ -313,7 +324,7 @@
   }
 
   /* ---------------- UI elements & state ---------------- */
-  var fab, panel, popup, menu, bubble, editorBox;
+  var fab, panel, popup, menu, bubble, editorBox, zoom;
   var edState = null;   /* live state while the editor popup is open */
   var edHandle = null;  /* { read(), repaint() } from mountEditor */
   /* Draft for a highlight being created. Kept OUTSIDE the DOM so a re-render
@@ -340,9 +351,22 @@
 
     bubble = mk("div", "note-bubble hl-ignore");
     document.body.appendChild(bubble);
+    /* 鼠标从锚点移到气泡上时取消隐藏，移出气泡再延迟隐藏 —— 解决 hover 间隙 */
+    bubble.addEventListener("mouseenter", function () { cancelHide(); });
+    bubble.addEventListener("mouseleave", function () { scheduleHide(); });
 
     editorBox = mk("div", "note-editor hl-ignore");
     document.body.appendChild(editorBox);
+
+    /* 双击笔记图片放大（lightbox） */
+    zoom = mk("div", "nb-zoom-overlay hl-ignore");
+    zoom.style.display = "none";
+    zoom.innerHTML = "<img class='nb-zoom-img' alt='放大查看'><div class='nb-zoom-hint'>单击任意处或按 Esc 关闭</div>";
+    document.body.appendChild(zoom);
+    zoom.addEventListener("click", closeZoom);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" || e.key === "Esc") closeZoom();
+    });
   }
 
   function countAll() {
@@ -376,7 +400,7 @@
     function paint() {
       sync();
       var thumbs = st.imgs.filter(safeImg).map(function (u, i) {
-        var img = "<img src='" + esc(u) + "' alt=''>";
+        var img = "<img class='nb-img' src='" + esc(u) + "' alt='' title='双击放大'>";
         var rm = "<button type='button' class='ne-rm' data-i='" + i + "' title='移除'>✕</button>";
         return "<span class='ne-thumb'>" + img + rm + "</span>";
       }).join("");
@@ -739,17 +763,49 @@
   }
 
   /* ---------------- note bubble (hidden detail) ---------------- */
-  function showBubble(chip) {
-    var n = findNote(PAGE, chip.getAttribute("data-note-id"));
-    if (!n) return;
-    var label = PAGE_LABEL[PAGE] || PAGE;
-    bubble.innerHTML =
-      "<div class='nb-head'>📓 笔记 · " + esc(label) + "</div>" +
-      noteBodyHTML(n) +
+  function showBubbleFor(opts) {
+    var headHTML, bodyHTML, onEdit;
+    if (opts.kind === "note") {
+      var n = findNote(PAGE, opts.id);
+      if (!n) return;
+      headHTML = "<div class='nb-head'>📓 笔记 · " + esc(PAGE_LABEL[PAGE] || PAGE) + "</div>";
+      bodyHTML = noteBodyHTML(n);
+      onEdit = function () { hideBubble(); openLineNoteEditor(PAGE, n.id, n.anchorIdx); };
+    } else {
+      /* highlight (划重点): note 是字符串，图片在 noteImgs 数组 */
+      var h = null;
+      (DB.marks[PAGE] || []).forEach(function (o) { if (o.id === opts.id) h = o; });
+      if (!h) return;
+      var hText = h.note || "";
+      var hImgs = (h.noteImgs || []).filter(safeImg);
+      var htags = h.tags || [];
+      if (!hText && !hImgs.length && !htags.length) return; /* 没有可显示的内容 */
+      headHTML = "<div class='nb-head'>🖍 划重点 · " + esc(PAGE_LABEL[PAGE] || PAGE) + "</div>";
+      bodyHTML = "";
+      if (hText) {
+        bodyHTML += "<div class='nb-text'>" + esc(hText).replace(/\n/g, "<br>") + "</div>";
+      }
+      if (hImgs.length) {
+        bodyHTML += "<div class='nb-imgs'>" + hImgs.map(function (u) {
+          return "<img class='nb-img' src='" + esc(u) + "' alt='笔记图片' title='双击放大'>";
+        }).join("") + "</div>";
+      }
+      if (htags.length) {
+        bodyHTML += "<div class='nb-tags'>" + htags.map(function (t) {
+          return "<span class='nb-tag'>" + esc(t) + "</span>";
+        }).join("") + "</div>";
+      }
+      onEdit = function () {
+        hideBubble();
+        var r = opts.anchorEl.getBoundingClientRect();
+        showPopupFor(h.id, r.left + r.width / 2, r.bottom);
+      };
+    }
+    bubble.innerHTML = headHTML + bodyHTML +
       "<div class='nb-actions'><button type='button' class='nb-edit-btn'>✏️ 编辑</button></div>";
     bubble.style.display = "block";
     try {
-      var r = chip.getBoundingClientRect();
+      var r = opts.anchorEl.getBoundingClientRect();
       var bw = bubble.offsetWidth || 300;
       var left = r.right + 10;
       if (left + bw > document.documentElement.clientWidth - 10) {
@@ -761,16 +817,29 @@
       bubble.style.left = left + "px";
       bubble.style.top = top + "px";
     } catch (e) {}
-    bubble._chip = chip;
+    bubble._anchor = opts.anchorEl;
     var eb = bubble.querySelector(".nb-edit-btn");
-    if (eb) {
-      eb.addEventListener("click", function () {
-        hideBubble();
-        openLineNoteEditor(PAGE, n.id, n.anchorIdx);
-      });
-    }
+    if (eb) eb.addEventListener("click", onEdit);
   }
-  function hideBubble() { if (bubble) { bubble.style.display = "none"; bubble._chip = null; } }
+  function showBubble(chip) {
+    showBubbleFor({ kind: "note", id: chip.getAttribute("data-note-id"), anchorEl: chip });
+  }
+  /* 延迟隐藏：鼠标从锚点移到气泡本身时不会闪退 */
+  var hideTimer = null;
+  function cancelHide() { if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } }
+  function scheduleHide() {
+    if (bubbleHold) return;
+    cancelHide();
+    hideTimer = setTimeout(function () { hideBubble(); hideTimer = null; }, 220);
+  }
+  function hideBubble() { if (bubble) { bubble.style.display = "none"; bubble._anchor = null; } }
+  function openZoom(src) {
+    if (!zoom || !safeImg(src)) return;
+    var im = zoom.querySelector(".nb-zoom-img");
+    if (im) im.src = src;
+    zoom.style.display = "flex";
+  }
+  function closeZoom() { if (zoom) zoom.style.display = "none"; }
 
   /* ---------------- right-click context menu ---------------- */
   function showMenu(px, py, idx) {
@@ -1033,12 +1102,21 @@
     document.addEventListener("click", function (e) {
       var mk = e.target.closest ? e.target.closest("mark.hl") : null;
       if (mk) {
+        hideBubble();
         var r = mk.getBoundingClientRect();
         showPopupFor(mk.getAttribute("data-hid"), r.left + r.width / 2, r.bottom);
         return;
       }
       var chip = e.target.closest ? e.target.closest(".note-chip") : null;
-      if (chip) showBubble(chip);
+      if (chip) { hideBubble(); showBubble(chip); }
+    });
+
+    /* 双击笔记里的图片 → 放大查看（仅对笔记气泡 / 编辑器内的图片生效） */
+    document.addEventListener("dblclick", function (e) {
+      var img = e.target.closest ? e.target.closest("img") : null;
+      if (!img) return;
+      if (!img.closest(".note-bubble, .note-editor")) return;
+      openZoom(img.getAttribute("src"));
     });
 
     panel.addEventListener("click", function (e) {

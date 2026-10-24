@@ -651,13 +651,26 @@ mark.hl-flash { animation: hlflash 1.6s ease; }
 .nb-head { font-size: 11.5px; font-weight: 700; color: var(--purple); margin-bottom: 5px; }
 .nb-text { white-space: pre-wrap; word-break: break-word; }
 .nb-imgs { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
-.nb-img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; }
+.nb-img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; cursor: zoom-in; }
 .nb-actions { margin-top: 9px; padding-top: 7px; border-top: 1px dashed var(--line); }
 .nb-edit-btn {
   font: inherit; font-size: 12px; padding: 4px 10px; border-radius: 7px;
   border: 1px solid var(--line); background: #fff; color: var(--ink-2); cursor: pointer;
 }
 .nb-edit-btn:hover { background: var(--blue-soft); border-color: var(--blue-line); color: var(--blue); }
+.nb-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.nb-tag { font-size: 11px; line-height: 1; padding: 3px 9px; border-radius: 999px;
+  background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+
+/* 笔记图片双击放大（lightbox） */
+.nb-zoom-overlay {
+  position: fixed; inset: 0; z-index: 160; display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  background: rgba(10,18,32,.86); cursor: zoom-out;
+}
+.nb-zoom-img { max-width: 92vw; max-height: 82vh; border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5); cursor: default; }
+.nb-zoom-hint { color: #fff; opacity: .78; font-size: 12px; }
 
 /* note editor popup */
 .note-editor {
