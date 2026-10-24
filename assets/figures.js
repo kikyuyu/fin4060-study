@@ -198,23 +198,23 @@
     s += txt(174, 122, "证券（股/债）", { size: 10, fill: C.amber });
 
     /* --- intermediated --- */
-    s += txt(490, 52, "Intermediated Financing 间接融资", { size: 12, weight: 700, fill: C.green });
-    s += box(360, 66, 110, 46, "资金盈余方", "Households", { fill: C.blueSoft, stroke: C.blue });
-    s += box(490, 60, 130, 58, "金融中介 FIs", "存款 / 保单", { fill: C.greenSoft, stroke: C.green });
-    s += box(650, 66, 110, 46, "资金短缺方", "Corporations", { fill: C.amberSoft, stroke: C.amber });
-    s += arrow(470, 89, 488, 89, { stroke: C.blue });
-    s += txt(479, 80, "现金", { size: 10, fill: C.blue });
-    s += arrow(620, 89, 648, 89, { stroke: C.green });
-    s += txt(634, 80, "贷款", { size: 10, fill: C.green });
-    s += arrow(648, 105, 620, 105, { stroke: C.amber, dash: "4 3" });
-    s += txt(634, 122, "还本付息", { size: 10, fill: C.amber });
-    s += arrow(488, 105, 470, 105, { stroke: C.blue, dash: "4 3" });
+    s += txt(505, 52, "Intermediated Financing 间接融资", { size: 12, weight: 700, fill: C.green });
+    s += box(350, 66, 96, 46, "资金盈余方", "Households", { fill: C.blueSoft, stroke: C.blue });
+    s += box(468, 60, 110, 58, "金融中介 FIs", "存款 / 保单", { fill: C.greenSoft, stroke: C.green });
+    s += box(600, 66, 78, 46, "资金短缺方", "Corporations", { fill: C.amberSoft, stroke: C.amber });
+    s += arrow(446, 89, 466, 89, { stroke: C.blue });
+    s += txt(456, 80, "现金", { size: 10, fill: C.blue });
+    s += arrow(578, 89, 598, 89, { stroke: C.green });
+    s += txt(588, 80, "贷款", { size: 10, fill: C.green });
+    s += arrow(598, 105, 578, 105, { stroke: C.amber, dash: "4 3" });
+    s += txt(588, 126, "还本付息", { size: 10, fill: C.amber });
+    s += arrow(468, 105, 448, 105, { stroke: C.blue, dash: "4 3" });
 
     /* divider */
     s += line(340, 46, 340, 140, { stroke: C.grid, w: 1, dash: "5 4" });
 
     /* why intermediaries */
-    s += rect(20, 152, 640, 122, { fill: "#fff", stroke: C.grid, rx: 8 });
+    s += rect(20, 152, 640, 158, { fill: "#fff", stroke: C.grid, rx: 8 });
     s += txt(36, 174, "为什么需要中介？五大功能", { anchor: "start", size: 12, weight: 700, fill: C.navy });
     var fns = [
       ["降低监控成本", "Delegated monitoring"],
@@ -224,11 +224,11 @@
       ["面额转换", "Denomination intermediation"]
     ];
     fns.forEach(function (f, i) {
-      var x = 34 + (i % 3) * 208, y = 188 + Math.floor(i / 3) * 46;
+      var x = 34 + (i % 3) * 208, y = 188 + Math.floor(i / 3) * 58;
       s += band(x, y, 196, 36, f[0], { fill: C.purpleSoft, stroke: C.purpleLine, color: C.purple });
-      s += txt(x + 98, y + 50, f[1], { size: 10, fill: C.muted });
+      s += txt(x + 98, y + 48, f[1], { size: 10, fill: C.muted });
     });
-    return wrap(288, s);
+    return wrap(322, s);
   };
 
   /* ---------- 3. Financial institution categories ---------- */
@@ -236,10 +236,10 @@
     var s = "";
     s += txt(340, 24, "金融机构四大类：同一家机构可跨多个类别", { size: 13, weight: 700, fill: C.navy });
     var cats = [
-      { t: "存款类 Depository", sub: "商业银行 · 信用社 · 储蓄机构", items: "吸收存款并发放贷款；主要资产是贷款与证券", c: C.blue, f: C.blueSoft, l: C.blueLine },
-      { t: "契约储蓄 Contractual savings", sub: "寿险 · 财险 · 养老金", items: "按合约定期收付，负债久期长、可预测", c: C.green, f: C.greenSoft, l: C.greenLine },
-      { t: "投资集合 Investment pools", sub: "共同基金 · ETF · 对冲基金", items: "把小额资金集合起来投资证券组合", c: C.purple, f: C.purpleSoft, l: C.purpleLine },
-      { t: "市场中介 Intermediaries", sub: "投行 · 经纪商 · 做市商 · 交易所", items: "撮合、承销、做市；不 necessarily 承担资产负债表风险", c: C.amber, f: C.amberSoft, l: C.amberLine }
+      { t: "存款类 Depository", sub: "商业银行 · 信用社 · 储蓄机构", items: ["吸收存款并发放贷款", "主要资产是贷款与证券"], c: C.blue, f: C.blueSoft, l: C.blueLine },
+      { t: "契约储蓄 Contractual savings", sub: "寿险 · 财险 · 养老金", items: ["按合约定期收付", "负债久期长、可预测"], c: C.green, f: C.greenSoft, l: C.greenLine },
+      { t: "投资集合 Investment pools", sub: "共同基金 · ETF · 对冲基金", items: ["把小额资金集合起来", "投资证券组合"], c: C.purple, f: C.purpleSoft, l: C.purpleLine },
+      { t: "市场中介 Intermediaries", sub: "投行 · 经纪商 · 做市商 · 交易所", items: ["撮合、承销、做市", "未必承担资产负债表风险"], c: C.amber, f: C.amberSoft, l: C.amberLine }
     ];
     cats.forEach(function (k, i) {
       var x = 20 + i * 165, w = 152;
@@ -249,10 +249,10 @@
       s += line(x + 12, 70, x + w - 12, 70, { stroke: k.l, w: 1 });
       var ss = fitSize(k.sub, w - 12, 10.5);
       s += txt(x + w / 2, 88, k.sub, { size: ss, fill: C.ink });
-      s += txt(x + w / 2, 104, "·", { size: 14, fill: k.c });
-      var is = fitSize(k.items, w - 14, 9.8);
-      s += txt(x + w / 2, 126, k.items, { size: is, fill: C.muted });
-      s += txt(x + w / 2, 142, "", { size: 9 });
+      var is1 = fitSize(k.items[0], w - 14, 9.8);
+      s += txt(x + w / 2, 118, k.items[0], { size: is1, fill: C.muted });
+      var is2 = fitSize(k.items[1], w - 14, 9.8);
+      s += txt(x + w / 2, 136, k.items[1], { size: is2, fill: C.muted });
     });
     /* risk strip */
     s += rect(20, 172, 640, 86, { fill: "#fff", stroke: C.grid, rx: 8 });
@@ -286,8 +286,8 @@
     /* Stock connect: two-way with HK */
     s += box(230, 130, 220, 46, "香港市场 (HKEX)", "互联互通的对接端", { fill: C.greenSoft, stroke: C.green });
     s += biArrow(340, 108, 340, 128, { stroke: C.green, w: 2 });
-    s += txt(430, 122, "沪港通 / 深港通", { anchor: "start", size: 10.5, weight: 700, fill: C.green });
-    s += txt(430, 138, "双向额度 + 标的名单", { anchor: "start", size: 9.5, fill: C.muted });
+    s += txt(458, 122, "沪港通 / 深港通", { anchor: "start", size: 10.5, weight: 700, fill: C.green });
+    s += txt(458, 138, "双向额度 + 标的名单", { anchor: "start", size: 9.5, fill: C.muted });
 
     /* A vs B share */
     s += rect(20, 192, 310, 84, { fill: C.blueSoft, stroke: C.blueLine, rx: 8 });
@@ -338,7 +338,7 @@
     /* note */
     s += rect(f.L, f.capY - 12, 570, 34, { fill: C.amberSoft, stroke: C.amberLine, rx: 7 });
     s += txt(f.L + 12, f.capY + 6, "自有资金 ¥40,000 + 借入 ¥60,000 → 资产敞口 ¥100,000 = 2.5 倍", { anchor: "start", size: 11, weight: 600, fill: C.amber });
-    return wrap(f.H + 10, s);
+    return wrap(f.H + 18, s);
   };
 
   /* ---------- 6. Margin spiral ---------- */
@@ -426,7 +426,7 @@
     s += line(40, y + 92, 40, y + 130, { stroke: C.axis, w: 1.4 });
     s += line(40, y + 130, 640, y + 130, { stroke: C.axis, w: 1.4 });
     parts.forEach(function (p, i) {
-      var w = p.v * scale;
+      var w = Math.max(p.v * scale, 58);
       s += rect(x, y, w, 78, { fill: p.f, stroke: p.l, rx: 4 });
       var ts = fitSize(p.t, w - 8, 11.5);
       s += txt(x + w / 2, y + 30, p.t, { size: ts, weight: 700, fill: p.c });
@@ -450,9 +450,9 @@
     s += txt(340, 24, "收益率曲线的三种基本形状（以 1/2/5/10 年为例）", { size: 13, weight: 700, fill: C.navy });
     var m = [1, 2, 5, 10];
     var series = [
-      { name: "向上倾斜 Upward", ys: [1.20, 1.45, 1.95, 2.40], c: C.green },
-      { name: "平坦 Flat", ys: [4.20, 4.25, 4.38, 4.55], c: C.gray },
-      { name: "倒挂 Inverted", ys: [5.80, 5.45, 5.00, 4.72], c: C.red }
+      { name: "向上倾斜 Upward", ys: [1.20, 1.45, 1.95, 2.40], c: C.green, dy: 18 },
+      { name: "平坦 Flat", ys: [4.20, 4.25, 4.38, 4.55], c: C.gray, dy: 16 },
+      { name: "倒挂 Inverted", ys: [5.80, 5.45, 5.00, 4.72], c: C.red, dy: -10 }
     ];
     var f = frame({
       h: 316, xMin: 0.5, xMax: 10.5, yMin: 0.8, yMax: 6.2,
@@ -466,7 +466,7 @@
       s += path(d, { stroke: se.c, w: 2.8 });
       m.forEach(function (v, i) { s += dot(f.sx(v), f.sy(se.ys[i]), 4, { fill: se.c }); });
       var last = m.length - 1;
-      s += txt(f.sx(m[last]) + 8, f.sy(se.ys[last]) + 4, se.name, { anchor: "start", size: 10.5, weight: 700, fill: se.c });
+      s += txt(f.R - 4, f.sy(se.ys[last]) + se.dy, se.name, { anchor: "end", size: 10.5, weight: 700, fill: se.c });
     });
     s += txt(340, f.capY + 4, "期限价差 Term Spread = y₁₀ − y₁；>0.20% 向上，±0.20% 内平坦，<−0.20% 倒挂", { size: 11, weight: 600, fill: C.navy });
     return wrap(f.H + 8, s);
@@ -631,10 +631,10 @@
   FIG.pullToPar = function () {
     var s = "";
     var f = frame({
-      h: 316, xMin: 0, xMax: 10, yMin: 900, yMax: 1120,
+      h: 316, xMin: 0, xMax: 10, yMin: 820, yMax: 1180,
       xLabel: "距到期的剩余年限", yLabel: "债券价格 Price ($)",
       xTicks: [{ v: 0, l: "0" }, { v: 2, l: "2" }, { v: 4, l: "4" }, { v: 6, l: "6" }, { v: 8, l: "8" }, { v: 10, l: "10" }],
-      yTicks: [{ v: 900, l: "900" }, { v: 950, l: "950" }, { v: 1000, l: "1000" }, { v: 1050, l: "1050" }, { v: 1100, l: "1100" }]
+      yTicks: [{ v: 850, l: "850" }, { v: 900, l: "900" }, { v: 950, l: "950" }, { v: 1000, l: "1000" }, { v: 1050, l: "1050" }, { v: 1100, l: "1100" }, { v: 1150, l: "1150" }]
     });
     s += f.svg;
     function price(T, c, y) {
@@ -642,18 +642,18 @@
       for (var t = 1; t <= Math.round(T); t++) pv += (t < Math.round(T) ? c * 1000 : c * 1000 + 1000) / Math.pow(1 + y, t);
       return pv;
     }
-    function curve(c, y, color, label, dash) {
+    function curve(c, y, color, label, dash, ly) {
       var pts = [], T;
       for (T = 10; T >= 1; T--) pts.push([f.sx(T), f.sy(price(T, c, y))]);
       var d = pts.map(function (p, k) { return (k ? "L" : "M") + n(p[0]) + "," + n(p[1]); }).join(" ");
       var out = path(d, { stroke: color, w: 2.6, dash: dash });
       pts.forEach(function (p) { out += dot(p[0], p[1], 3.2, { fill: color }); });
-      out += txt(f.sx(10) + 6, f.sy(price(10, c, y)) + 4, label, { anchor: "start", size: 10.2, weight: 700, fill: color });
+      out += txt(f.sx(10) - 8, ly, label, { anchor: "end", size: 10.2, weight: 700, fill: color });
       return out;
     }
-    s += curve(0.06, 0.04, C.blue, "溢价债（c=6% > y=4%）", null);
-    s += curve(0.04, 0.04, C.gray, "平价债（c=y=4%）", "5 4");
-    s += curve(0.02, 0.04, C.amber, "折价债（c=2% < y=4%）", null);
+    s += curve(0.06, 0.04, C.blue, "溢价债（c=6% > y=4%）", null, f.sy(price(10, 0.06, 0.04)) - 6);
+    s += curve(0.04, 0.04, C.gray, "平价债（c=y=4%）", "5 4", f.sy(1000) + 18);
+    s += curve(0.02, 0.04, C.amber, "折价债（c=2% < y=4%）", null, 251);
     s += line(f.L, f.sy(1000), f.R, f.sy(1000), { stroke: C.navy, w: 1.4, dash: "5 4" });
     s += txt(f.R - 4, f.sy(1000) - 8, "面值 $1,000", { anchor: "end", size: 10.5, weight: 700, fill: C.navy });
     s += txt(340, f.capY + 2, "收益率不变时，溢价随到期临近收敛至 0（pull to par）；折价同理向上收敛", { size: 11, weight: 600, fill: C.navy });
@@ -666,10 +666,10 @@
     s += txt(340, 22, "久期随期限上升但增速递减；票息越高久期越短", { size: 12.5, weight: 700, fill: C.navy });
     /* left: maturity effect */
     var f1 = frame({
-      h: 300, xMin: 0, xMax: 32, yMin: 0, yMax: 20,
+      h: 300, xMin: 0, xMax: 32, yMin: 0, yMax: 32,
       xLabel: "期限 Maturity（年）", yLabel: "麦考利久期（年）",
       xTicks: [{ v: 5, l: "5" }, { v: 10, l: "10" }, { v: 15, l: "15" }, { v: 20, l: "20" }, { v: 25, l: "25" }, { v: 30, l: "30" }],
-      yTicks: [{ v: 0, l: "0" }, { v: 5, l: "5" }, { v: 10, l: "10" }, { v: 15, l: "15" }, { v: 20, l: "20" }]
+      yTicks: [{ v: 0, l: "0" }, { v: 5, l: "5" }, { v: 10, l: "10" }, { v: 15, l: "15" }, { v: 20, l: "20" }, { v: 25, l: "25" }, { v: 30, l: "30" }]
     });
     var s1 = f1.svg;
     function macDur(T, c, y) {
@@ -686,7 +686,7 @@
     s1 += path(ds.map(function (p, k) { return (k ? "L" : "M") + n(p[0]) + "," + n(p[1]); }).join(" "), { stroke: C.blue, w: 3 });
     ds.forEach(function (p) { s1 += dot(p[0], p[1], 4.5, { fill: C.blue }); });
     s1 += line(f1.sx(5), f1.sy(5), f1.sx(30), f1.sy(30), { stroke: C.gray, w: 1.6, dash: "5 4" });
-    s1 += txt(f1.sx(30) - 4, f1.sy(30) + 16, "零息债：久期 = 期限（虚线）", { anchor: "end", size: 9.6, fill: C.muted });
+    s1 += txt(f1.sx(26), f1.sy(26) - 8, "零息债：久期 = 期限（虚线）", { anchor: "end", size: 9.6, fill: C.muted });
     /* increment brackets: show decreasing step sizes */
     var prev = null;
     ds.forEach(function (p, k) {
@@ -759,7 +759,7 @@
   FIG.ddmTimeline = function () {
     var s = "";
     s += txt(340, 24, "股利折现模型：从 D₁ 开始折现，终值在拐点处折回", { size: 12.5, weight: 700, fill: C.navy });
-    var y0 = 92;
+    var y0 = 110;
     s += line(60, y0, 620, y0, { stroke: C.axis, w: 1.6 });
     var xs = [110, 250, 390, 530];
     xs.forEach(function (x, i) {
@@ -818,7 +818,7 @@
 
     s += rect(f.L, f.capY - 10, 570, 34, { fill: C.amberSoft, stroke: C.amberLine, rx: 7 });
     s += txt(f.L + 12, f.capY + 8, "CAPM 只对 beta（系统性风险）给溢价；个体波动可通过分散化消除，不获溢价", { anchor: "start", size: 10.8, weight: 600, fill: C.amber });
-    return wrap(f.H + 10, s);
+    return wrap(f.H + 20, s);
   };
 
   /* ---------- 19. Factor model ---------- */
@@ -883,7 +883,7 @@
       });
       if (i < 3) s += arrow(colX[3] + colW[3] + 6, y + 15, colX[0] + colW[0] - 4, y + 42, { stroke: C.green, w: 1.6, dash: "4 3" });
     });
-    s += txt(470, 200, "贷款 → 支出 → 再存款", { size: 9.6, fill: C.green });
+    s += txt(470, 214, "贷款 → 支出 → 再存款", { size: 9.6, fill: C.green });
     s += rect(20, 222, 640, 60, { fill: C.amberSoft, stroke: C.amberLine, rx: 8 });
     s += txt(340, 242, "最大存款增量 = 初始准备金 ÷ 准备金率 = 100 ÷ 0.10 = 1,000（百万）", { size: 12, weight: 700, fill: C.amber });
     s += txt(340, 262, "最大贷款增量 = 1,000 − 100 = 900（百万）；准备金率 20% 时存款增量降为 500", { size: 10.8, fill: C.ink });
@@ -922,7 +922,7 @@
     items.forEach(function (it, i) {
       var x = 32 + i * 208;
       s += band(x, 154, 192, 30, it[0], { fill: C.redSoft, stroke: C.redLine, color: C.red, size: 10.8 });
-      s += txt(x + 96, 186, it[1], { size: 10, fill: C.muted });
+      s += txt(x + 96, 194, it[1], { size: 10, fill: C.muted });
     });
     /* lender of last resort */
     s += rect(16, 204, 644, 58, { fill: C.greenSoft, stroke: C.greenLine, rx: 8 });
@@ -961,8 +961,10 @@
     s2 += biArrow(f.sx(1.80), f.B - 24, f.sx(2.50), f.B - 24, { stroke: C.purple, w: 1.8 });
     s2 += txt((f.sx(1.80) + f.sx(2.50)) / 2, f.B - 32, "走廊宽度 70 bp", { size: 11, weight: 700, fill: C.purple });
     /* mechanism labels inside band */
-    s2 += txt((f.sx(1.80) + f.sx(2.00)) / 2, (f.T + f.B) / 2, "机构可把钱放给央行", { size: 9.6, fill: C.muted });
-    s2 += txt((f.sx(2.00) + f.sx(2.50)) / 2, (f.T + f.B) / 2, "机构可向央行借钱", { size: 9.6, fill: C.muted });
+    s2 += txt((f.sx(1.80) + f.sx(2.00)) / 2, (f.T + f.B) / 2 - 10, "机构可把钱", { size: 9.6, fill: C.muted });
+    s2 += txt((f.sx(1.80) + f.sx(2.00)) / 2, (f.T + f.B) / 2 + 12, "放给央行", { size: 9.6, fill: C.muted });
+    s2 += txt((f.sx(2.00) + f.sx(2.50)) / 2, (f.T + f.B) / 2 - 10, "机构可向", { size: 9.6, fill: C.muted });
+    s2 += txt((f.sx(2.00) + f.sx(2.50)) / 2, (f.T + f.B) / 2 + 12, "央行借钱", { size: 9.6, fill: C.muted });
     s2 += txt(340, f.capY + 2, "合格机构 + 足够抵押品 ⇒ 市场利率难以越出走廊上下限", { size: 11, weight: 600, fill: C.navy });
     return wrap(f.H + 6, s2);
   };
@@ -1004,7 +1006,7 @@
     s += arrow(158, 84, 194, 84, { stroke: C.green });
     s += txt(176, 78, "现金", { size: 9.5, fill: C.green });
     s += arrow(194, 100, 158, 100, { stroke: C.green, dash: "4 3" });
-    s += txt(176, 116, "证券（抵押）", { size: 9.5, fill: C.green });
+    s += txt(176, 121, "证券（抵押）", { size: 9.5, fill: C.green });
     s += txt(175, 140, "今天：央行买入并约定卖回", { size: 10, fill: C.muted });
     s += txt(175, 158, "到期不续做 → 收回流动性", { size: 10, fill: C.red });
 
@@ -1016,7 +1018,7 @@
     s += arrow(526, 84, 490, 84, { stroke: C.red });
     s += txt(508, 78, "现金", { size: 9.5, fill: C.red });
     s += arrow(490, 100, 526, 100, { stroke: C.red, dash: "4 3" });
-    s += txt(508, 116, "证券（抵押）", { size: 9.5, fill: C.red });
+    s += txt(508, 121, "证券（抵押）", { size: 9.5, fill: C.red });
     s += txt(505, 140, "今天：央行卖出并约定买回", { size: 10, fill: C.muted });
     s += txt(505, 158, "到期 → 归还流动性", { size: 10, fill: C.green });
 
@@ -1100,7 +1102,7 @@
   FIG.cdTimeline = function () {
     var s = "";
     s += txt(340, 24, "大额可转让 CD：到期一次付息，二级市场价格与收益率反向", { size: 12.5, weight: 700, fill: C.navy });
-    var y0 = 92;
+    var y0 = 110;
     s += line(70, y0, 610, y0, { stroke: C.axis, w: 1.6 });
     var xs = [110, 400, 570];
     xs.forEach(function (x, i) {
