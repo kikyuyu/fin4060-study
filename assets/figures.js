@@ -411,6 +411,41 @@
     return wrap(f.H + 8, s);
   };
 
+  /* ---------- 7b. Loanable funds self-correction ---------- */
+  FIG.loanableAdjust = function () {
+    var s = "";
+    var f = frame({
+      h: 322, xMin: 0, xMax: 120, yMin: 0, yMax: 10,
+      xLabel: "可贷资金数量 Quantity of loanable funds", yLabel: "利率 Interest rate (%)",
+      xTicks: [{ v: 20, l: "20" }, { v: 40, l: "40" }, { v: 60, l: "60" }, { v: 80, l: "80" }, { v: 100, l: "100" }],
+      yTicks: [{ v: 0, l: "0" }, { v: 3, l: "3" }, { v: 5, l: "5" }, { v: 7, l: "7" }, { v: 9, l: "9" }]
+    });
+    s += f.svg;
+    /* S: (8,1.2)->(112,8.4); D: (8,8.4)->(112,1.2); E=(60,5) */
+    function xS(i) { return 8 + (i - 1.2) * (104 / 7.2); }
+    function xD(i) { return 8 + (8.4 - i) * (104 / 7.2); }
+    s += line(f.sx(8), f.sy(1.2), f.sx(112), f.sy(8.4), { stroke: C.green, w: 2.6 });
+    s += txt(f.sx(112), f.sy(8.4) - 10, "S", { anchor: "end", size: 12.5, weight: 700, fill: C.green });
+    s += line(f.sx(8), f.sy(8.4), f.sx(112), f.sy(1.2), { stroke: C.blue, w: 2.6 });
+    s += txt(f.sx(112), f.sy(1.2) + 16, "D", { anchor: "end", size: 12.5, weight: 700, fill: C.blue });
+    s += dot(f.sx(60), f.sy(5), 5.5, { fill: C.navy });
+    s += txt(f.sx(60) + 11, f.sy(5) - 9, "E (i*)", { anchor: "start", size: 11.5, weight: 700, fill: C.navy });
+    s += line(f.L, f.sy(5), f.sx(60), f.sy(5), { stroke: C.navy, w: 1.2, dash: "4 3" });
+    s += line(f.sx(60), f.B, f.sx(60), f.sy(5), { stroke: C.navy, w: 1.2, dash: "4 3" });
+    /* above equilibrium: excess supply at i_H = 7 */
+    s += line(f.sx(xD(7)), f.sy(7), f.sx(xS(7)), f.sy(7), { stroke: C.amber, w: 2, dash: "6 4" });
+    s += biArrow(f.sx(xD(7)) + 14, f.sy(7) - 12, f.sx(xS(7)) - 14, f.sy(7) - 12, { stroke: C.amber, w: 1.6 });
+    s += txt(f.sx(60), f.sy(7) - 22, "超额供给 → 利率被压回 i*", { size: 10.8, weight: 600, fill: C.amber });
+    s += arrow(f.sx(xS(7)) + 16, f.sy(7), f.sx(xS(7)) + 16, f.sy(5.4), { stroke: C.amber, w: 1.8, head: 6 });
+    /* below equilibrium: excess demand at i_L = 3 */
+    s += line(f.sx(xS(3)), f.sy(3), f.sx(xD(3)), f.sy(3), { stroke: C.purple, w: 2, dash: "6 4" });
+    s += biArrow(f.sx(xS(3)) + 14, f.sy(3) + 14, f.sx(xD(3)) - 14, f.sy(3) + 14, { stroke: C.purple, w: 1.6 });
+    s += txt(f.sx(60), f.sy(3) + 30, "超额需求 → 利率被推回 i*", { size: 10.8, weight: 600, fill: C.purple });
+    s += arrow(f.sx(xS(3)) - 16, f.sy(3), f.sx(xS(3)) - 16, f.sy(4.6), { stroke: C.purple, w: 1.8, head: 6 });
+    s += txt(340, f.capY + 2, "高于 i*：想贷的多、想借的少；低于 i*：想借的多、想贷的少 —— 利率自动回归 i*，无需外力干预", { size: 10.5, weight: 600, fill: C.navy });
+    return wrap(f.H + 8, s);
+  };
+
   /* ---------- 8. Interest rate decomposition ---------- */
   FIG.rateDecomposition = function () {
     var s = "";
@@ -627,6 +662,50 @@
     return wrap(f.H + 10, s);
   };
 
+  /* ---------- 13b. Premium / par / discount zones ---------- */
+  FIG.bondPriceZones = function () {
+    /* 12Y, 10% annual coupon paid semiannually (courseware example) */
+    function pv(r) {
+      var i = r / 2, N = 24;
+      return 50 * (1 - Math.pow(1 + i, -N)) / i + 1000 * Math.pow(1 + i, -N);
+    }
+    var s = "";
+    var f = frame({
+      h: 342, xMin: 0.07, xMax: 0.15, yMin: 700, yMax: 1250,
+      xLabel: "要求收益率 Required return r", yLabel: "债券价格 Price ($)",
+      xTicks: [{ v: 0.08, l: "8%" }, { v: 0.10, l: "10%" }, { v: 0.12, l: "12%" }, { v: 0.14, l: "14%" }],
+      yTicks: [{ v: 700, l: "700" }, { v: 850, l: "850" }, { v: 1000, l: "1000" }, { v: 1150, l: "1150" }, { v: 1250, l: "1250" }]
+    });
+    s += f.svg;
+    /* zones: above par = premium (green), below = discount (red) */
+    s += rect(f.L, f.T, f.R - f.L, f.sy(1000) - f.T, { fill: C.greenSoft, stroke: "none", opacity: 0.55 });
+    s += rect(f.L, f.sy(1000), f.R - f.L, f.B - f.sy(1000), { fill: C.redSoft, stroke: "none", opacity: 0.45 });
+    s += txt(f.R - 10, f.T + 18, "溢价区 Vb > Par（c > r）", { anchor: "end", size: 10.5, weight: 700, fill: C.green });
+    s += txt(156, f.B - 12, "折价区 Vb < Par（c < r）", { anchor: "start", size: 10.5, weight: 700, fill: C.red });
+    /* par line */
+    s += line(f.L, f.sy(1000), f.R, f.sy(1000), { stroke: C.navy, w: 1.6, dash: "7 4" });
+    s += txt(f.L + 8, f.sy(1000) - 7, "Par = $1,000（c = r 时价格回到面值）", { anchor: "start", size: 10.2, weight: 600, fill: C.navy });
+    /* price-yield curve */
+    var pts = [], r;
+    for (r = 0.07; r <= 0.1501; r += 0.002) pts.push([f.sx(r), f.sy(pv(r))]);
+    s += path(pts.map(function (p, k) { return (k ? "L" : "M") + n(p[0]) + "," + n(p[1]); }).join(" "), { stroke: C.blue, w: 2.8 });
+    /* courseware points */
+    var marks = [
+      { r: 0.08, p: 1152.47, lbl: "$1,152.47 溢价债", dx: 12, anc: "start" },
+      { r: 0.10, p: 1000.00, lbl: "$1,000 平价债", dx: 14, anc: "start" },
+      { r: 0.12, p: 874.50, lbl: "$874.50 折价债", dx: -12, anc: "end" }
+    ];
+    marks.forEach(function (m) {
+      s += line(f.sx(m.r), f.B, f.sx(m.r), f.sy(m.p), { stroke: C.grid, w: 1.2, dash: "4 3" });
+      s += dot(f.sx(m.r), f.sy(m.p), 5.5, { fill: C.navy });
+      var ly = f.sy(m.p) - 12;
+      if (m.r > 0.11) ly = f.sy(m.p) + 22;
+      s += txt(f.sx(m.r) + m.dx, ly, m.lbl, { anchor: m.anc, size: 10.8, weight: 700, fill: C.navy });
+    });
+    s += txt(340, f.capY + 2, "12 年期、票息 10%（半年付）课件例：r = 8% → $1,152.47；r = 10% → $1,000；r = 12% → $874.50", { size: 10.5, weight: 600, fill: C.navy });
+    return wrap(f.H + 8, s);
+  };
+
   /* ---------- 14. Pull to par ---------- */
   FIG.pullToPar = function () {
     var s = "";
@@ -753,6 +832,73 @@
     s += legend([{ label: "真实价格", color: C.blue }, { label: "久期近似", color: C.amber, dash: "6 4" }], f.L + 4, 24);
     s += txt(340, f.capY + 4, "ΔP/P ≈ −D_mod × Δy：Δy 越小越准；大幅变动必须补凸性项", { size: 11, weight: 600, fill: C.navy });
     return wrap(f.H + 10, s);
+  };
+
+  /* ---------- 16b. Coupon rate vs price sensitivity ---------- */
+  FIG.couponSensitivity = function () {
+    /* 10Y annual-pay bonds, base yield 10%; % price change vs Δr */
+    function pv(c, r) {
+      return c * 1000 * (1 - Math.pow(1 + r, -10)) / r + 1000 * Math.pow(1 + r, -10);
+    }
+    var P0h = pv(0.10, 0.10), P0l = pv(0.02, 0.10);
+    var s = "";
+    var f = frame({
+      h: 330, xMin: -0.04, xMax: 0.04, yMin: -40, yMax: 45,
+      xLabel: "收益率变动 Δr（百分点，基准 r = 10%）", yLabel: "价格变化 %（相对基准价）",
+      xTicks: [{ v: -0.04, l: "−4pp" }, { v: -0.02, l: "−2pp" }, { v: 0, l: "0" }, { v: 0.02, l: "+2pp" }, { v: 0.04, l: "+4pp" }],
+      yTicks: [{ v: -30, l: "−30%" }, { v: -15, l: "−15%" }, { v: 0, l: "0" }, { v: 15, l: "+15%" }, { v: 30, l: "+30%" }, { v: 45, l: "+45%" }]
+    });
+    s += f.svg;
+    s += line(f.L, f.sy(0), f.R, f.sy(0), { stroke: C.grid, w: 1.2 });
+    function series(c, P0) {
+      var pts = [], dr;
+      for (dr = -0.04; dr <= 0.0401; dr += 0.002) {
+        pts.push([f.sx(dr), f.sy((pv(c, 0.10 + dr) - P0) / P0 * 100)]);
+      }
+      return pts;
+    }
+    var hi = series(0.10, P0h), lo = series(0.02, P0l);
+    s += path(lo.map(function (p, k) { return (k ? "L" : "M") + n(p[0]) + "," + n(p[1]); }).join(" "), { stroke: C.red, w: 2.6 });
+    s += path(hi.map(function (p, k) { return (k ? "L" : "M") + n(p[0]) + "," + n(p[1]); }).join(" "), { stroke: C.blue, w: 2.6 });
+    s += dot(f.sx(0), f.sy(0), 5, { fill: C.navy });
+    s += txt(f.R - 8, 44, "票息 10%（高票息，更平）", { anchor: "end", size: 11, weight: 700, fill: C.blue });
+    s += txt(f.R - 8, 60, "票息 2%（低票息，更陡）", { anchor: "end", size: 11, weight: 700, fill: C.red });
+    s += txt(340, f.capY + 2, "同样 +4pp：低票息债 −26.4% vs 高票息债 −20.9% —— 票息越高，价格对利率越不敏感（Malkiel 定理）", { size: 10.5, weight: 600, fill: C.navy });
+    return wrap(f.H + 8, s);
+  };
+
+  /* ---------- 16c. Convexity gain-loss asymmetry ---------- */
+  FIG.convexityAsymmetry = function () {
+    /* 12Y, 10% semiannual coupon (courseware p7 example) */
+    function pv(r) {
+      var i = r / 2, N = 24;
+      return 50 * (1 - Math.pow(1 + i, -N)) / i + 1000 * Math.pow(1 + i, -N);
+    }
+    var s = "";
+    var f = frame({
+      h: 342, xMin: 0.06, xMax: 0.14, yMin: 750, yMax: 1200,
+      xLabel: "收益率 Yield", yLabel: "债券价格 Price ($)",
+      xTicks: [{ v: 0.06, l: "6%" }, { v: 0.08, l: "8%" }, { v: 0.10, l: "10%" }, { v: 0.12, l: "12%" }, { v: 0.14, l: "14%" }],
+      yTicks: [{ v: 850, l: "850" }, { v: 1000, l: "1000" }, { v: 1150, l: "1150" }]
+    });
+    s += f.svg;
+    var pts = [], r;
+    for (r = 0.078; r <= 0.1401; r += 0.0015) pts.push([f.sx(r), f.sy(pv(r))]);
+    s += path(pts.map(function (p, k) { return (k ? "L" : "M") + n(p[0]) + "," + n(p[1]); }).join(" "), { stroke: C.blue, w: 2.8 });
+    /* tangent (duration approximation) at 10% */
+    var h = 0.0005, slope = (pv(0.10 + h) - pv(0.10 - h)) / (2 * h);
+    function tan(y) { return 1000 + slope * (y - 0.10); }
+    s += line(f.sx(0.082), f.sy(tan(0.082)), f.sx(0.134), f.sy(tan(0.134)), { stroke: C.gray, w: 2, dash: "6 4" });
+    /* three courseware points */
+    [[0.08, 1152.47], [0.10, 1000], [0.12, 874.50]].forEach(function (m) {
+      s += dot(f.sx(m[0]), f.sy(m[1]), 5.5, { fill: C.navy });
+      s += line(f.sx(m[0]), f.B, f.sx(m[0]), f.sy(m[1]), { stroke: C.grid, w: 1.2, dash: "4 3" });
+    });
+    s += txt(f.sx(0.103), 100, "y₀ = 10%，P = $1,000", { anchor: "start", size: 10.5, weight: 700, fill: C.navy });
+    /* convexity summary strip (one line) */
+    s += rect(74, f.capY - 18, 570, 30, { fill: C.greenSoft, stroke: C.greenLine, rx: 7 });
+    s += txt(340, f.capY + 2, "同样 +2pp：−13.23% → −12.55%；±2pp：+15.25% vs −12.55%（涨多跌少 = 凸性）", { size: 11, weight: 700, fill: C.green });
+    return wrap(f.H + 8, s);
   };
 
   /* ---------- 17. DDM timeline ---------- */
@@ -930,6 +1076,58 @@
     s += txt(340, 244, "流动性短缺 = 到期付不出钱（可用借款过渡）；资不抵债 = 资产不足以偿付负债（借款无法解决）", { size: 10.4, fill: C.ink });
     s += txt(340, 260, "贴现窗：央行 → 机构；联邦基金：机构 → 机构（通常隔夜、无抵押）", { size: 10.2, fill: C.muted });
     return wrap(278, s);
+  };
+
+  /* ---------- 21b. Money supply vs interest rate targeting ---------- */
+  FIG.msMdTargeting = function () {
+    var s = "";
+    /* MD1 passes (6,5): (2,8.6)->(9,2.3); MD2 = MD1 shifted right 1.5 */
+    function m(i) { return 2 + (8.6 - i) * (7 / 6.3); } /* x on MD1 at level i */
+    function md2(x) { return 8.6 - (x - 3.5) * (6.3 / 7); } /* i on MD2 at x */
+    function panel(title, cap) {
+      var f = frame({
+        h: 280, xMin: 0, xMax: 10.5, yMin: 0, yMax: 10,
+        xLabel: "货币量 Money supply", yLabel: "利率 Interest rate",
+        xTicks: [], yTicks: []
+      });
+      return { f: f, title: title, cap: cap };
+    }
+    /* --- panel A: target money supply --- */
+    var A = panel("目标 A：钉住货币供给 MS", "");
+    s += txt(340, 22, A.title, { size: 12.5, weight: 700, fill: C.navy });
+    s += A.f.svg;
+    s += line(A.f.sx(2), A.f.sy(8.6), A.f.sx(9), A.f.sy(2.3), { stroke: C.blue, w: 2.6 });
+    s += txt(A.f.sx(9) + 8, A.f.sy(2.3) + 4, "MD₁", { anchor: "start", size: 11, weight: 700, fill: C.blue });
+    s += line(A.f.sx(3.5), A.f.sy(8.6), A.f.sx(10), A.f.sy(2.75), { stroke: C.purple, w: 2.4, dash: "6 4" });
+    s += txt(A.f.sx(10) - 4, A.f.sy(8.6) - 8, "MD₂（货币需求上升）", { anchor: "end", size: 10.5, weight: 600, fill: C.purple });
+    s += line(A.f.sx(6), A.f.T + 4, A.f.sx(6), A.f.B, { stroke: C.green, w: 3 });
+    s += txt(A.f.sx(6) - 6, A.f.T + 16, "MS 固定", { anchor: "end", size: 10.5, weight: 700, fill: C.green });
+    var i1 = 5, i2 = md2(6);
+    s += line(A.f.L, A.f.sy(i1), A.f.sx(6), A.f.sy(i1), { stroke: C.navy, w: 1.2, dash: "4 3" });
+    s += line(A.f.L, A.f.sy(i2), A.f.sx(6), A.f.sy(i2), { stroke: C.navy, w: 1.2, dash: "4 3" });
+    s += txt(A.f.L - 6, A.f.sy(i1) + 4, "i₁", { anchor: "end", size: 11, weight: 700, fill: C.navy });
+    s += txt(A.f.L - 6, A.f.sy(i2) + 4, "i₂", { anchor: "end", size: 11, weight: 700, fill: C.navy });
+    s += arrow(A.f.sx(6), A.f.sy(i1) - 3, A.f.sx(6), A.f.sy(i2) + 2, { stroke: C.red, w: 2, head: 6 });
+    s += txt(340, A.f.capY + 2, "MD 不稳定时，固定 MS → 利率随需求波动（i₁ → i₂）", { size: 10.5, weight: 600, fill: C.navy });
+    /* --- panel B: target interest rate --- */
+    var B = panel("目标 B：钉住利率 i*", "");
+    s += txt(340, A.f.H + 42, B.title, { size: 12.5, weight: 700, fill: C.navy });
+    s += "<g transform='translate(0," + (A.f.H + 22) + ")'>" + B.f.svg;
+    s += line(B.f.sx(2), B.f.sy(8.6), B.f.sx(9), B.f.sy(2.3), { stroke: C.blue, w: 2.6 });
+    s += txt(B.f.sx(9) + 8, B.f.sy(2.3) + 4, "MD₁", { anchor: "start", size: 11, weight: 700, fill: C.blue });
+    s += line(B.f.sx(3.5), B.f.sy(8.6), B.f.sx(10), B.f.sy(2.75), { stroke: C.purple, w: 2.4, dash: "6 4" });
+    s += txt(B.f.sx(10) - 4, B.f.sy(8.6) - 8, "MD₂（货币需求上升）", { anchor: "end", size: 10.5, weight: 600, fill: C.purple });
+    s += line(B.f.L, B.f.sy(5), B.f.R, B.f.sy(5), { stroke: C.red, w: 1.8, dash: "7 4" });
+    s += txt(B.f.L + 6, B.f.sy(5) - 7, "i* = 目标利率（保持不变）", { anchor: "start", size: 10.5, weight: 700, fill: C.red });
+    s += line(B.f.sx(6), B.f.T + 4, B.f.sx(6), B.f.B, { stroke: C.green, w: 2.6 });
+    s += txt(B.f.sx(6) - 6, B.f.T + 16, "MS₁", { anchor: "end", size: 10.5, weight: 700, fill: C.green });
+    s += line(B.f.sx(7.5), B.f.T + 4, B.f.sx(7.5), B.f.B, { stroke: C.amber, w: 2.6, dash: "6 4" });
+    s += txt(B.f.sx(7.5) - 6, B.f.T + 16, "MS₂", { anchor: "end", size: 10.5, weight: 700, fill: C.amber });
+    s += arrow(B.f.sx(6.1), B.f.B - 14, B.f.sx(7.4), B.f.B - 14, { stroke: C.amber, w: 2 });
+    s += txt(B.f.sx(6.75), B.f.B + 16, "央行移动 MS 对冲需求冲击", { size: 9.8, weight: 600, fill: C.amber });
+    s += "</g>";
+    s += txt(340, A.f.H + B.f.H + 44, "MD 波动后央行反向调整 MS，把利率钉回 i* —— 需求越不稳定，越倾向利率目标", { size: 10.5, weight: 600, fill: C.navy });
+    return wrap(A.f.H + B.f.H + 56, s);
   };
 
   /* ---------- 22. Interest rate corridor ---------- */
