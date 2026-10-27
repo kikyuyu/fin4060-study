@@ -284,7 +284,7 @@
       chip.type = "button";
       chip.className = "note-chip hl-ignore";
       chip.setAttribute("data-note-id", n.id);
-      chip.title = "笔记（悬浮或按住左键查看，松开隐藏）";
+      chip.title = "笔记（鼠标移上去查看，单击直接编辑）";
       chip.innerHTML = "<span class='nc-ico'>\uD83D\uDCD3</span>";
       if (el.nextSibling) el.parentNode.insertBefore(chip, el.nextSibling);
       else el.parentNode.appendChild(chip);
@@ -732,6 +732,16 @@
   }
   function hidePopup() { closeBox(); editingId = null; }
 
+  /* Open the edit popup for an existing highlight (colour / tags / note +
+     delete / save). Used by the side-panel "编辑" button and the
+     ?goto=<id>&edit=1 deep link. */
+  function openHighlightEditor(h) {
+    if (!h) return;
+    var x = window.innerWidth / 2;
+    var y = (window.scrollY || window.pageYOffset || 0) + 140;
+    showPopupFor(h.id, x, y);
+  }
+
   /* ---------------- line-note editor ---------------- */
   function openLineNoteEditor(page, noteId, idx) {
     var n = noteId ? findNote(page, noteId) : null;
@@ -1108,7 +1118,13 @@
         return;
       }
       var chip = e.target.closest ? e.target.closest(".note-chip") : null;
-      if (chip) { hideBubble(); showBubble(chip); }
+      if (chip) {
+        hideBubble();
+        var nid = chip.getAttribute("data-note-id");
+        var nn = findNote(PAGE, nid);
+        if (nn) { openLineNoteEditor(PAGE, nid, nn.anchorIdx); }
+        return;
+      }
     });
 
     /* 双击笔记里的图片 → 放大查看（仅对笔记气泡 / 编辑器内的图片生效） */
