@@ -191,6 +191,105 @@
   function marks(page) { return DB.marks[page] || (DB.marks[page] = []); }
   function notes(page) { return DB.notes[page] || (DB.notes[page] = []); }
 
+  /* ---------------- re-anchoring ----------------
+     Highlights store absolute char offsets; line-notes store the index of
+     a noteable element. Both drift when page content changes (new figures,
+     extra exercises, edits). Before rendering, re-validate every mark
+     against the current page and re-anchor by searching for the stored
+     text, preferring the occurrence closest to the old position. */
+  function normText(s) { return String(s || "").replace(/\s+/g, " ").trim(); }
+
+  function pageTextSnapshot() {
+    var nodes = textNodes(mainEl() || document.body), text = "", i;
+    for (i = 0; i < nodes.length; i++) text += nodes[i].nodeValue;
+    return { nodes: nodes, text: text };
+  }
+
+  /* Whitespace-collapsed copy of `text` + map from normalized index back
+     to raw index, so a normalized match can be converted to raw offsets. */
+  function normMap(text) {
+    var s = "", map = [], i;
+    for (i = 0; i < text.length; i++) {
+      if (/\s/.test(text.charAt(i))) {
+        if (s.length && s.charAt(s.length - 1) !== " ") { s += " "; map.push(i); }
+      } else { s += text.charAt(i); map.push(i); }
+    }
+    return { s: s, map: map };
+  }
+
+  function reanchorMarks() {
+    var list = DB.marks[PAGE];
+    if (!mainEl() || !list || !list.length) return;
+    var snap = pageTextSnapshot();
+    var nm = normMap(snap.text);
+    var changed = false;
+    list.forEach(function (h) {
+      h._lost = false;
+      if (h.start == null || h.end == null) { h._lost = true; return; }
+      /* 1) stored offsets still slice exactly the stored text? */
+      if (snap.text.slice(h.start, h.end) === h.text) return;
+      var best = -1, bestDist = Infinity, from = 0, j;
+      /* 2) exact string search, closest occurrence to old position */
+      if (h.text && h.text.length) {
+        while ((j = snap.text.indexOf(h.text, from)) >= 0) {
+          var d = Math.abs(j - h.start);
+          if (d < bestDist) { bestDist = d; best = j; }
+          from = j + 1;
+        }
+        if (best >= 0) { h.start = best; h.end = best + h.text.length; changed = true; return; }
+      }
+      /* 3) whitespace-collapsed search (markup may have reflowed) */
+      var q = normMap(h.text || "").s.replace(/^ +| +$/g, "");
+      if (q.length) {
+        var nb = -1, nd = Infinity, nf = 0, k;
+        while ((k = nm.s.indexOf(q, nf)) >= 0) {
+          var dd = Math.abs((nm.map[k] || 0) - h.start);
+          if (dd < nd) { nd = dd; nb = k; }
+          nf = k + 1;
+        }
+        if (nb >= 0) {
+          h.start = nm.map[nb];
+          h.end = (nm.map[nb + q.length - 1] || 0) + 1;
+          changed = true; return;
+        }
+      }
+      h._lost = true; /* marked text no longer exists on this page */
+    });
+    if (changed) save();
+  }
+
+  function reanchorNotes() {
+    var list = DB.notes[PAGE];
+    if (!list || !list.length) return;
+    var els = noteableEls();
+    var normEls = els.map(function (el) { return normText(el.textContent); });
+    var changed = false;
+    list.forEach(function (n) {
+      if (n.anchorIdx == null) return;
+      /* snippet() truncates with "…"; drop it so prefix matching works */
+      var at = normText(n.anchorText).replace(/\u2026$/, "");
+      if (!at) return;
+      var el = els[n.anchorIdx];
+      if (el && normEls[n.anchorIdx].indexOf(at) > -1) return; /* still valid */
+      /* staged search: full snippet, then shorter prefixes (content may
+         have been reflowed across element boundaries) */
+      var queries = [at, at.slice(0, 24), at.slice(0, 14)];
+      for (var t = 0; t < queries.length; t++) {
+        var q = queries[t];
+        if (t > 0 && q.length < 8) break; /* too short = false positives */
+        var best_ = -1, bd = Infinity;
+        normEls.forEach(function (txt, i) {
+          if (txt.indexOf(q) > -1) {
+            var d = Math.abs(i - n.anchorIdx);
+            if (d < bd) { bd = d; best_ = i; }
+          }
+        });
+        if (best_ >= 0) { n.anchorIdx = best_; changed = true; break; }
+      }
+    });
+    if (changed) save();
+  }
+
   function renderAll() {
     var m = mainEl();
     if (!m) return;
@@ -201,8 +300,9 @@
       p.removeChild(mk);
     });
     m.normalize();
+    reanchorMarks();
     DB.marks[PAGE] = DB.marks[PAGE] || [];
-    DB.marks[PAGE].forEach(applyHighlight);
+    DB.marks[PAGE].forEach(function (h) { if (!h._lost) applyHighlight(h); });
     renderNotes();
   }
 
@@ -273,6 +373,7 @@
   function renderNotes() {
     var m = mainEl();
     if (!m) return;
+    reanchorNotes();
     each(m.querySelectorAll(".note-chip"), function (c) {
       if (c.parentNode) c.parentNode.removeChild(c);
     });
