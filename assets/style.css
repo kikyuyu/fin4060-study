@@ -661,6 +661,10 @@ mark.hl-flash { animation: hlflash 1.6s ease; }
 .nb-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
 .nb-tag { font-size: 11px; line-height: 1; padding: 3px 9px; border-radius: 999px;
   background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+.nb-quote { margin-top: 8px; padding: 6px 9px; border-left: 3px solid var(--purple-line);
+  background: var(--purple-soft); border-radius: 0 7px 7px 0; font-size: 12.5px;
+  color: var(--ink-2); white-space: pre-wrap; word-break: break-word; }
+.nb-text.muted { font-style: italic; }
 
 /* 笔记图片双击放大（lightbox） */
 .nb-zoom-overlay {

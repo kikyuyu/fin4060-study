@@ -782,18 +782,21 @@
       bodyHTML = noteBodyHTML(n);
       onEdit = function () { hideBubble(); openLineNoteEditor(PAGE, n.id, n.anchorIdx); };
     } else {
-      /* highlight (划重点): note 是字符串，图片在 noteImgs 数组 */
+      /* highlight (划重点): note 是字符串，图片在 noteImgs 数组。
+         关键点：无论有没有写备注，悬浮都弹出气泡——否则「只有颜色、没写备注」的
+         划重点悬浮什么都不显示，用户就看不到「编辑」入口，误以为功能没实现。 */
       var h = null;
       (DB.marks[PAGE] || []).forEach(function (o) { if (o.id === opts.id) h = o; });
       if (!h) return;
       var hText = h.note || "";
       var hImgs = (h.noteImgs || []).filter(safeImg);
       var htags = h.tags || [];
-      if (!hText && !hImgs.length && !htags.length) return; /* 没有可显示的内容 */
       headHTML = "<div class='nb-head'>🖍 划重点 · " + esc(PAGE_LABEL[PAGE] || PAGE) + "</div>";
       bodyHTML = "";
       if (hText) {
         bodyHTML += "<div class='nb-text'>" + esc(hText).replace(/\n/g, "<br>") + "</div>";
+      } else {
+        bodyHTML += "<div class='nb-text muted'>（暂无备注，点「编辑」即可添加）</div>";
       }
       if (hImgs.length) {
         bodyHTML += "<div class='nb-imgs'>" + hImgs.map(function (u) {
@@ -804,6 +807,10 @@
         bodyHTML += "<div class='nb-tags'>" + htags.map(function (t) {
           return "<span class='nb-tag'>" + esc(t) + "</span>";
         }).join("") + "</div>";
+      }
+      /* 始终显示被高亮的原文片段，方便确认这是哪段文字 */
+      if (h.text) {
+        bodyHTML += "<div class='nb-quote'>" + esc(snippet(h.text, 60)) + "</div>";
       }
       onEdit = function () {
         hideBubble();
