@@ -191,6 +191,9 @@ h2.sec .badge {
   border: 1px solid var(--blue-line); border-radius: 999px;
   padding: 3px 11px;
 }
+h2.sec .badge.mock-badge {
+  background: #fff7ed; color: #c2410c; border-color: #fdba74;
+}
 h3.sub {
   font-size: 18.5px; margin: 32px 0 8px; color: var(--navy-2);
   padding-left: 12px; border-left: 4px solid var(--blue);
@@ -349,6 +352,7 @@ table.data tr.total { background: #f8fafc; font-weight: 700; }
 .eninline { color: var(--navy); font-weight: 600; }
 
 .kbd { font-family: "Consolas", "SF Mono", monospace; background: #f1f5f9; border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; font-size: 13px; }
+.kbd.mock { background: #fff7ed; border-color: #fdba74; color: #c2410c; font-weight: 700; }
 
 .center { text-align: center; }
 .muted { color: var(--muted); font-size: 13.5px; }
